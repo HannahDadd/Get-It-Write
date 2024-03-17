@@ -22,11 +22,14 @@ import androidx.compose.ui.unit.sp
 import com.example.getitwrite.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.NavController
+import com.example.getitwrite.views.components.ErrorText
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun showLogin(navController: NavController) {
-    var email = remember { mutableStateOf("") }
-    var password = remember { mutableStateOf("") }
+fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf("") }
     Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Image(painter = painterResource(id = R.drawable.sitting), modifier = Modifier.fillMaxWidth(), contentDescription = "", contentScale = ContentScale.FillWidth)
         Text("Login", fontSize = 40.sp, fontWeight = FontWeight.Bold)
@@ -52,16 +55,38 @@ fun showLogin(navController: NavController) {
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /* ... */ },
+            onClick = {
+                auth.signInWithEmailAndPassword(email.toString(), password.toString())
+                    .addOnCompleteListener() { task ->
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
+                            navController.navigate("signup")
+                        } else {
+                            errorString.value = "Authentication failed."
+                        }
+                    }
+            },
             colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
         ) {
             Text("LOGIN", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
+        ErrorText(error = errorString)
         TextButton(onClick = { navController.navigate("signup") }) {
             Text(modifier = Modifier.align(Alignment.Bottom),
                 text = "Don't have an account? Sign Up", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold)
         }
     }
+}
+
+private fun signIn(email: String, password: String, auth: FirebaseAuth, navController: NavController) {
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener() { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                navController.navigate("signup")
+            } else {
+            }
+        }
 }
 
 object Colours {
