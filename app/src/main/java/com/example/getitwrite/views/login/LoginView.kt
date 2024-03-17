@@ -61,7 +61,7 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
                         if (task.isSuccessful) {
                             navController.navigate("feed")
                         } else {
-                            errorString.value = "Authentication failed."
+                            errorString.value = task.exception.toString()
                         }
                     }
             },

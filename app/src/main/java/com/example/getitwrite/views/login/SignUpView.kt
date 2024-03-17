@@ -74,7 +74,7 @@ fun showSignUp(navController: NavController, auth: FirebaseAuth) {
                             if (task.isSuccessful) {
                                 navController.navigate("createAccount")
                             } else {
-                                errorString.value = "Network failure"
+                                errorString.value = task.exception.toString()
                             }
                         }
             },
