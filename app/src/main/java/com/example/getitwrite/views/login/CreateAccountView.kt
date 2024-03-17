@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -23,10 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.R
 import com.example.getitwrite.views.components.QuestionSection
-import com.example.getitwrite.views.components.TagCloud
+import com.example.getitwrite.views.components.SelectTagCloud
 
 @Composable
 fun ShowCreateAccountView() {
@@ -51,7 +49,7 @@ fun ShowCreateAccountView() {
                     }
                 }
             )
-            TagCloud()
+            SelectTagCloud("Which genres do you write?")
             QuestionSection(bio, "Tell other writers about yourself.")
             QuestionSection(writing, "Tell other writers about your writing.")
             QuestionSection(critiqueStyle, "Tell other writers about your critique style.")
