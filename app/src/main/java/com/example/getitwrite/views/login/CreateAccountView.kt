@@ -23,11 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.R
 import com.example.getitwrite.views.components.QuestionSection
+import com.example.getitwrite.views.components.TagCloud
 
 @Composable
-fun showCreateAccountView() {
+fun ShowCreateAccountView() {
     var displayName = remember { mutableStateOf("") }
     var bio = remember { mutableStateOf("") }
     var writing = remember { mutableStateOf("") }
@@ -49,6 +51,7 @@ fun showCreateAccountView() {
                     }
                 }
             )
+            TagCloud()
             QuestionSection(bio, "Tell other writers about yourself.")
             QuestionSection(writing, "Tell other writers about your writing.")
             QuestionSection(critiqueStyle, "Tell other writers about your critique style.")

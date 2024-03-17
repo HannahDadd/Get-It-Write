@@ -90,5 +90,6 @@ private fun signIn(email: String, password: String, auth: FirebaseAuth, navContr
 
 object Colours {
     val Dark_Readable = Color(0xFF729B79)
+    val Dark_Background = Color(0xFF475B63)
     val signOutGrey = Color(0xFF444444)
 }

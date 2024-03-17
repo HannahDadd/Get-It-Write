@@ -1,43 +1,33 @@
 package com.example.getitwrite.views.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.getitwrite.GlobalVariables
+import com.example.getitwrite.views.login.Colours
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TagCloud(
-    modifier: Modifier = Modifier,
-    verticalPadding: Dp = 24.dp,
-    content: @Composable () -> Unit
-) {
-    Layout(
-        modifier = modifier,
-        content = content
-    ) { measurables, constraints ->
-        // Don't constrain child views further, measure them with given constraints
-        // List of measured children
-        val placeables = measurables.map { measurable ->
-            // Measure each children
-            // Set minHeight = 0 for weight = 1f variant
-            measurable.measure(constraints.copy(minHeight = 0))
-        }
-
-        // Set the size of the layout as big as it can
-        layout(constraints.minWidth, constraints.maxHeight) {
-            // Track the y co-ord we have placed children up to
-            var xPosition = 0
-            var yPosition = 0
-
-            // Place children in the parent layout
-            placeables.forEach { placeable ->
-                // Position item on the screen
-                placeable.placeRelative(x = xPosition, y = yPosition)
-
-                xPosition += placeable.width
-                if (xPosition >= constraints.maxWidth) {
-                    yPosition += placeable.height + verticalPadding.value.toInt()
-                    xPosition = 0
+fun TagCloud() {
+    Column {
+        FlowRow() {
+            for (genre in GlobalVariables.genres) {
+                TextButton(modifier = Modifier
+                    .padding(4.dp)
+                    .background(
+                        color = Colours.Dark_Background,
+                        shape = RoundedCornerShape(4.dp)),
+                    onClick = {  }) {
+                    Text(text = genre, color = Color.White)
                 }
             }
         }
