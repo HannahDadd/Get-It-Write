@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -20,7 +21,7 @@ fun ErrorText(error: MutableState<String>) {
 
 @Composable
 fun QuestionSection(response: MutableState<String>, question: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(20.dp), modifier = Modifier.padding(vertical = 10.dp)) {
         Text(question, fontWeight = FontWeight.Bold)
         OutlinedTextField(
             value = response.value,
