@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                 ShowFeed()
             }
             composable("signup") {
-                showSignUp(navController = navController)
+                showSignUp(navController = navController, auth)
             }
             composable("createAccount") {
                 showCreateAccountView()

@@ -24,9 +24,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.getitwrite.R
 import com.example.getitwrite.views.components.ErrorText
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun showSignUp(navController: NavController) {
+fun showSignUp(navController: NavController, auth: FirebaseAuth) {
     var email = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var confirmPassword = remember { mutableStateOf("") }
@@ -68,7 +69,14 @@ fun showSignUp(navController: NavController) {
                 else if (password.value != confirmPassword.value)
                     errorString.value = "Passwords do not match"
                 else
-                    navController.navigate("createAccount")
+                    auth.createUserWithEmailAndPassword(email.value, password.value)
+                        .addOnCompleteListener() { task ->
+                            if (task.isSuccessful) {
+                                navController.navigate("createAccount")
+                            } else {
+                                errorString.value = "Network failure"
+                            }
+                        }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
         ) {

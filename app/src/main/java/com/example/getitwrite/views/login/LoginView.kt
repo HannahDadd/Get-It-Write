@@ -59,8 +59,7 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
                 auth.signInWithEmailAndPassword(email.toString(), password.toString())
                     .addOnCompleteListener() { task ->
                         if (task.isSuccessful) {
-                            val user = auth.currentUser
-                            navController.navigate("signup")
+                            navController.navigate("feed")
                         } else {
                             errorString.value = "Authentication failed."
                         }
