@@ -77,7 +77,7 @@ fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
             onClick = {
                 val db = Firebase.firestore
                 val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value, bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value, authors = authorTags, writingGenres = genreTags, colour = (0..<GlobalVariables.profileColours.size).random())
-                db.collection("cities").document("LA")
+                db.collection("users").document(auth.currentUser?.uid ?: "ID")
                     .set(user)
                     .addOnSuccessListener { navController.navigate("feed") }
                     .addOnFailureListener { errorString.value = "Network error" }
