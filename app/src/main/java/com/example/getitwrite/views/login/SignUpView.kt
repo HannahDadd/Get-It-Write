@@ -32,7 +32,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 @Composable
-fun showSignUp(navController: NavController, auth: FirebaseAuth) {
+fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
     var email = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var confirmPassword = remember { mutableStateOf("") }

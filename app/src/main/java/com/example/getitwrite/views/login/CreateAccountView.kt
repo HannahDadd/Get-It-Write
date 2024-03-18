@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.R
@@ -35,7 +36,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 @Composable
-fun ShowCreateAccountView(auth: FirebaseAuth) {
+fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
     val displayName = remember { mutableStateOf("") }
     val bio = remember { mutableStateOf("") }
     val writing = remember { mutableStateOf("") }
@@ -78,7 +79,7 @@ fun ShowCreateAccountView(auth: FirebaseAuth) {
                 val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value, bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value, authors = authorTags, writingGenres = genreTags, colour = (0..<GlobalVariables.profileColours.size).random())
                 db.collection("cities").document("LA")
                     .set(user)
-                    .addOnSuccessListener {  }
+                    .addOnSuccessListener { navController.navigate("feed") }
                     .addOnFailureListener { errorString.value = "Network error" }
 
             },

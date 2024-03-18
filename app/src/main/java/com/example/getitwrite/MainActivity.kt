@@ -12,7 +12,7 @@ import com.example.getitwrite.ui.theme.GetItWriteTheme
 import com.example.getitwrite.views.feed.ShowFeed
 import com.example.getitwrite.views.login.ShowCreateAccountView
 import com.example.getitwrite.views.login.ShowLogin
-import com.example.getitwrite.views.login.showSignUp
+import com.example.getitwrite.views.login.ShowSignUp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -42,14 +42,13 @@ class MainActivity : ComponentActivity() {
                 ShowLogin(navController, auth)
             }
             composable("feed") {
-//                ShowFeed()
-                ShowCreateAccountView()
+                ShowFeed()
             }
             composable("signup") {
-                showSignUp(navController = navController, auth)
+                ShowSignUp(navController = navController, auth)
             }
             composable("createAccount") {
-                ShowCreateAccountView()
+                ShowCreateAccountView(navController, auth)
             }
         }
     }
