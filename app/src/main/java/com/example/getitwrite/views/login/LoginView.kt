@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.getitwrite.R
 import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.NavController
+import com.example.getitwrite.Colours
 import com.example.getitwrite.views.components.ErrorText
 import com.google.firebase.auth.FirebaseAuth
 
@@ -86,10 +87,4 @@ private fun signIn(email: String, password: String, auth: FirebaseAuth, navContr
             } else {
             }
         }
-}
-
-object Colours {
-    val Dark_Readable = Color(0xFF729B79)
-    val Dark_Background = Color(0xFF475B63)
-    val signOutGrey = Color(0xFF444444)
 }

@@ -22,20 +22,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.getitwrite.Colours
 import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.R
+import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.CreateTagCloud
+import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.QuestionSection
 import com.example.getitwrite.views.components.SelectTagCloud
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 
 @Composable
-fun ShowCreateAccountView() {
+fun ShowCreateAccountView(auth: FirebaseAuth) {
     val displayName = remember { mutableStateOf("") }
     val bio = remember { mutableStateOf("") }
     val writing = remember { mutableStateOf("") }
     val critiqueStyle = remember { mutableStateOf("") }
     val genreTags = ArrayList<String>()
     val authorTags = ArrayList<String>()
+    var errorString = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
@@ -62,10 +69,19 @@ fun ShowCreateAccountView() {
                 authorTags.add(it)
             }
             QuestionSection(critiqueStyle, "Tell other writers about your critique style.")
+            ErrorText(error = errorString)
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /* ... */ },
+            onClick = {
+                val db = Firebase.firestore
+                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value, bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value, authors = authorTags, writingGenres = genreTags, colour = (0..<GlobalVariables.profileColours.size).random())
+                db.collection("cities").document("LA")
+                    .set(user)
+                    .addOnSuccessListener {  }
+                    .addOnFailureListener { errorString.value = "Network error" }
+
+            },
             colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
         ) {
             Text("Sign Up!", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)

@@ -22,9 +22,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.getitwrite.Colours
+import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.R
+import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ErrorText
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
 
 @Composable
 fun showSignUp(navController: NavController, auth: FirebaseAuth) {
@@ -72,6 +77,12 @@ fun showSignUp(navController: NavController, auth: FirebaseAuth) {
                     auth.createUserWithEmailAndPassword(email.value, password.value)
                         .addOnCompleteListener() { task ->
                             if (task.isSuccessful) {
+                                val db = Firebase.firestore
+                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random())
+                                db.collection("cities").document("LA")
+                                    .set(user)
+                                    .addOnSuccessListener {  }
+                                    .addOnFailureListener { errorString.value = "Network error" }
                                 navController.navigate("createAccount")
                             } else {
                                 errorString.value = task.exception.toString()

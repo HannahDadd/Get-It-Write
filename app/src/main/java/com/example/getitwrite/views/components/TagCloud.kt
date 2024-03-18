@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.getitwrite.views.login.Colours
+import com.example.getitwrite.Colours
 
 @Composable
 fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
@@ -27,6 +27,7 @@ fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
     val tagsInCloud by remember { mutableStateOf(mutableListOf<String>()) }
     Column(modifier = Modifier.padding(vertical = 10.dp)) {
         Text(question, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 4.dp))
+        Text("Tap on tags to remove them", fontWeight = FontWeight.Light, modifier = Modifier.padding(vertical = 4.dp))
         Row {
             TextField(
                 value = text,
