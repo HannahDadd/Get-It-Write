@@ -32,6 +32,7 @@ fun ShowCreateAccountView() {
     var bio = remember { mutableStateOf("") }
     var writing = remember { mutableStateOf("") }
     var critiqueStyle = remember { mutableStateOf("") }
+    var tags = ArrayList<String>()
     Column(modifier = Modifier
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
@@ -49,7 +50,9 @@ fun ShowCreateAccountView() {
                     }
                 }
             )
-            SelectTagCloud("Which genres do you write?")
+            SelectTagCloud("Which genres do you write?") {
+                tags.add(it)
+            }
             QuestionSection(bio, "Tell other writers about yourself.")
             QuestionSection(writing, "Tell other writers about your writing.")
             QuestionSection(critiqueStyle, "Tell other writers about your critique style.")

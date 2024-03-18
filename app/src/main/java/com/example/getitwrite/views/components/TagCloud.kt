@@ -19,25 +19,25 @@ import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.views.login.Colours
 
 @Composable
-fun SelectTagCloud(question: String) {
+fun SelectTagCloud(question: String, clickAction: (input: String) -> Boolean) {
     Column(modifier = Modifier.padding(vertical = 10.dp)) {
         Text(question, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 4.dp))
-        TagCloud(clickAction = true)
+        TagCloud(clickAction = true, action = clickAction)
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TagCloud(clickAction: Boolean) {
+fun TagCloud(clickAction: Boolean, action: (input: String) -> Boolean) {
     FlowRow() {
         for (genre in GlobalVariables.genres) {
-            SingleTag(clickAction, genre)
+            SingleTag(clickAction, genre, action)
         }
     }
 }
 
 @Composable
-fun SingleTag(clickAction: Boolean, tagString: String) {
+fun SingleTag(clickAction: Boolean, tagString: String, action: (input: String) -> Boolean) {
     var bgColour = remember { mutableStateOf( Colours.Dark_Background) }
     TextButton(modifier = Modifier
         .padding(4.dp)
@@ -47,6 +47,7 @@ fun SingleTag(clickAction: Boolean, tagString: String) {
         ),
         onClick = {
             if (clickAction) {
+                action(tagString)
                 bgColour.value = Colours.Dark_Readable
             }
         }) {
