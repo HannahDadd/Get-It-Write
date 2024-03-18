@@ -22,17 +22,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.R
+import com.example.getitwrite.views.components.CreateTagCloud
 import com.example.getitwrite.views.components.QuestionSection
 import com.example.getitwrite.views.components.SelectTagCloud
 
 @Composable
 fun ShowCreateAccountView() {
-    var displayName = remember { mutableStateOf("") }
-    var bio = remember { mutableStateOf("") }
-    var writing = remember { mutableStateOf("") }
-    var critiqueStyle = remember { mutableStateOf("") }
-    var tags = ArrayList<String>()
+    val displayName = remember { mutableStateOf("") }
+    val bio = remember { mutableStateOf("") }
+    val writing = remember { mutableStateOf("") }
+    val critiqueStyle = remember { mutableStateOf("") }
+    val genreTags = ArrayList<String>()
+    val authorTags = ArrayList<String>()
     Column(modifier = Modifier
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
@@ -50,11 +53,14 @@ fun ShowCreateAccountView() {
                     }
                 }
             )
-            SelectTagCloud("Which genres do you write?") {
-                tags.add(it)
-            }
             QuestionSection(bio, "Tell other writers about yourself.")
+            SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres) {
+                genreTags.add(it)
+            }
             QuestionSection(writing, "Tell other writers about your writing.")
+            CreateTagCloud("Who are your favourite authors?") {
+                authorTags.add(it)
+            }
             QuestionSection(critiqueStyle, "Tell other writers about your critique style.")
         }
         Button(
