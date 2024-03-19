@@ -29,6 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.views.messages.ShowMessages
+import com.example.getitwrite.views.proposals.ProposalsFeed
 
 @Composable
 fun ShowFeed() {
@@ -77,7 +78,7 @@ fun ShowFeed() {
             composable(Screen.YourWork.route) { ShowMessages() }
             composable(Screen.ToCritique.route) { ShowMessages() }
             composable(Screen.Messages.route) { ShowMessages() }
-            composable(Screen.FindPartners.route) { ShowMessages() }
+            composable(Screen.FindPartners.route) { ProposalsFeed() }
         }
     }
 }
