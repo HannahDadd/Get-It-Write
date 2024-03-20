@@ -7,9 +7,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.TagCloud
@@ -17,22 +20,13 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
 @Composable
-fun ProposalsFeed() {
-    val proposals = remember { mutableStateOf(ArrayList<Proposal>()) }
+fun ProposalsFeed(
+    proposalViewModel: ProposalsViewModel = viewModel()
+) {
+    val proposals by proposalViewModel.proposalsFlow.collectAsState(initial = emptyList())
     val errorString = remember { mutableStateOf("") }
-    Firebase.firestore.collection("proposals")
-        .orderBy("timestamp")
-        .get()
-        .addOnSuccessListener { documents ->
-            for (document in documents) {
-                proposals.value.add(Proposal(id = document.id, data = document.data))
-            }
-        }
-        .addOnFailureListener { exception ->
-            errorString.value = exception.toString()
-        }
     LazyColumn {
-        items(proposals.value) { proposal ->
+        items(proposals) { proposal ->
             ProposalView(proposal)
         }
     }

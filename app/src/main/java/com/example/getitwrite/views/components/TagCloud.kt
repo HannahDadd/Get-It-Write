@@ -39,7 +39,9 @@ fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
                 addAction(text)
             })
         }
-        TagCloud(tags = tagsInCloud, action = null)
+        TagCloud(tags = tagsInCloud, action = {
+            tagsInCloud.remove(it)
+        })
     }
 }
 
