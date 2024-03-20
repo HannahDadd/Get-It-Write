@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.ui.theme.GetItWriteTheme
+import com.example.getitwrite.views.MainView
 import com.example.getitwrite.views.feed.ShowFeed
 import com.example.getitwrite.views.login.ShowCreateAccountView
 import com.example.getitwrite.views.login.ShowLogin
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 ShowLogin(navController, auth)
             }
             composable("feed") {
-                ShowFeed()
+                MainView()
             }
             composable("signup") {
                 ShowSignUp(navController = navController, auth)
