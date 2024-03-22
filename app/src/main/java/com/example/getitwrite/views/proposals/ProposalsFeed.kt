@@ -1,6 +1,7 @@
 package com.example.getitwrite.views.proposals
 
 import android.text.format.DateUtils
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -22,19 +25,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Proposal
-import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.TagCloud
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
+//import com.google.accompanist.adaptive.TwoPane
 
 @Composable
-fun ProposalsFeed(
-    proposalViewModel: ProposalsViewModel = viewModel()
-) {
+fun ProposalsFeed(proposalViewModel: ProposalsViewModel = viewModel()) {
     val proposals by proposalViewModel.proposalsFlow.collectAsState(initial = emptyList())
     val errorString = remember { mutableStateOf("") }
     Scaffold(
@@ -47,17 +49,21 @@ fun ProposalsFeed(
                 )
             }
     ) { innerPadding ->
+//        TwoPane (
+//
+//        )
         LazyColumn(Modifier.padding(innerPadding)) {
             items(proposals) { proposal ->
-                ProposalView(proposal)
+                ProposalView(proposal, Modifier.clickable {
+                })
             }
         }
     }
 }
 
 @Composable
-fun ProposalView(proposal: Proposal) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(10.dp)) {
+fun ProposalView(proposal: Proposal, modifier: Modifier) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = modifier.padding(10.dp)) {
         Text(proposal.title, fontWeight = FontWeight.Bold)
         Text(proposal.blurb)
         Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
@@ -85,22 +91,26 @@ fun ProposalView(proposal: Proposal) {
 
 @Composable
 fun ExpandedProposalView(proposal: Proposal) {
-    val proposals = remember { mutableStateOf(ArrayList<Proposal>()) }
-    val errorString = remember { mutableStateOf("") }
-    Firebase.firestore.collection("proposals")
-        .orderBy("timestamp")
-        .get()
-        .addOnSuccessListener { documents ->
-            for (document in documents) {
-                proposals.value.add(Proposal(id = document.id, data = document.data))
-            }
-        }
-        .addOnFailureListener { exception ->
-            errorString.value = exception.toString()
-        }
-    LazyColumn {
-        items(proposals.value) { proposal ->
-            ProposalView(proposal)
+    Column {
+        Text(proposal.title, fontSize = 40.sp)
+        Text("by ${proposal.writerName}")
+        Divider()
+        Text("Author's notes", fontWeight = FontWeight.Bold)
+        Text(proposal.authorNotes)
+        Divider()
+        Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
+        TagCloud(tags = proposal.genres, action = null)
+        Text(text = "${proposal.wordCount} words", fontWeight = FontWeight.Bold)
+        Text("Trigger warnings:", fontWeight = FontWeight.Bold)
+        TagCloud(tags = proposal.triggerWarnings, action = null)
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+        ) {
+            Text("Send Author Message", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
     }
 }
