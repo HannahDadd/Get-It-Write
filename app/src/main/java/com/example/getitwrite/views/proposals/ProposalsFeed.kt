@@ -19,72 +19,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.views.components.TagCloud
-import com.example.getitwrite.views.proposals.ProposalsDestinations.proposal_id
-
-object ProposalsDestinations {
-    const val proposalsList = "proposals"
-    const val proposalDetail = "proposalId"
-    const val proposal_id = "proposal_id"
-}
-
-@Composable
-fun ProposalsScreen(proposalViewModel: ProposalsViewModel = viewModel()) {
-    val proposals by proposalViewModel.proposalsFlow.collectAsState(initial = emptyList())
-    val errorString = remember { mutableStateOf("") }
-    val navController = rememberNavController()
-    val actions = remember(navController) { AppActions(navController) }
-
-    NavHost(
-        navController = navController,
-        startDestination = ProposalsDestinations.proposalsList
-    ) {
-        composable(ProposalsDestinations.proposalsList) {
-            ProposalsFeed(proposals = proposals, selectProposal = actions.selected)
-        }
-        composable(
-            "${ProposalsDestinations.proposalDetail}/${proposal_id}",
-            arguments = listOf(
-                navArgument(proposal_id) {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            ProposalDetails(
-                proposalId = arguments.getString(proposal_id)!!,
-                proposals = proposals,
-                navigateUp = actions.navigateUp
-            )
-        }
-    }
-}
-
-private class AppActions(
-    navController: NavHostController
-) {
-    val selected: (String) -> Unit = { proposal_id: String ->
-        navController.navigate("${ProposalsDestinations.proposalDetail}/${proposal_id}")
-    }
-    val navigateUp: () -> Unit = {
-        navController.navigateUp()
-    }
-}
 
 @Composable
 fun ProposalsFeed(proposals: List<Proposal>, selectProposal: (String) -> Unit) {

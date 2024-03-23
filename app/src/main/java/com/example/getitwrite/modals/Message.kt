@@ -1,6 +1,7 @@
 package com.example.getitwrite.modals
 
 import com.google.firebase.Timestamp
+import java.util.UUID
 
 class Message(
     val content: String,
@@ -14,10 +15,9 @@ class Message(
     )
 }
 
-class Chat(
-    val users: MutableList<String>
-) {
+class Chat(val users: MutableList<String>, val id: String) {
     constructor(data: Map<String, Any>) : this(
+        id = UUID.randomUUID().toString(),
         users = data.get("users") as MutableList<String>
     )
 }

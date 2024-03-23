@@ -14,6 +14,7 @@ import com.example.getitwrite.views.feed.ShowFeed
 import com.example.getitwrite.views.login.ShowCreateAccountView
 import com.example.getitwrite.views.login.ShowLogin
 import com.example.getitwrite.views.login.ShowSignUp
+import com.example.getitwrite.views.proposals.ProposalsDestinations
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -60,5 +61,26 @@ class MainActivity : ComponentActivity() {
         if (currentUser != null) {
             destination = "feed"
         }
+    }
+}
+
+object Destinations {
+    const val proposalsList = "proposals"
+    const val proposal_id = "proposal_id"
+    const val chatsList = "chats"
+    const val chat_id = "chat_id"
+}
+
+class AppActions(
+    navController: NavHostController
+) {
+    val selectedProposal: (String) -> Unit = { id: String ->
+        navController.navigate("${Destinations.proposalsList}/${id}")
+    }
+    val selectChat: (String) -> Unit = { id: String ->
+        navController.navigate("${Destinations.chatsList}/${id}")
+    }
+    val navigateUp: () -> Unit = {
+        navController.navigateUp()
     }
 }
