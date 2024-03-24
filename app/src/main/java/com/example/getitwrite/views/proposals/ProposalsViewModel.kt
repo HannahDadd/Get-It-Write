@@ -3,6 +3,7 @@ package com.example.getitwrite.views.proposals
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Proposal
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await

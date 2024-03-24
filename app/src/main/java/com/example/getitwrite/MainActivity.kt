@@ -10,11 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.ui.theme.GetItWriteTheme
 import com.example.getitwrite.views.MainView
-import com.example.getitwrite.views.feed.ShowFeed
+import com.example.getitwrite.views.MainViewModel
 import com.example.getitwrite.views.login.ShowCreateAccountView
 import com.example.getitwrite.views.login.ShowLogin
 import com.example.getitwrite.views.login.ShowSignUp
-import com.example.getitwrite.views.proposals.ProposalsDestinations
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -44,7 +43,7 @@ class MainActivity : ComponentActivity() {
                 ShowLogin(navController, auth)
             }
             composable("feed") {
-                MainView()
+                MainView(MainViewModel(auth))
             }
             composable("signup") {
                 ShowSignUp(navController = navController, auth)

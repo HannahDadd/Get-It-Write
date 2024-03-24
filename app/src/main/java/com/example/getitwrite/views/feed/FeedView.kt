@@ -26,12 +26,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.User
+import com.example.getitwrite.views.messages.ChatsScreen
 import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.proposals.ProposalsFeed
 import com.example.getitwrite.views.proposals.ProposalsScreen
 
 @Composable
-fun ShowFeed() {
+fun ShowFeed(user: User) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -76,7 +78,7 @@ fun ShowFeed() {
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) { ShowMessages() }
             composable(Screen.ToCritique.route) { ShowMessages() }
-            composable(Screen.Messages.route) { ShowMessages() }
+            composable(Screen.Messages.route) { ChatsScreen(user) }
             composable(Screen.FindPartners.route) { ProposalsScreen() }
         }
     }

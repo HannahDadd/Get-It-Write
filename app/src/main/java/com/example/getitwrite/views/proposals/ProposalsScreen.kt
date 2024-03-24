@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
+import com.example.getitwrite.Destinations
 
 @Composable
 fun ProposalsScreen(proposalViewModel: ProposalsViewModel = viewModel()) {
@@ -22,22 +23,22 @@ fun ProposalsScreen(proposalViewModel: ProposalsViewModel = viewModel()) {
 
     NavHost(
         navController = navController,
-        startDestination = ProposalsDestinations.proposalsList
+        startDestination = Destinations.proposalsList
     ) {
-        composable(ProposalsDestinations.proposalsList) {
+        composable(Destinations.proposalsList) {
             ProposalsFeed(proposals = proposals, selectProposal = actions.selectedProposal)
         }
         composable(
-            "${ProposalsDestinations.proposalDetail}/${ProposalsDestinations.proposal_id}",
+            "${Destinations.proposalsList}/${Destinations.proposal_id}",
             arguments = listOf(
-                navArgument(ProposalsDestinations.proposal_id) {
+                navArgument(Destinations.proposal_id) {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
             ProposalDetails(
-                proposalId = arguments.getString(ProposalsDestinations.proposal_id)!!,
+                proposalId = arguments.getString(Destinations.proposal_id)!!,
                 proposals = proposals,
                 navigateUp = actions.navigateUp
             )

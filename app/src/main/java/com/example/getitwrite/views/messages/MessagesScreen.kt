@@ -15,13 +15,14 @@ import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.Destinations
 import com.example.getitwrite.modals.Chat
+import com.example.getitwrite.modals.User
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ChatsScreen(chatsViewModel: ChatsViewModel = viewModel()) {
+fun ChatsScreen(user: User, chatsViewModel: ChatsViewModel = viewModel()) {
     val chats by chatsViewModel.chatsFlow.collectAsState(initial = emptyList())
     val errorString = remember { mutableStateOf("") }
     val navController = rememberNavController()
@@ -32,7 +33,7 @@ fun ChatsScreen(chatsViewModel: ChatsViewModel = viewModel()) {
         startDestination = Destinations.chatsList
     ) {
         composable(Destinations.chatsList) {
-            ChatsFeed(chats = chats, selectChat = actions.selectChat)
+            ChatsFeed(user = user, chats = chats, selectChat = actions.selectChat)
         }
         composable(
             "${Destinations.chatsList}/${Destinations.chat_id}",

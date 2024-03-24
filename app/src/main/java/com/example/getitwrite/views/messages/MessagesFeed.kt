@@ -8,18 +8,19 @@ import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.getitwrite.modals.Chat
+import com.example.getitwrite.modals.User
 
 @Composable
-fun ChatsFeed(chats: List<Chat>, selectChat: (String) -> Unit) {
+fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
     LazyColumn {
         items(chats) { chat ->
-            ChatView(chat, selectChat)
+            ChatView(user, chat, selectChat)
         }
     }
 }
 
 @Composable
-fun ChatView(chat: Chat, selectProposal: (String) -> Unit) {
+fun ChatView(user: User, chat: Chat, selectProposal: (String) -> Unit) {
     Card(Modifier.clickable { selectProposal(chat.id) }) {
         Row {
 //            Text(text = chat.users.)
