@@ -28,6 +28,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.messages.ChatsScreen
+import com.example.getitwrite.views.messages.ChatsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.proposals.ProposalsFeed
 import com.example.getitwrite.views.proposals.ProposalsScreen
@@ -78,7 +79,7 @@ fun ShowFeed(user: User) {
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) { ShowMessages() }
             composable(Screen.ToCritique.route) { ShowMessages() }
-            composable(Screen.Messages.route) { ChatsScreen(user) }
+            composable(Screen.Messages.route) { ChatsScreen(user, ChatsViewModel(user = user)) }
             composable(Screen.FindPartners.route) { ProposalsScreen() }
         }
     }

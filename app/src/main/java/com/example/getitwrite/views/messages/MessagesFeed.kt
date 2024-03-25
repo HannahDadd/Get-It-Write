@@ -29,7 +29,7 @@ import kotlinx.coroutines.tasks.await
 
 @Composable
 fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
-    if (chats.count() == 0) {
+    if (chats.isEmpty()) {
         Column(Modifier.padding(10.dp)) {
             Text("You have no chats.", fontWeight = FontWeight.Bold)
             FindPartnersText()

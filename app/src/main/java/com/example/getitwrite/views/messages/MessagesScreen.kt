@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ChatsScreen(user: User, chatsViewModel: ChatsViewModel = viewModel()) {
+fun ChatsScreen(user: User, chatsViewModel: ChatsViewModel) {
     val chats by chatsViewModel.chatsFlow.collectAsState(initial = emptyList())
     val errorString = remember { mutableStateOf("") }
     val navController = rememberNavController()
@@ -49,10 +49,10 @@ fun ChatsScreen(user: User, chatsViewModel: ChatsViewModel = viewModel()) {
     }
 }
 
-class ChatsViewModel : ViewModel() {
+class ChatsViewModel(user: User) : ViewModel() {
     val chatsFlow = flow {
         val documents = Firebase.firestore.collection("chats")
-            .orderBy("timestamp")
+//            .whereArrayContains("users", user.id)
             .get().await()
         val items = documents.map { doc ->
             Chat(doc.data)
