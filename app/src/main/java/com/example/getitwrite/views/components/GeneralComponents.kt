@@ -68,3 +68,8 @@ fun QuestionSection(response: MutableState<String>, question: String) {
 fun ProfileImage(username: String, profileColour: Int) {
     Text(text = username.first().uppercase(), style = TextStyle(background = GlobalVariables.profileColours.get(profileColour), color = Color.White))
 }
+
+@Composable
+fun FindPartnersText() {
+    Text(text = "Select 'find partners' on the bottom nav to find new critique partners.")
+}
