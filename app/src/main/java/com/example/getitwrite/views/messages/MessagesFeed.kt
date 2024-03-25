@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.Proposal
@@ -29,12 +30,12 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
     if (chats.count() == 0) {
-        Column(Modifier.padding()) {
+        Column(Modifier.padding(10.dp)) {
             Text("You have no chats.", fontWeight = FontWeight.Bold)
             FindPartnersText()
         }
     } else {
-        LazyColumn(Modifier.padding()) {
+        LazyColumn(Modifier.padding(10.dp)) {
             items(chats) { chat ->
                 val user2 = chat.users.filter { it != user.id }
                 Text(user2[0])
