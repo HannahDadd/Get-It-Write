@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.User
+import com.example.getitwrite.views.components.ProfileImage
 
 @Composable
 fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
@@ -21,9 +22,10 @@ fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
 
 @Composable
 fun ChatView(user: User, chat: Chat, selectProposal: (String) -> Unit) {
+    val user2 = chat.users.filter { it != user.id }
     Card(Modifier.clickable { selectProposal(chat.id) }) {
         Row {
-//            Text(text = chat.users.)
+            ProfileImage(username = chat.users., profileColour = )
         }
     }
 }

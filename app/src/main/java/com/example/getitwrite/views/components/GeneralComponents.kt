@@ -19,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.getitwrite.GlobalVariables
 
 @Composable
 fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
@@ -55,7 +57,14 @@ fun QuestionSection(response: MutableState<String>, question: String) {
             value = response.value,
             maxLines = 1,
             onValueChange = { response.value = it },
-            modifier = Modifier.fillMaxWidth().height(120.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
         )
     }
+}
+
+@Composable
+fun ProfileImage(username: String, profileColour: Int) {
+    Text(text = username.first().uppercase(), style = TextStyle(background = GlobalVariables.profileColours.get(profileColour), color = Color.White))
 }
