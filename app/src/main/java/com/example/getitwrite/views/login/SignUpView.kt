@@ -79,7 +79,7 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
                             if (task.isSuccessful) {
                                 val db = Firebase.firestore
                                 val user = User(id = auth.currentUser?.uid ?: "ID", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random())
-                                db.collection("cities").document("LA")
+                                db.collection("users").document(auth.currentUser?.uid.toString())
                                     .set(user)
                                     .addOnSuccessListener {  }
                                     .addOnFailureListener { errorString.value = "Network error" }
