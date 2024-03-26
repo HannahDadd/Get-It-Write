@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,6 +53,7 @@ class ChatsViewModel(user: User) : ViewModel() {
         val documents = Firebase.firestore.collection("chats")
 //            .whereArrayContains("users", user.id)
             .get().await()
+        print("XXXX ${documents}")
         val items = documents.map { doc ->
             Chat(doc.data)
         }
