@@ -38,8 +38,8 @@ fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
         LazyColumn(Modifier.padding(10.dp)) {
             items(chats) { chat ->
                 val user2 = chat.users.filter { it != user.id }
-                Text(user2[0])
-//            ChatView(ChatViewViewModel(user2.get(0)), chat, selectChat)
+                Text(text = user2[0])
+//                ChatView(ChatViewViewModel(user2.get(0)), chat, selectChat)
             }
         }
     }
