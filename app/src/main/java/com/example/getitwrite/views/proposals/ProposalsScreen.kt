@@ -1,5 +1,6 @@
 package com.example.getitwrite.views.proposals
 
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.Destinations
+import com.example.getitwrite.modals.Proposal
 
 @Composable
 fun ProposalsScreen(proposalViewModel: ProposalsViewModel = viewModel()) {
@@ -29,16 +31,17 @@ fun ProposalsScreen(proposalViewModel: ProposalsViewModel = viewModel()) {
             ProposalsFeed(proposals = proposals, selectProposal = actions.selectedProposal)
         }
         composable(
-            "${Destinations.proposalsList}/${Destinations.proposal_id}",
+            "details/{proposal_id}",
+//            "proposalTwo?proposalId={ErBRWcB1cqF8U2GaJQ0U}",
             arguments = listOf(
-                navArgument(Destinations.proposal_id) {
+                navArgument("proposal_id") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
             ProposalDetails(
-                proposalId = arguments.getString(Destinations.proposal_id)!!,
+                proposalId = arguments.getString("proposal_id")!!,
                 proposals = proposals,
                 navigateUp = actions.navigateUp
             )

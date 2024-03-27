@@ -24,7 +24,7 @@ class Proposal (
         triggerWarnings = data.get("triggerWarnings") as MutableList<String>,
         timestamp = data.get("timestamp") as Timestamp,
         authorNotes = data.get("authorNotes") as String,
-        wordCount = 2,//data.get("wordCount") as Int,
+        wordCount = (data.get("wordCount") as Long).toInt(),
         writerId = data.get("writerId") as String,
         writerName = data.get("writerName") as String
     ) {

@@ -65,6 +65,7 @@ class MainActivity : ComponentActivity() {
 
 object Destinations {
     const val proposalsList = "proposals"
+    const val proposalTwo = "proposalTwo"
     const val proposal_id = "proposal_id"
     const val chatsList = "chats"
     const val chat_id = "chat_id"
@@ -74,7 +75,7 @@ class AppActions(
     navController: NavHostController
 ) {
     val selectedProposal: (String) -> Unit = { id: String ->
-        navController.navigate("${Destinations.proposalsList}/${id}")
+        navController.navigate("details/${id}")
     }
     val selectChat: (String) -> Unit = { id: String ->
         navController.navigate("${Destinations.chatsList}/${id}")
