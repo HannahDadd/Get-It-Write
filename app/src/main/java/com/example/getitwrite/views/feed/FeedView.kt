@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.messages.ChatsScreen
 import com.example.getitwrite.views.messages.ChatsViewModel
@@ -40,8 +41,7 @@ import com.example.getitwrite.views.proposals.ProposalsFeed
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 
 @Composable
-fun ShowFeed(user: User) {
-    val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
+fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -49,7 +49,6 @@ fun ShowFeed(user: User) {
         Screen.FindPartners
     )
     val navController = rememberNavController()
-    val actions = remember(navController) { AppActions(navController) }
     Scaffold(
         bottomBar = {
             BottomNavigation(backgroundColor = Colours.bold) {
@@ -88,22 +87,7 @@ fun ShowFeed(user: User) {
             composable(Screen.YourWork.route) { ShowMessages() }
             composable(Screen.ToCritique.route) { ShowMessages() }
             composable(Screen.Messages.route) { ChatsScreen(user, ChatsViewModel(user = user)) }
-            composable(Screen.FindPartners.route) { ProposalsFeed(proposals = proposals, selectProposal = actions.selectedProposal) }
-            composable(
-                "details/{proposal_id}",
-                arguments = listOf(
-                    navArgument("proposal_id") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { backStackEntry ->
-                val arguments = requireNotNull(backStackEntry.arguments)
-                ProposalDetails(
-                    proposalId = arguments.getString("proposal_id")!!,
-                    proposals = proposals,
-                    navigateUp = actions.navigateUp
-                )
-            }
+            composable(Screen.FindPartners.route) { ProposalsFeed(proposals = proposals, selectProposal = selectProposal) }
         }
     }
 }
