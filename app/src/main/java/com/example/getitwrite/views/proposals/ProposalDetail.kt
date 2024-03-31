@@ -1,5 +1,6 @@
 package com.example.getitwrite.views.proposals
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,28 +30,34 @@ fun ProposalDetails(
     }
 
     if (proposal != null) {
-        Column(modifier = Modifier.padding(vertical = 10.dp)) {
+        Column {
             DetailHeader(title = proposal.title, navigateUp = navigateUp)
-            Divider()
-            Text("Author's notes", fontWeight = FontWeight.Bold)
-            Text(proposal.authorNotes)
-            Divider()
-            Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
-            TagCloud(tags = proposal.genres, action = null)
-            Text(text = "${proposal.wordCount} words", fontWeight = FontWeight.Bold)
-            Text("Trigger warnings:", fontWeight = FontWeight.Bold)
-            TagCloud(tags = proposal.triggerWarnings, action = null)
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Colours.Dark_Readable,
-                    contentColor = Color.White
-                )
+            Column(
+                modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text("Send Author Message", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+                Text("Blurb", fontWeight = FontWeight.Bold)
+                Text(proposal.blurb)
+                Divider()
+                Text("Author's notes", fontWeight = FontWeight.Bold)
+                Text(proposal.authorNotes)
+                Text(text = "${proposal.wordCount} words", fontWeight = FontWeight.Light)
+                Divider()
+                Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Bold)
+                TagCloud(tags = proposal.genres, action = null)
+                Text("Trigger warnings:", fontWeight = FontWeight.Bold)
+                TagCloud(tags = proposal.triggerWarnings, action = null)
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Colours.Dark_Readable,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Send Author Message", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
