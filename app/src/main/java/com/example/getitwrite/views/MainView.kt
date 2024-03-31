@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.Colours
 import com.example.getitwrite.R
+import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -55,7 +56,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(viewModel: MainViewModel) {
+fun MainView(viewModel: MainViewModel, proposals: List<Proposal>, selectProposal: (String) -> Unit) {
     val user by viewModel.user.collectAsState(
         initial = User(
             id = "1",
@@ -140,7 +141,7 @@ fun MainView(viewModel: MainViewModel) {
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowFeed(user = user)
+                ShowFeed(user = user, proposals = proposals, selectProposal = selectProposal)
             }
         }
     }
