@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.IconButton
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -72,4 +75,20 @@ fun ProfileImage(username: String, profileColour: Int) {
 @Composable
 fun FindPartnersText() {
     Text(text = "Select 'find partners' on the bottom nav to find new critique partners.")
+}
+
+@Composable
+fun DetailHeader(
+    title: String,
+    navigateUp: () -> Unit
+) {
+    TopAppBar(
+        title = { Text(text = title) },
+        backgroundColor = Color.White,
+        navigationIcon = {
+            IconButton(onClick = navigateUp) {
+                androidx.compose.material.Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "")
+            }
+        }
+    )
 }
