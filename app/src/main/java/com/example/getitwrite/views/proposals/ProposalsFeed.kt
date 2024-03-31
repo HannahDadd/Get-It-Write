@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -28,14 +27,14 @@ import com.example.getitwrite.views.components.TagCloud
 @Composable
 fun ProposalsFeed(proposals: List<Proposal>, selectProposal: (String) -> Unit) {
     Scaffold(
-            floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    text = { Text("Add your own!") },
-                    icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                    onClick = {
-                    }
-                )
-            }
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                text = { Text("Add your own!") },
+                icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+                onClick = {
+                }
+            )
+        }
     ) { innerPadding ->
         LazyColumn(Modifier.padding(innerPadding)) {
             items(proposals) { proposal ->
@@ -47,30 +46,33 @@ fun ProposalsFeed(proposals: List<Proposal>, selectProposal: (String) -> Unit) {
 
 @Composable
 fun ProposalView(proposal: Proposal, selectProposal: (String) -> Unit) {
-    Card(Modifier.clickable { selectProposal(proposal.id) }) {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.padding(10.dp)) {
-            Text(proposal.title, fontWeight = FontWeight.Bold)
-            Text(proposal.blurb)
-            Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
-            TagCloud(tags = proposal.genres, action = null)
-            Row(modifier = Modifier
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier
+            .padding(10.dp)
+            .clickable { selectProposal(proposal.id) }) {
+        Text(proposal.title, fontWeight = FontWeight.Bold)
+        Text(proposal.blurb)
+        Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
+        TagCloud(tags = proposal.genres, action = null)
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding()) {
-                Text(
-                    text = DateUtils.getRelativeTimeSpanString(
-                        (proposal.timestamp.seconds * 1000),
-                        System.currentTimeMillis(),
-                        DateUtils.DAY_IN_MILLIS
-                    ).toString(),
-                    fontWeight = FontWeight.Light
-                )
-                Spacer(modifier = Modifier.weight(1.0f))
-                Text(
-                    text = "${proposal.wordCount} words",
-                    fontWeight = FontWeight.Light
-                )
-            }
-            Divider()
+                .padding()
+        ) {
+            Text(
+                text = DateUtils.getRelativeTimeSpanString(
+                    (proposal.timestamp.seconds * 1000),
+                    System.currentTimeMillis(),
+                    DateUtils.DAY_IN_MILLIS
+                ).toString(),
+                fontWeight = FontWeight.Light
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = "${proposal.wordCount} words",
+                fontWeight = FontWeight.Light
+            )
         }
+        Divider()
     }
 }

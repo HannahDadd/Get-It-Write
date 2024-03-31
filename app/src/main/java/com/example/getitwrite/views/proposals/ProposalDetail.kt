@@ -43,6 +43,7 @@ fun ProposalDetails(
                 Text(text = "${proposal.wordCount} words", fontWeight = FontWeight.Light)
                 Divider()
                 Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Bold)
+                Text("Genres", fontWeight = FontWeight.Bold)
                 TagCloud(tags = proposal.genres, action = null)
                 Text("Trigger warnings:", fontWeight = FontWeight.Bold)
                 TagCloud(tags = proposal.triggerWarnings, action = null)
