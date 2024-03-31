@@ -56,7 +56,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(proposals: List<Proposal>, selectProposal: (String) -> Unit, user: User) {
+fun MainView(proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit, user: User) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -128,7 +128,7 @@ fun MainView(proposals: List<Proposal>, selectProposal: (String) -> Unit, user: 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowFeed(user = user, proposals = proposals, selectProposal = selectProposal)
+                ShowFeed(user = user, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat)
             }
         }
     }

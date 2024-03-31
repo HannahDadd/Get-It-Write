@@ -25,7 +25,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ChatsFeed(user: User, chats: List<Chat>, selectChat: (String) -> Unit) {
+fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -> Unit) {
+    val chats by chatsViewModel.chatsFlow.collectAsState(initial = emptyList())
     if (chats.isEmpty()) {
         Column(Modifier.padding(10.dp)) {
             Text("You have no chats.", fontWeight = FontWeight.Bold)
@@ -63,5 +64,18 @@ class ChatViewViewModel(userID: String) : ViewModel() {
         } ?: run {
             emit(User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1))
         }
+    }
+}
+
+class ChatsViewModel(user: User) : ViewModel() {
+    val chatsFlow = flow {
+        val documents = Firebase.firestore.collection("chats")
+//            .whereArrayContains("users", user.id)
+            .get().await()
+        print("XXXX ${documents}")
+        val items = documents.map { doc ->
+            Chat(doc.data)
+        }
+        emit(items)
     }
 }

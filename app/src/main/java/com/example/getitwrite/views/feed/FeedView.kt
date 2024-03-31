@@ -14,34 +14,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.getitwrite.AppActions
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
-import com.example.getitwrite.views.messages.ChatsScreen
+import com.example.getitwrite.views.messages.ChatsFeed
 import com.example.getitwrite.views.messages.ChatsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
-import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsFeed
-import com.example.getitwrite.views.proposals.ProposalsViewModel
 
 @Composable
-fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> Unit) {
+fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -86,7 +79,7 @@ fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> 
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) { ShowMessages() }
             composable(Screen.ToCritique.route) { ShowMessages() }
-            composable(Screen.Messages.route) { ChatsScreen(user, ChatsViewModel(user = user)) }
+            composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(proposals = proposals, selectProposal = selectProposal) }
         }
     }

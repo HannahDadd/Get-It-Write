@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
+import com.example.getitwrite.Destinations
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
 import com.example.getitwrite.views.proposals.ProposalDetails
@@ -43,7 +44,18 @@ fun PostLoginNavController(viewModel: MainViewModel) {
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(proposals = proposals, selectProposal = actions.selectedProposal, user = user)
+            MainView(proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
+        }
+        composable(
+            "chatDetails/${Destinations.chat_id}",
+            arguments = listOf(
+                navArgument(Destinations.chat_id) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+
         }
         composable(
             "details/{proposal_id}",
