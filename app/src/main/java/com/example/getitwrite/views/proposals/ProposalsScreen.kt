@@ -32,7 +32,6 @@ fun ProposalsScreen(proposalViewModel: ProposalsViewModel = viewModel()) {
         }
         composable(
             "details/{proposal_id}",
-//            "proposalTwo?proposalId={ErBRWcB1cqF8U2GaJQ0U}",
             arguments = listOf(
                 navArgument("proposal_id") {
                     type = NavType.StringType
