@@ -12,14 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Chat
-import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
-import com.example.getitwrite.views.MainViewModel
 import com.example.getitwrite.views.components.FindPartnersText
 import com.example.getitwrite.views.components.ProfileImage
 import com.google.firebase.Firebase

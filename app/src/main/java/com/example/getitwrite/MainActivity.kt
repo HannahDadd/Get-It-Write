@@ -8,18 +8,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.getitwrite.ui.theme.GetItWriteTheme
-import com.example.getitwrite.views.MainView
-import com.example.getitwrite.views.MainViewModel
+import com.example.getitwrite.views.feed.MainViewModel
+import com.example.getitwrite.views.feed.PostLoginNavController
 import com.example.getitwrite.views.login.ShowCreateAccountView
 import com.example.getitwrite.views.login.ShowLogin
 import com.example.getitwrite.views.login.ShowSignUp
-import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -52,22 +49,7 @@ class MainActivity : ComponentActivity() {
                 ShowLogin(navController, auth)
             }
             composable("feed") {
-                MainView(MainViewModel(auth), proposals = proposals, selectProposal = actions.selectedProposal)
-            }
-            composable(
-                "details/{proposal_id}",
-                arguments = listOf(
-                    navArgument("proposal_id") {
-                        type = NavType.StringType
-                    }
-                )
-            ) { backStackEntry ->
-                val arguments = requireNotNull(backStackEntry.arguments)
-                ProposalDetails(
-                    proposalId = arguments.getString("proposal_id")!!,
-                    proposals = proposals,
-                    navigateUp = actions.navigateUp
-                )
+                PostLoginNavController(MainViewModel(auth))
             }
             composable("signup") {
                 ShowSignUp(navController = navController, auth)

@@ -56,19 +56,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(viewModel: MainViewModel, proposals: List<Proposal>, selectProposal: (String) -> Unit) {
-    val user by viewModel.user.collectAsState(
-        initial = User(
-            id = "1",
-            displayName = "",
-            bio = "",
-            writing = "",
-            critiqueStyle = "",
-            authors = ArrayList(),
-            writingGenres = ArrayList(),
-            colour = 1
-        )
-    )
+fun MainView(proposals: List<Proposal>, selectProposal: (String) -> Unit, user: User) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -107,7 +95,6 @@ fun MainView(viewModel: MainViewModel, proposals: List<Proposal>, selectProposal
     ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-
             topBar = {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -143,30 +130,6 @@ fun MainView(viewModel: MainViewModel, proposals: List<Proposal>, selectProposal
             Box(modifier = Modifier.padding(contentPadding)) {
                 ShowFeed(user = user, proposals = proposals, selectProposal = selectProposal)
             }
-        }
-    }
-}
-
-class MainViewModel(auth: FirebaseAuth) : ViewModel() {
-    val user = flow {
-        val doc = Firebase.firestore.collection("users")
-            .document(auth.uid.toString())
-            .get().await()
-        doc.data?.let {
-            emit(User(id = doc.id, data = it))
-        } ?: run {
-            emit(
-                User(
-                    id = "1",
-                    displayName = "",
-                    bio = "",
-                    writing = "",
-                    critiqueStyle = "",
-                    authors = ArrayList(),
-                    writingGenres = ArrayList(),
-                    colour = 1
-                )
-            )
         }
     }
 }
