@@ -20,13 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.getitwrite.modals.User
+import com.example.getitwrite.views.components.DetailHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(user: User) {
+fun SettingsScreen(user: User, navigateUp: () -> Unit) {
     var bottomSheetContent by remember { mutableStateOf(BottomSheetContent.none) }
     val sheetState = rememberModalBottomSheetState()
     Column {
+        DetailHeader(title = "Settings", navigateUp = navigateUp)
         if (bottomSheetContent != BottomSheetContent.none) {
             ModalBottomSheet(
                 onDismissRequest = {
@@ -34,9 +36,14 @@ fun SettingsScreen(user: User) {
                 },
                 sheetState = sheetState
             ) {
-                // Sheet content
                 if (bottomSheetContent == BottomSheetContent.tsAndCs) {
                     TsAndCsView()
+                } else if (bottomSheetContent == BottomSheetContent.changeEmail) {
+
+                } else if (bottomSheetContent == BottomSheetContent.changePassword) {
+
+                } else {
+                    PrivacyPolicyView()
                 }
             }
         }

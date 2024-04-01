@@ -18,6 +18,7 @@ import com.example.getitwrite.views.profile.EditProfileView
 import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
+import com.example.getitwrite.views.settings.SettingsScreen
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -53,6 +54,9 @@ fun PostLoginNavController(viewModel: MainViewModel) {
         }
         composable("editProfile") {
             EditProfileView(user = user, navigateUp = actions.navigateUp)
+        }
+        composable("settings") {
+            SettingsScreen(user = user, navigateUp = actions.navigateUp)
         }
         composable(
             "chatDetails/${Destinations.chat_id}",

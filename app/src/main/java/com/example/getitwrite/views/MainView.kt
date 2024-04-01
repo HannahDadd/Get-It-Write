@@ -72,7 +72,7 @@ fun MainView(navController: NavController, proposals: List<Proposal>, selectProp
                             Text("Profile", fontSize = 18.sp)
                         }
                     }
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = { navController.navigate("settings") }) {
                         Row {
                             Icon(Icons.Filled.Settings, contentDescription = "", Modifier.padding(end = 10.dp))
                             Text("Settings", fontSize = 18.sp)
