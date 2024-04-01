@@ -12,18 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.getitwrite.Colours
-import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.TagCloud
-import com.google.firebase.Firebase
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.firestore
-import java.util.UUID
 
 @Composable
-fun ProfileView(ownProfile: Boolean, user: User, navigateUp: () -> Unit) {
+fun ProfileView(navController: NavController, ownProfile: Boolean, user: User, navigateUp: () -> Unit) {
     Column {
         DetailHeader(title = user.displayName, navigateUp = navigateUp)
         Column(
@@ -43,6 +39,7 @@ fun ProfileView(ownProfile: Boolean, user: User, navigateUp: () -> Unit) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
+                        navController.navigate("editProfile")
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
                 ) {

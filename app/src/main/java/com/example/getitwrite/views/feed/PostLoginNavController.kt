@@ -14,6 +14,8 @@ import com.example.getitwrite.AppActions
 import com.example.getitwrite.Destinations
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
+import com.example.getitwrite.views.profile.EditProfileView
+import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.google.firebase.Firebase
@@ -45,6 +47,12 @@ fun PostLoginNavController(viewModel: MainViewModel) {
     ) {
         composable("feed") {
             MainView(proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
+        }
+        composable("profile") {
+            ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
+        }
+        composable("editProfile") {
+            EditProfileView(user = user, navigateUp = actions.navigateUp)
         }
         composable(
             "chatDetails/${Destinations.chat_id}",
