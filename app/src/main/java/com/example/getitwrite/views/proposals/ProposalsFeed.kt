@@ -54,7 +54,9 @@ fun ProposalsFeed(user: User, proposals: List<Proposal>, selectProposal: (String
                 },
                 sheetState = sheetState
             ) {
-                MakeProposalView(user)
+                MakeProposalView(user) {
+                    showBottomSheet = false
+                }
             }
         }
         LazyColumn(Modifier.padding(innerPadding)) {

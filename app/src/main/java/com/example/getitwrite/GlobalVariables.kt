@@ -3,7 +3,7 @@ package com.example.getitwrite
 import androidx.compose.ui.graphics.Color
 
 object GlobalVariables {
-    val genres = mutableListOf("Young Adult", "Adult", "Middle Grade", "Fantasy", "Magical Realism", "Histroical", "Romance", "Science Fiction", "Memoir", "Women's Fiction", "Short Stories", "Dystopian", "Mystery", "Thriller")
+    val genres = mutableListOf("Young Adult", "Adult", "Middle Grade", "Fantasy", "Magical Realism", "Histroical", "Romance", "Science Fiction", "Memoir", "Short Stories", "Dystopian", "Mystery", "Thriller")
 
     val typeOfProject =
         mutableListOf("Query Letter", "Short Story", "Chapter by Chapter MS Swap", "Query Package", "Synopsis")
