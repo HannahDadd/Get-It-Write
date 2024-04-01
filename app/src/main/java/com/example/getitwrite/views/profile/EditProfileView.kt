@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -44,8 +46,9 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
     var errorString = remember { mutableStateOf("") }
     Column {
         DetailHeader(title = user.displayName, navigateUp = navigateUp)
-        Column(
-            modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
+        Column(modifier = Modifier
+            .padding(10.dp)
+            .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             QuestionSection(bio, "Tell other writers about yourself.")
             SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres) {

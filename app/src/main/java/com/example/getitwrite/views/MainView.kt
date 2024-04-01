@@ -43,6 +43,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.R
 import com.example.getitwrite.modals.Proposal
@@ -56,7 +57,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit, user: User) {
+fun MainView(navController: NavController, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit, user: User) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -65,7 +66,7 @@ fun MainView(proposals: List<Proposal>, selectProposal: (String) -> Unit, select
         drawerContent = {
             ModalDrawerSheet {
                 Column(Modifier.padding(10.dp)) {
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = { navController.navigate("profile") }) {
                         Row {
                             Icon(Icons.Filled.Face, contentDescription = "", Modifier.padding(end = 10.dp))
                             Text("Profile", fontSize = 18.sp)

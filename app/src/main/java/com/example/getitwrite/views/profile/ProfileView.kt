@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -23,7 +25,9 @@ fun ProfileView(navController: NavController, ownProfile: Boolean, user: User, n
     Column {
         DetailHeader(title = user.displayName, navigateUp = navigateUp)
         Column(
-            modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)
+            modifier = Modifier
+                .padding(10.dp)
+                .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Text("Bio", fontWeight = FontWeight.Bold)
             Text(user.bio)
