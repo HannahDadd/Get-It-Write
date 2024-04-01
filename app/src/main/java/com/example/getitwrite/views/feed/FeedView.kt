@@ -80,7 +80,7 @@ fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> 
             composable(Screen.YourWork.route) { ShowMessages() }
             composable(Screen.ToCritique.route) { ShowMessages() }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
-            composable(Screen.FindPartners.route) { ProposalsFeed(proposals = proposals, selectProposal = selectProposal) }
+            composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }
     }
 }

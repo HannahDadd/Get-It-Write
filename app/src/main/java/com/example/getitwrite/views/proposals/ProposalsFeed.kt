@@ -30,13 +30,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.TagCloud
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProposalsFeed(proposals: List<Proposal>, selectProposal: (String) -> Unit) {
+fun ProposalsFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
     Scaffold(
         floatingActionButton = {
@@ -54,7 +54,7 @@ fun ProposalsFeed(proposals: List<Proposal>, selectProposal: (String) -> Unit) {
                 },
                 sheetState = sheetState
             ) {
-                MakeProposalView()
+                MakeProposalView(user)
             }
         }
         LazyColumn(Modifier.padding(innerPadding)) {
