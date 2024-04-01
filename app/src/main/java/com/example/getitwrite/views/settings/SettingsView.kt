@@ -39,9 +39,9 @@ fun SettingsScreen(user: User, navigateUp: () -> Unit) {
                 if (bottomSheetContent == BottomSheetContent.tsAndCs) {
                     TsAndCsView()
                 } else if (bottomSheetContent == BottomSheetContent.changeEmail) {
-
+                    ChangeEmailView()
                 } else if (bottomSheetContent == BottomSheetContent.changePassword) {
-
+                    ChangePasswordView()
                 } else {
                     PrivacyPolicyView()
                 }
