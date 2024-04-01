@@ -64,7 +64,7 @@ fun TagCloud(tags: MutableList<String>, action: ((input: String) -> Boolean)?) {
 }
 
 @Composable
-fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?) {
+private fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?) {
     var bgColour = remember { mutableStateOf( Colours.Dark_Background) }
     TextButton(modifier = Modifier
         .padding(4.dp)
