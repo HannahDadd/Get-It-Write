@@ -57,19 +57,19 @@ fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
                 modifier = Modifier.fillMaxWidth(),
                 label = {
                     Box {
-                        Text(text = "Display Name")
+                        Text(text = "Display Name (Optional)")
                     }
                 }
             )
-            QuestionSection(bio, "Tell other writers about yourself.")
-            SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres) {
+            QuestionSection(bio, "Tell other writers about yourself. (Optional)")
+            SelectTagCloud("Which genres do you write? (Optional)", answers = GlobalVariables.genres) {
                 genreTags.add(it)
             }
-            QuestionSection(writing, "Tell other writers about your writing.")
-            CreateTagCloud("Who are your favourite authors?") {
+            QuestionSection(writing, "Tell other writers about your writing. (Optional)")
+            CreateTagCloud("Who are your favourite authors? (Optional)") {
                 authorTags.add(it)
             }
-            QuestionSection(critiqueStyle, "Tell other writers about your critique style.")
+            QuestionSection(critiqueStyle, "Tell other writers about your critique style. (Optional)")
             ErrorText(error = errorString)
         }
         Button(

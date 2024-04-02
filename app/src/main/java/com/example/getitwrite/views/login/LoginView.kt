@@ -77,14 +77,3 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
         }
     }
 }
-
-private fun signIn(email: String, password: String, auth: FirebaseAuth, navController: NavController) {
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
-                val user = auth.currentUser
-                navController.navigate("signup")
-            } else {
-            }
-        }
-}

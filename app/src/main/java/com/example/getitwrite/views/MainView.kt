@@ -44,6 +44,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,7 +70,7 @@ fun MainView(logoutNavController: NavHostController, auth: FirebaseAuth, navCont
                         }
                     }
                     TextButton(onClick = {
-                        auth.signOut()
+                        FirebaseAuth.getInstance().signOut()
                         logoutNavController.navigate("login")
                     }) {
                         Row {
@@ -78,11 +79,12 @@ fun MainView(logoutNavController: NavHostController, auth: FirebaseAuth, navCont
                         }
                     }
                     TextButton(onClick = {
-                        auth.currentUser?.delete()
-                        Firebase.firestore.collection("users")
-                            .document(auth.uid.toString())
-                            .delete()
-                        logoutNavController.navigate("login")
+                        FirebaseAuth.getInstance().currentUser?.delete()?.addOnSuccessListener {
+                            Firebase.firestore.collection("users")
+                                .document(auth.uid.toString())
+                                .delete()
+                            logoutNavController.navigate("login")
+                        }
                     }) {
                         Row {
                             Icon(Icons.Filled.Delete, contentDescription = "", Modifier.padding(end = 10.dp))

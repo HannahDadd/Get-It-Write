@@ -39,8 +39,6 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun NavigationComponent(navController: NavHostController) {
-        val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
-        val actions = remember(navController) { AppActions(navController) }
         NavHost(
             navController = navController,
             startDestination = destination
