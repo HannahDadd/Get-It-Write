@@ -1,11 +1,15 @@
 package com.example.getitwrite.views.messages
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +40,6 @@ fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -
         LazyColumn(Modifier.padding(10.dp)) {
             items(chats) { chat ->
                 val user2 = chat.users.filter { it != user.id }
-//                Text(text = user2[0])
                 ChatView(ChatViewViewModel(user2.get(0)), chat, selectChat)
             }
         }
@@ -45,12 +48,29 @@ fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -
 
 @Composable
 fun ChatView(viewModel: ChatViewViewModel, chat: Chat, selectProposal: (String) -> Unit) {
-    val user2 by viewModel.user2Data.collectAsState(initial = User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1, arrayListOf()))
-    Card(Modifier.clickable { selectProposal(chat.id) }) {
-        Row {
-            ProfileImage(username = user2.displayName, profileColour = user2.colour)
-            Text(user2.displayName)
-        }
+    val user2 by viewModel.user2Data.collectAsState(
+        initial = User(
+            id = "1",
+            displayName = "",
+            bio = "",
+            writing = "",
+            critiqueStyle = "",
+            authors = ArrayList(),
+            writingGenres = ArrayList(),
+            colour = 1,
+            arrayListOf()
+        )
+    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clickable {
+                selectProposal(chat.id)
+            }, horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        ProfileImage(username = user2.displayName, profileColour = user2.colour)
+        Text(user2.displayName)
     }
 }
 
@@ -62,7 +82,19 @@ class ChatViewViewModel(userID: String) : ViewModel() {
         doc.data?.let {
             emit(User(id = doc.id, data = it))
         } ?: run {
-            emit(User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1, arrayListOf()))
+            emit(
+                User(
+                    id = "1",
+                    displayName = "",
+                    bio = "",
+                    writing = "",
+                    critiqueStyle = "",
+                    authors = ArrayList(),
+                    writingGenres = ArrayList(),
+                    colour = 1,
+                    arrayListOf()
+                )
+            )
         }
     }
 }

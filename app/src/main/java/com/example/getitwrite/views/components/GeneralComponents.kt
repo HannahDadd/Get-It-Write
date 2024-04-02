@@ -21,6 +21,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -69,7 +70,33 @@ fun QuestionSection(response: MutableState<String>, question: String) {
 
 @Composable
 fun ProfileImage(username: String, profileColour: Int) {
-    Text(text = username.first().uppercase(), style = TextStyle(background = GlobalVariables.profileColours.get(profileColour), color = Color.White))
+    if (username.isEmpty()) {
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .drawBehind {
+                    drawCircle(
+                        color = GlobalVariables.profileColours.get(profileColour),
+                        radius = this.size.maxDimension
+                    )
+                },
+            color = Color.White,
+            text = " ",
+        )
+    } else {
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .drawBehind {
+                    drawCircle(
+                        color = GlobalVariables.profileColours.get(profileColour),
+                        radius = this.size.maxDimension
+                    )
+                },
+            color = Color.White,
+            text = username.first().toString(),
+        )
+    }
 }
 
 @Composable
