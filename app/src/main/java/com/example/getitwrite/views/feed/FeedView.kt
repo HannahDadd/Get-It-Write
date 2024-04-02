@@ -77,8 +77,8 @@ fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> 
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
-            composable(Screen.YourWork.route) { ShowMessages() }
-            composable(Screen.ToCritique.route) { ShowMessages() }
+            composable(Screen.YourWork.route) {  }
+            composable(Screen.ToCritique.route) {  }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }

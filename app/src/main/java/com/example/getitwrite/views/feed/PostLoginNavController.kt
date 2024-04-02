@@ -14,8 +14,6 @@ import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
-import com.example.getitwrite.views.messages.ChatView
-import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.profile.EditProfileView
 import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
@@ -93,6 +91,8 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             ProposalDetails(
                 proposalId = arguments.getString("proposal_id")!!,
                 proposals = proposals,
+                user = user,
+                navController = navController,
                 navigateUp = actions.navigateUp
             )
         }

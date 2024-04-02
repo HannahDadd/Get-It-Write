@@ -16,15 +16,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.getitwrite.Colours
+import com.example.getitwrite.GlobalVariables
 import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.TagCloud
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import java.util.UUID
 
 @Composable
 fun ProposalDetails(
     proposalId: String,
     proposals: List<Proposal>,
+    user: User,
+    navController: NavController,
     navigateUp: () -> Unit
 ) {
     val proposal: Proposal? = remember(proposalId) {
@@ -52,7 +60,11 @@ fun ProposalDetails(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-
+                        val id = UUID.randomUUID().toString()
+                        Firebase.firestore.collection("chats").document(id)
+                            .set(mapOf("users" to listOf(user.id, proposal.writerId)))
+                            .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
+                            .addOnFailureListener {  }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Colours.Dark_Readable,
