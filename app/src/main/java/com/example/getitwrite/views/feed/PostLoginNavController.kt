@@ -57,10 +57,10 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             EditProfileView(user = user, navigateUp = actions.navigateUp)
         }
         composable("settings") {
-            SettingsScreen(user = user, navigateUp = actions.navigateUp)
+            SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable("resetEmail") {
-            SettingsScreen(user = user, navigateUp = actions.navigateUp)
+            SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable(
             "chatDetails/${Destinations.chat_id}",

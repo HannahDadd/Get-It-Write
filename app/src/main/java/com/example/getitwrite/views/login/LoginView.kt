@@ -57,7 +57,7 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                auth.signInWithEmailAndPassword(email.toString(), password.toString())
+                auth.signInWithEmailAndPassword(email.value, password.value)
                     .addOnCompleteListener() { task ->
                         if (task.isSuccessful) {
                             navController.navigate("feed")
