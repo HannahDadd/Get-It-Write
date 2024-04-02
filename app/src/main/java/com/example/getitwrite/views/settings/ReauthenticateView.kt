@@ -17,41 +17,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.views.components.ErrorText
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.firestore
+
 
 @Composable
-fun ReAuthBottomSheetNavComponent(nextTask: PostReAuthTask) {
-    val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = "reauth"
-    ) {
-        composable("reauth") {
-            ReAuthView(navController, nextTask = nextTask)
-        }
-        composable("changeEmail") {
-            ChangeEmailView()
-        }
-        composable("changePassword") {
-            ChangePasswordView()
-        }
-    }
-}
-
-@Composable
-fun ReAuthView(navController: NavController, nextTask: PostReAuthTask) {
+fun ReAuthView(logoutNavController: NavHostController, nextTask: PostReAuthTask) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf("") }
 
     val openAlertDialog = remember { mutableStateOf(false) }
+    val showEmailReset = remember { mutableStateOf(false) }
+    val showPasswordReset = remember { mutableStateOf(false) }
     Column {
         OutlinedTextField(
             value = email.value,
@@ -78,11 +65,11 @@ fun ReAuthView(navController: NavController, nextTask: PostReAuthTask) {
                     ?.addOnCompleteListener(OnCompleteListener<Void?> { task ->
                         if (task.isSuccessful) {
                             if (nextTask == PostReAuthTask.changePassword) {
-                                navController.navigate("changePassword")
+                                showPasswordReset.value = true
                             } else if (nextTask == PostReAuthTask.deleteAccount) {
                                 openAlertDialog.value = true
                             } else {
-                                navController.navigate("changeEmail")
+                                showEmailReset.value = true
                             }
                         } else {
                             errorString.value = "Failed to Reauthenticate"
@@ -101,7 +88,15 @@ fun ReAuthView(navController: NavController, nextTask: PostReAuthTask) {
         openAlertDialog.value -> {
             AlertDialog(
                 onDismissRequest = { openAlertDialog.value = false },
-                confirmButton = { /*TODO*/ },
+                confirmButton = {
+                    val id = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                    FirebaseAuth.getInstance().currentUser?.delete()?.addOnSuccessListener {
+                        Firebase.firestore.collection("users")
+                            .document(id)
+                            .delete()
+                        logoutNavController.navigate("login")
+                    }
+                },
                 title = { Text(text = "Are you sure you want to delete your account?") },
                 text = { Text(text = "This cannot be undone.") })
         }

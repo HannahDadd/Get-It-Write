@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,12 +20,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(user: User, navigateUp: () -> Unit) {
+fun SettingsScreen(logoutNavController: NavHostController, navigateUp: () -> Unit) {
     var bottomSheetContent by remember { mutableStateOf(BottomSheetContent.none) }
     val sheetState = rememberModalBottomSheetState()
     Column {
@@ -39,9 +41,11 @@ fun SettingsScreen(user: User, navigateUp: () -> Unit) {
                 if (bottomSheetContent == BottomSheetContent.tsAndCs) {
                     TsAndCsView()
                 } else if (bottomSheetContent == BottomSheetContent.changeEmail) {
-                    ReAuthBottomSheetNavComponent(nextTask = PostReAuthTask.changeEmail)
+                    ReAuthView(logoutNavController, nextTask = PostReAuthTask.changeEmail)
                 } else if (bottomSheetContent == BottomSheetContent.changePassword) {
-                    ReAuthBottomSheetNavComponent(nextTask = PostReAuthTask.changePassword)
+                    ReAuthView(logoutNavController, nextTask = PostReAuthTask.changePassword)
+                } else if (bottomSheetContent == BottomSheetContent.deleteAccount) {
+                    ReAuthView(logoutNavController, nextTask = PostReAuthTask.deleteAccount)
                 } else {
                     PrivacyPolicyView()
                 }
@@ -59,6 +63,12 @@ fun SettingsScreen(user: User, navigateUp: () -> Unit) {
         TextButton(onClick = { bottomSheetContent = BottomSheetContent.changePassword }) {
             Text("Change password", fontSize = 18.sp)
         }
+        TextButton(onClick = { bottomSheetContent = BottomSheetContent.deleteAccount }) {
+            Row {
+                Icon(Icons.Filled.Delete, contentDescription = "", Modifier.padding(end = 10.dp))
+                Text("Delete Account", fontSize = 18.sp)
+            }
+        }
     }
 }
 
@@ -67,5 +77,6 @@ private enum class BottomSheetContent {
     tsAndCs,
     privacyPolicy,
     changeEmail,
-    changePassword
+    changePassword,
+    deleteAccount
 }

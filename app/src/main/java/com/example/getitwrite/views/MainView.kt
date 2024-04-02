@@ -78,19 +78,6 @@ fun MainView(logoutNavController: NavHostController, auth: FirebaseAuth, navCont
                             Text("Logout", fontSize = 18.sp)
                         }
                     }
-                    TextButton(onClick = {
-                        FirebaseAuth.getInstance().currentUser?.delete()?.addOnSuccessListener {
-                            Firebase.firestore.collection("users")
-                                .document(auth.uid.toString())
-                                .delete()
-                            logoutNavController.navigate("login")
-                        }
-                    }) {
-                        Row {
-                            Icon(Icons.Filled.Delete, contentDescription = "", Modifier.padding(end = 10.dp))
-                            Text("Delete Account", fontSize = 18.sp)
-                        }
-                    }
                 }
             }
         },
