@@ -64,9 +64,9 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable(
-            "chatDetails/${Destinations.chat_id}",
+            "chatDetails/{chat_id}",
             arguments = listOf(
-                navArgument(Destinations.chat_id) {
+                navArgument("chat_id") {
                     type = NavType.StringType
                 }
             )
