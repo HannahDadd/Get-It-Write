@@ -12,7 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
-import com.example.getitwrite.Destinations
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
 import com.example.getitwrite.views.profile.EditProfileView
@@ -72,7 +71,6 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-
         }
         composable(
             "details/{proposal_id}",
