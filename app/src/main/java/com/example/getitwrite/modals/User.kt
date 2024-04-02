@@ -11,11 +11,11 @@ class User(
     val critiqueStyle: String,
     val authors: MutableList<String>,
     val writingGenres: MutableList<String>,
-    val colour: Int
+    val colour: Int,
+    val blockedUserIds: MutableList<String>
 ) {
-    var photoURL = String
-    var rating = Int
-    var blockedUserIds = mutableListOf <String>()
+//    var photoURL = String
+//    var rating = Int
 
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
@@ -25,6 +25,7 @@ class User(
         critiqueStyle = data.get("critiqueStyle") as String,
         authors = data.get("authors") as MutableList<String>,
         writingGenres = data.get("writingGenres") as MutableList<String>,
-        colour = data.get("colour") as Int
+        colour = data.get("colour") as Int,
+        blockedUserIds = data.get("blockedUserIds") as MutableList<String>
     )
 }

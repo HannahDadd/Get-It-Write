@@ -45,7 +45,7 @@ fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -
 
 @Composable
 fun ChatView(viewModel: ChatViewViewModel, chat: Chat, selectProposal: (String) -> Unit) {
-    val user2 by viewModel.user2Data.collectAsState(initial = User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1))
+    val user2 by viewModel.user2Data.collectAsState(initial = User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1, arrayListOf()))
     Card(Modifier.clickable { selectProposal(chat.id) }) {
         Row {
             ProfileImage(username = user2.displayName, profileColour = user2.colour)
@@ -62,7 +62,7 @@ class ChatViewViewModel(userID: String) : ViewModel() {
         doc.data?.let {
             emit(User(id = doc.id, data = it))
         } ?: run {
-            emit(User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1))
+            emit(User(id = "1", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = ArrayList(), writingGenres = ArrayList(), colour = 1, arrayListOf()))
         }
     }
 }

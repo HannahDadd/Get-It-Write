@@ -77,14 +77,14 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
                     auth.createUserWithEmailAndPassword(email.value, password.value)
                         .addOnCompleteListener() { task ->
                             if (task.isSuccessful) {
-                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random())
+                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = mutableListOf<String>())
                                 Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
                                     .set(user)
                                     .addOnSuccessListener {  }
                                     .addOnFailureListener { errorString.value = "Network error" }
                                 navController.navigate("createAccount")
                             } else {
-                                errorString.value = task.exception.toString()
+                                errorString.value = task.exception?.message.toString()
                             }
                         }
             },

@@ -37,7 +37,8 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             critiqueStyle = "",
             authors = ArrayList(),
             writingGenres = ArrayList(),
-            colour = 1
+            colour = 1,
+            blockedUserIds = ArrayList()
         )
     )
     val navController = rememberNavController()
@@ -108,7 +109,8 @@ class MainViewModel(auth: FirebaseAuth) : ViewModel() {
                     critiqueStyle = "",
                     authors = ArrayList(),
                     writingGenres = ArrayList(),
-                    colour = 1
+                    colour = 1,
+                    blockedUserIds = ArrayList()
                 )
             )
         }

@@ -76,7 +76,7 @@ fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 val db = Firebase.firestore
-                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value, bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value, authors = authorTags, writingGenres = genreTags, colour = (0..<GlobalVariables.profileColours.size).random())
+                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value, bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value, authors = authorTags, writingGenres = genreTags, colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = ArrayList())
                 db.collection("users").document(auth.currentUser?.uid ?: "ID")
                     .set(user)
                     .addOnSuccessListener { navController.navigate("feed") }

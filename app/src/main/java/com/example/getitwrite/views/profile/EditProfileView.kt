@@ -73,7 +73,8 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
                                 critiqueStyle = critiqueStyle.value,
                                 authors = authorTags,
                                 writingGenres = genreTags,
-                                colour = user.colour
+                                colour = user.colour,
+                                arrayListOf()
                             )
                         )
                         .addOnSuccessListener {
