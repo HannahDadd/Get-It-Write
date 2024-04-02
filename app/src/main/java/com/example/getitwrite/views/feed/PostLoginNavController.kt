@@ -14,6 +14,8 @@ import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
+import com.example.getitwrite.views.messages.ChatView
+import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.profile.EditProfileView
 import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
@@ -63,14 +65,21 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable(
-            "chatDetails/{chat_id}",
+            "chatDetails/{chat_id}{otherUserName}",
             arguments = listOf(
                 navArgument("chat_id") {
+                    type = NavType.StringType
+                },
+                navArgument("otherUserName") {
                     type = NavType.StringType
                 }
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
+//            ShowMessages(
+//                chatId = arguments.getString("proposal_id")!!,
+//
+//            )
         }
         composable(
             "details/{proposal_id}",

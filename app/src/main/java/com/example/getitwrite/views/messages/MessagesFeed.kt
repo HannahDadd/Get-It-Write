@@ -50,7 +50,7 @@ fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -
 }
 
 @Composable
-fun ChatView(viewModel: ChatViewViewModel, chat: Chat, selectProposal: (String) -> Unit) {
+fun ChatView(viewModel: ChatViewViewModel, chat: Chat, select: (String) -> Unit) {
     val user2 by viewModel.user2Data.collectAsState(
         initial = User(
             id = "1",
@@ -70,7 +70,7 @@ fun ChatView(viewModel: ChatViewViewModel, chat: Chat, selectProposal: (String) 
                 .fillMaxWidth()
                 .padding(10.dp)
                 .clickable {
-                    selectProposal(chat.id)
+                    select(chat.id)
                 }, horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -111,7 +111,6 @@ class ChatsViewModel(user: User) : ViewModel() {
         val documents = Firebase.firestore.collection("chats")
 //            .whereArrayContains("users", user.id)
             .get().await()
-        print("XXXX ${documents}")
         val items = documents.map { doc ->
             Chat(doc.data)
         }
