@@ -11,13 +11,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.User
@@ -61,16 +64,20 @@ fun ChatView(viewModel: ChatViewViewModel, chat: Chat, selectProposal: (String) 
             arrayListOf()
         )
     )
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .clickable {
-                selectProposal(chat.id)
-            }, horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        ProfileImage(username = user2.displayName, profileColour = user2.colour)
-        Text(user2.displayName)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+                .clickable {
+                    selectProposal(chat.id)
+                }, horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfileImage(username = user2.displayName, profileColour = user2.colour)
+            Text(user2.displayName, fontSize = 20.sp)
+        }
+        Divider()
     }
 }
 
