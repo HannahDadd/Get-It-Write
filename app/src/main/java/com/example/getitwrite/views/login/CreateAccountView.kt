@@ -66,7 +66,7 @@ fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
                 genreTags.add(it)
             }
             QuestionSection(writing, "Tell other writers about your writing. (Optional)")
-            CreateTagCloud("Who are your favourite authors? (Optional)") {
+            CreateTagCloud("Who are your favourite authors?") {
                 authorTags.add(it)
             }
             QuestionSection(critiqueStyle, "Tell other writers about your critique style. (Optional)")

@@ -31,7 +31,7 @@ fun ProfileView(navController: NavController, ownProfile: Boolean, user: User, n
         ) {
             Text("Bio", fontWeight = FontWeight.Bold)
             Text(user.bio)
-            Text("Favourite author", fontWeight = FontWeight.Bold)
+            Text("Favourite authors", fontWeight = FontWeight.Bold)
             TagCloud(tags = user.authors, action = null)
             Text("Writing", fontWeight = FontWeight.Bold)
             Text(user.writing)

@@ -25,7 +25,7 @@ class User(
         critiqueStyle = data.get("critiqueStyle") as String,
         authors = data.get("authors") as MutableList<String>,
         writingGenres = data.get("writingGenres") as MutableList<String>,
-        colour = data.get("colour") as Int,
+        colour = (data.get("colour") as Long).toInt(),
         blockedUserIds = data.get("blockedUserIds") as MutableList<String>
     )
 }
