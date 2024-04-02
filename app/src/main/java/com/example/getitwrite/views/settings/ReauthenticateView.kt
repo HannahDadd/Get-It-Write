@@ -1,8 +1,11 @@
 package com.example.getitwrite.views.settings
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -39,7 +42,7 @@ fun ReAuthView(logoutNavController: NavHostController, nextTask: PostReAuthTask)
     val openAlertDialog = remember { mutableStateOf(false) }
     val showEmailReset = remember { mutableStateOf(false) }
     val showPasswordReset = remember { mutableStateOf(false) }
-    Column {
+    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
         OutlinedTextField(
             value = email.value,
             maxLines = 1,
@@ -89,11 +92,10 @@ fun ReAuthView(logoutNavController: NavHostController, nextTask: PostReAuthTask)
             AlertDialog(
                 onDismissRequest = { openAlertDialog.value = false },
                 confirmButton = {
-                    val id = FirebaseAuth.getInstance().currentUser?.uid.toString()
+                    Firebase.firestore.collection("users")
+                        .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                        .delete()
                     FirebaseAuth.getInstance().currentUser?.delete()?.addOnSuccessListener {
-                        Firebase.firestore.collection("users")
-                            .document(id)
-                            .delete()
                         logoutNavController.navigate("login")
                     }
                 },

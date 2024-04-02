@@ -62,7 +62,7 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
                         if (task.isSuccessful) {
                             navController.navigate("feed")
                         } else {
-                            errorString.value = task.exception.toString()
+                            errorString.value = task.exception?.message.toString()
                         }
                     }
             },
