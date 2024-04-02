@@ -39,9 +39,9 @@ fun SettingsScreen(user: User, navigateUp: () -> Unit) {
                 if (bottomSheetContent == BottomSheetContent.tsAndCs) {
                     TsAndCsView()
                 } else if (bottomSheetContent == BottomSheetContent.changeEmail) {
-                    ChangeEmailView()
+                    ReAuthBottomSheetNavComponent(nextTask = PostReAuthTask.changeEmail)
                 } else if (bottomSheetContent == BottomSheetContent.changePassword) {
-                    ChangePasswordView()
+                    ReAuthBottomSheetNavComponent(nextTask = PostReAuthTask.changePassword)
                 } else {
                     PrivacyPolicyView()
                 }

@@ -59,6 +59,9 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
         composable("settings") {
             SettingsScreen(user = user, navigateUp = actions.navigateUp)
         }
+        composable("resetEmail") {
+            SettingsScreen(user = user, navigateUp = actions.navigateUp)
+        }
         composable(
             "chatDetails/${Destinations.chat_id}",
             arguments = listOf(

@@ -3,6 +3,7 @@ package com.example.getitwrite.views.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -41,9 +42,6 @@ fun ReAuthBottomSheetNavComponent(nextTask: PostReAuthTask) {
         composable("changePassword") {
             ChangePasswordView()
         }
-        composable("deleteAccount") {
-            DeleteAccountView()
-        }
     }
 }
 
@@ -52,6 +50,8 @@ fun ReAuthView(navController: NavController, nextTask: PostReAuthTask) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf("") }
+
+    val openAlertDialog = remember { mutableStateOf(false) }
     Column {
         OutlinedTextField(
             value = email.value,
@@ -80,7 +80,7 @@ fun ReAuthView(navController: NavController, nextTask: PostReAuthTask) {
                             if (nextTask == PostReAuthTask.changePassword) {
                                 navController.navigate("changePassword")
                             } else if (nextTask == PostReAuthTask.deleteAccount) {
-                                navController.navigate("deleteAccount")
+                                openAlertDialog.value = true
                             } else {
                                 navController.navigate("changeEmail")
                             }
@@ -95,6 +95,15 @@ fun ReAuthView(navController: NavController, nextTask: PostReAuthTask) {
             )
         ) {
             Text("Re-authenticate", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+        }
+    }
+    when {
+        openAlertDialog.value -> {
+            AlertDialog(
+                onDismissRequest = { openAlertDialog.value = false },
+                confirmButton = { /*TODO*/ },
+                title = { Text(text = "Are you sure you want to delete your account?") },
+                text = { Text(text = "This cannot be undone.") })
         }
     }
 }
