@@ -5,6 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,7 +27,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun PostLoginNavController(viewModel: MainViewModel) {
+fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutNavController: NavHostController) {
     val user by viewModel.user.collectAsState(
         initial = User(
             id = "1",
@@ -47,7 +48,7 @@ fun PostLoginNavController(viewModel: MainViewModel) {
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(navController = navController, proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
+            MainView(logoutNavController, auth = auth, navController = navController, proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)

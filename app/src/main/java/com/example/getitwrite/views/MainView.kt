@@ -4,16 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
@@ -31,19 +26,16 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import com.example.getitwrite.views.feed.ShowFeed
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.R
 import com.example.getitwrite.modals.Proposal
@@ -51,13 +43,11 @@ import com.example.getitwrite.modals.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(navController: NavController, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit, user: User) {
+fun MainView(logoutNavController: NavHostController, auth: FirebaseAuth, navController: NavController, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit, user: User) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -78,13 +68,22 @@ fun MainView(navController: NavController, proposals: List<Proposal>, selectProp
                             Text("Settings", fontSize = 18.sp)
                         }
                     }
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = {
+                        auth.signOut()
+                        logoutNavController.navigate("login")
+                    }) {
                         Row {
                             Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "", Modifier.padding(end = 10.dp))
                             Text("Logout", fontSize = 18.sp)
                         }
                     }
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = {
+                        auth.currentUser?.delete()
+                        Firebase.firestore.collection("users")
+                            .document(auth.uid.toString())
+                            .delete()
+                        logoutNavController.navigate("login")
+                    }) {
                         Row {
                             Icon(Icons.Filled.Delete, contentDescription = "", Modifier.padding(end = 10.dp))
                             Text("Delete Account", fontSize = 18.sp)
