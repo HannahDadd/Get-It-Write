@@ -9,14 +9,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -29,29 +27,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
-import com.example.getitwrite.views.feed.MainViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
 
 @Composable
 fun ShowMessages(
-    viewModel: MessagesViewModel,
     chatId: String,
-    chats: List<Chat>,
     user: User,
     user2Name: String,
     navigateUp: () -> Unit
 ) {
-    val viewModel = MessagesViewModel()
-    viewModel.getMessages(chatId)
+    val messages = MessagesViewModel().getMessages(chatId)
     Column {
         DetailHeader(title = user2Name, navigateUp = navigateUp)
         Column(
@@ -60,7 +51,12 @@ fun ShowMessages(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            SingleMessage()
+            Text(text = messages.value?.size.toString())
+            Text(user2Name)
+            messages.value?.forEach {
+//                SingleMessage(it.content)
+                Text(text = "it.content")
+            }
         }
     }
 }
@@ -88,7 +84,7 @@ class MessagesViewModel : ViewModel() {
 }
 
 @Composable
-fun SingleMessage() {
+fun SingleMessage(text: String) {
     Row(Modifier.height(IntrinsicSize.Max)) {
         Column(
             modifier = Modifier.background(
@@ -96,7 +92,7 @@ fun SingleMessage() {
                 shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
             )//.width(xxxx)
         ) {
-            Text("Chat")
+            Text(text)
         }
         Column(
             modifier = Modifier

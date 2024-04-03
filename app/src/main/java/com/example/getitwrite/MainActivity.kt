@@ -73,8 +73,8 @@ class AppActions(
     val selectedProposal: (String) -> Unit = { id: String ->
         navController.navigate("details/${id}")
     }
-    val selectChat: (String) -> Unit = { id: String ->
-        navController.navigate("chatDetails/${id}")
+    val selectChat: (String, String) -> Unit = { id: String, user2Name: String ->
+        navController.navigate("chatDetails/${id}/${user2Name}")
     }
     val navigateUp: () -> Unit = {
         navController.navigateUp()

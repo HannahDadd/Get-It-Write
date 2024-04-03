@@ -48,7 +48,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(logoutNavController: NavHostController, auth: FirebaseAuth, navController: NavController, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String) -> Unit, user: User) {
+fun MainView(logoutNavController: NavHostController, auth: FirebaseAuth, navController: NavController, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String, String) -> Unit, user: User) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()

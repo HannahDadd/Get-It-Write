@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -> Unit) {
+fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String, String) -> Unit) {
     val chats by chatsViewModel.chatsFlow.collectAsState(initial = emptyList())
     if (chats.isEmpty()) {
         Column(Modifier.padding(10.dp)) {
@@ -50,7 +50,7 @@ fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -
 }
 
 @Composable
-fun ChatView(viewModel: ChatViewViewModel, chat: Chat, select: (String) -> Unit) {
+fun ChatView(viewModel: ChatViewViewModel, chat: Chat, select: (String, String) -> Unit) {
     val user2 by viewModel.user2Data.collectAsState(initial = User())
     Column {
         Row(
@@ -58,7 +58,7 @@ fun ChatView(viewModel: ChatViewViewModel, chat: Chat, select: (String) -> Unit)
                 .fillMaxWidth()
                 .padding(10.dp)
                 .clickable {
-                    select(chat.id)
+                    select(chat.id, user2.displayName)
                 }, horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
