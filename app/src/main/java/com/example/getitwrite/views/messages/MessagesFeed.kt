@@ -85,7 +85,7 @@ class ChatViewViewModel(userID: String) : ViewModel() {
 class ChatsViewModel(user: User) : ViewModel() {
     val chatsFlow = flow {
         val documents = Firebase.firestore.collection("chats")
-//            .whereArrayContains("users", user.id)
+            .whereArrayContains("users", user.id)
             .get().await()
         val items = documents.map { doc ->
             Chat(doc.data)
