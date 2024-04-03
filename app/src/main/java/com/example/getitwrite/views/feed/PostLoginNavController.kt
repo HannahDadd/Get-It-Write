@@ -28,17 +28,7 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutNavController: NavHostController) {
     val user by viewModel.user.collectAsState(
-        initial = User(
-            id = "1",
-            displayName = "",
-            bio = "",
-            writing = "",
-            critiqueStyle = "",
-            authors = ArrayList(),
-            writingGenres = ArrayList(),
-            colour = 1,
-            blockedUserIds = ArrayList()
-        )
+        initial = User()
     )
     val navController = rememberNavController()
     val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
@@ -107,19 +97,7 @@ class MainViewModel(auth: FirebaseAuth) : ViewModel() {
         doc.data?.let {
             emit(User(id = doc.id, data = it))
         } ?: run {
-            emit(
-                User(
-                    id = "1",
-                    displayName = "",
-                    bio = "",
-                    writing = "",
-                    critiqueStyle = "",
-                    authors = ArrayList(),
-                    writingGenres = ArrayList(),
-                    colour = 1,
-                    blockedUserIds = ArrayList()
-                )
-            )
+            emit(User())
         }
     }
 }

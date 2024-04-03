@@ -51,19 +51,7 @@ fun ChatsFeed(user: User, chatsViewModel: ChatsViewModel, selectChat: (String) -
 
 @Composable
 fun ChatView(viewModel: ChatViewViewModel, chat: Chat, select: (String) -> Unit) {
-    val user2 by viewModel.user2Data.collectAsState(
-        initial = User(
-            id = "1",
-            displayName = "",
-            bio = "",
-            writing = "",
-            critiqueStyle = "",
-            authors = ArrayList(),
-            writingGenres = ArrayList(),
-            colour = 1,
-            arrayListOf()
-        )
-    )
+    val user2 by viewModel.user2Data.collectAsState(initial = User())
     Column {
         Row(
             modifier = Modifier
@@ -89,19 +77,7 @@ class ChatViewViewModel(userID: String) : ViewModel() {
         doc.data?.let {
             emit(User(id = doc.id, data = it))
         } ?: run {
-            emit(
-                User(
-                    id = "1",
-                    displayName = "",
-                    bio = "",
-                    writing = "",
-                    critiqueStyle = "",
-                    authors = ArrayList(),
-                    writingGenres = ArrayList(),
-                    colour = 1,
-                    arrayListOf()
-                )
-            )
+            emit(User())
         }
     }
 }
