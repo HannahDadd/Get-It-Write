@@ -44,7 +44,6 @@ fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
                 modifier = Modifier.size(20.dp)
             )
         }
-
     }
 }
 
