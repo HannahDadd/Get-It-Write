@@ -15,6 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -24,13 +26,18 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentManager.BackStackEntry
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
 import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
@@ -40,9 +47,13 @@ fun ShowMessages(
     chatId: String,
     user: User,
     user2Name: String,
+    backStackEntry: NavBackStackEntry,
     navigateUp: () -> Unit
 ) {
-    val messages = MessagesViewModel().getMessages(chatId)
+    var messages = listOf<Message>()
+    MessagesViewModel().getMessages(chatId).observe(backStackEntry, Observer {
+        messages = it
+    })
     Column {
         DetailHeader(title = user2Name, navigateUp = navigateUp)
         Column(
@@ -51,11 +62,9 @@ fun ShowMessages(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(text = messages.value?.size.toString())
-            Text(user2Name)
-            messages.value?.forEach {
-//                SingleMessage(it.content)
-                Text(text = "it.content")
+            Text(text = messages.size.toString())
+            messages.forEach {
+                SingleMessage(it.content)
             }
         }
     }
@@ -72,11 +81,12 @@ class MessagesViewModel : ViewModel() {
                     return@EventListener
                 }
 
-                var savedAddressList: MutableList<Message> = mutableListOf()
+                var savedLists: MutableList<Message> = mutableListOf()
                 for (doc in value!!) {
-                    savedAddressList.add(Message(doc.data!!))
+//                    savedLists.add(Message(doc.data!!))
+                    savedLists.add(Message(content = "Hello", created = Timestamp.now(), senderID = ""))
                 }
-                messages.value = savedAddressList
+                messages.value = savedLists
             })
 
         return messages

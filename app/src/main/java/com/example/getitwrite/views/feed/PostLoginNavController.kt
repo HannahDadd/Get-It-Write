@@ -67,6 +67,7 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
                 chatId = arguments.getString("chat_id")!!,
                 user = user,
                 user2Name = arguments.getString("otherUserName")!!,
+                backStackEntry,
                 navigateUp = actions.navigateUp
             )
         }
