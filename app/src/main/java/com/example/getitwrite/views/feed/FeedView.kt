@@ -32,9 +32,11 @@ import com.example.getitwrite.views.messages.ChatsFeed
 import com.example.getitwrite.views.messages.ChatsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.proposals.ProposalsFeed
+import com.example.getitwrite.views.toCritique.ToCritiqueFeed
+import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 
 @Composable
-fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit) {
+fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -72,7 +74,7 @@ fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) {  }
-            composable(Screen.ToCritique.route) {  }
+            composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, viewModel = ToCritiqueViewModel(user), selectCritiqueRequest) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }

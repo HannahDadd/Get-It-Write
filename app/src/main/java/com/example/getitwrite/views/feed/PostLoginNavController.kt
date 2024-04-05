@@ -37,7 +37,9 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(logoutNavController, navController = navController, proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
+            MainView(logoutNavController, navController = navController, proposals = proposals,
+                selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
+                selectCritiqueRequest = actions.selectCritiqueRequest)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)

@@ -96,7 +96,7 @@ fun ShowMessages(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState
             ) {
-                SendWorkView(user2Id, user = user, proposals) {
+                SendWorkView(user2Id, user = user, proposals = proposals, chatID = chatId) {
                     showBottomSheet = false
                 }
             }

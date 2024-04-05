@@ -33,8 +33,6 @@ import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ErrorText
-import com.example.getitwrite.views.components.QuestionSection
-import com.example.getitwrite.views.proposals.MakeProposalView
 import com.example.getitwrite.views.proposals.ProposalView
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp

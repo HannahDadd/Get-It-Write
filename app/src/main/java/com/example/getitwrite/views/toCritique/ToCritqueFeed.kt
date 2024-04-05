@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.Proposal
@@ -34,7 +35,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ToCritiqueFeed(user: User, viewModel: ToCritiqueViewModel, selectChat: (String, String) -> Unit) {
+fun ToCritiqueFeed(user: User, viewModel: ToCritiqueViewModel, selectCritiqueRequest: (String) -> Unit) {
     val toCritiques by viewModel.chatsFlow.collectAsState(initial = emptyList())
     if (toCritiques.isEmpty()) {
         Column(Modifier.padding(10.dp)) {
@@ -44,6 +45,8 @@ fun ToCritiqueFeed(user: User, viewModel: ToCritiqueViewModel, selectChat: (Stri
     } else {
         LazyColumn(Modifier.padding(10.dp)) {
             items(toCritiques) { work ->
+                ToCritiqueView(work, selectCritiqueRequest)
+                Divider()
             }
         }
     }
@@ -55,41 +58,24 @@ fun ToCritiqueView(requestCritique: RequestCritique, selectProposal: (String) ->
         modifier = Modifier
             .padding(10.dp)
             .clickable { selectProposal(requestCritique.id) }) {
+        Text(requestCritique.workTitle, fontSize = 20.sp)
         Text(requestCritique.title, fontWeight = FontWeight.Bold)
         Text(requestCritique.blurb)
-//        Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
-//        TagCloud(tags = proposal.genres, action = null)
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding()
-//        ) {
-//            Text(
-//                text = DateUtils.getRelativeTimeSpanString(
-//                    (proposal.timestamp.seconds * 1000),
-//                    System.currentTimeMillis(),
-//                    DateUtils.DAY_IN_MILLIS
-//                ).toString(),
-//                fontWeight = FontWeight.Light
-//            )
-//            Spacer(modifier = Modifier.weight(1.0f))
-//            Text(
-//                text = "${proposal.wordCount} words",
-//                fontWeight = FontWeight.Light
-//            )
-//        }
-//        Divider()
     }
 }
 
 class ToCritiqueViewModel(user: User) : ViewModel() {
     val chatsFlow = flow {
-        val documents = Firebase.firestore.collection("users")
-            .document(user.id).collection("requestCritiques")
-            .orderBy("timestamp", Query.Direction.DESCENDING).get().await()
-        val items = documents.map { doc ->
-            RequestCritique(doc.id, doc.data)
+        if (user.id != "") {
+            val documents = Firebase.firestore.collection("users/${user.id}/requestCritiques")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get().await()
+            val items = documents.map { doc ->
+                RequestCritique(doc.id, doc.data)
+            }
+            emit(items)
+        } else {
+            emit(listOf<RequestCritique>())
         }
-        emit(items)
     }
 }
