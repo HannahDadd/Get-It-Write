@@ -77,7 +77,7 @@ fun ShowMessages(
     user: User,
     user2Name: String,
     user2Id: String,
-    proposals: ArrayList<Proposal>,
+    proposals: List<Proposal>,
     backStackEntry: NavBackStackEntry,
     navigateUp: () -> Unit
 ) {

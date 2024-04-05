@@ -39,7 +39,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SendWorkView(user2Id: String, user: User, proposals: ArrayList<Proposal>, closeAction: () -> Unit) {
+fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, closeAction: () -> Unit) {
     var errorString = remember { mutableStateOf("") }
     val title = remember { mutableStateOf("") }
     val text = remember { mutableStateOf("") }
@@ -104,7 +104,7 @@ fun SendWorkView(user2Id: String, user: User, proposals: ArrayList<Proposal>, cl
 }
 
 @Composable
-fun SelectProposalView(proposals: ArrayList<Proposal>, user: User, selectProposal: (Proposal) -> Unit) {
+fun SelectProposalView(proposals: List<Proposal>, user: User, selectProposal: (Proposal) -> Unit) {
     val usersProposals = proposals.filter { it.writerId == user.id }
     LazyColumn {
         items(usersProposals) { proposal ->

@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.ui.theme.GetItWriteTheme
 import com.example.getitwrite.views.feed.MainViewModel
 import com.example.getitwrite.views.feed.PostLoginNavController
@@ -70,8 +71,8 @@ class MainActivity : ComponentActivity() {
 class AppActions(
     navController: NavHostController
 ) {
-    val selectedProposal: (String) -> Unit = { id: String ->
-        navController.navigate("details/${id}")
+    val selectedProposal: (Proposal) -> Unit = { proposal: Proposal ->
+        navController.navigate("details/${proposal.id}")
     }
     val selectChat: (String, String) -> Unit = { id: String, user2Name: String ->
         navController.navigate("chatDetails/${id}/${user2Name}")

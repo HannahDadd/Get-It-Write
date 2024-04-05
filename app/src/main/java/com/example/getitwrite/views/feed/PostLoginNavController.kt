@@ -37,7 +37,7 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(logoutNavController, auth = auth, navController = navController, proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
+            MainView(logoutNavController, navController = navController, proposals = proposals, selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -52,12 +52,15 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable(
-            "chatDetails/{chat_id}/{otherUserName}",
+            "chatDetails/{chat_id}/{otherUserName}/{otherUserId}",
             arguments = listOf(
                 navArgument("chat_id") {
                     type = NavType.StringType
                 },
                 navArgument("otherUserName") {
+                    type = NavType.StringType
+                },
+                navArgument("otherUserId") {
                     type = NavType.StringType
                 }
             )
@@ -67,7 +70,9 @@ fun PostLoginNavController(auth: FirebaseAuth, viewModel: MainViewModel, logoutN
                 chatId = arguments.getString("chat_id")!!,
                 user = user,
                 user2Name = arguments.getString("otherUserName")!!,
-                backStackEntry,
+                user2Id = arguments.getString("otherUserId")!!,
+                proposals = proposals,
+                backStackEntry = backStackEntry,
                 navigateUp = actions.navigateUp
             )
         }
