@@ -34,7 +34,7 @@ import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.proposals.ProposalsFeed
 
 @Composable
-fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> Unit, selectChat: (String, String) -> Unit) {
+fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,

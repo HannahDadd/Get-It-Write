@@ -35,7 +35,7 @@ import com.example.getitwrite.views.components.TagCloud
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProposalsFeed(user: User, proposals: List<Proposal>, selectProposal: (String) -> Unit) {
+fun ProposalsFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Scaffold(
@@ -68,11 +68,11 @@ fun ProposalsFeed(user: User, proposals: List<Proposal>, selectProposal: (String
 }
 
 @Composable
-fun ProposalView(proposal: Proposal, selectProposal: (String) -> Unit) {
+fun ProposalView(proposal: Proposal, selectProposal: (Proposal) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .padding(10.dp)
-            .clickable { selectProposal(proposal.id) }) {
+            .clickable { selectProposal(proposal) }) {
         Text(proposal.title, fontWeight = FontWeight.Bold)
         Text(proposal.blurb)
         Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)

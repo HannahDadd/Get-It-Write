@@ -56,6 +56,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Message
+import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.settings.BottomSheetContent
@@ -75,6 +76,8 @@ fun ShowMessages(
     chatId: String,
     user: User,
     user2Name: String,
+    user2Id: String,
+    proposals: ArrayList<Proposal>,
     backStackEntry: NavBackStackEntry,
     navigateUp: () -> Unit
 ) {
@@ -83,18 +86,18 @@ fun ShowMessages(
     MessagesViewModel().getMessages(chatId).observe(backStackEntry) {
         messages = it
     }
-    var bottomSheetContent by remember { mutableStateOf(BottomSheetContent.none) }
+    var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     Column {
         DetailHeader(title = user2Name, navigateUp = navigateUp)
-        if (bottomSheetContent != BottomSheetContent.none) {
+        if (showBottomSheet) {
             ModalBottomSheet(
-                onDismissRequest = {
-                    bottomSheetContent = BottomSheetContent.none
-                },
+                onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState
             ) {
-                SendWorkView()
+                SendWorkView(user2Id, user = user, proposals) {
+                    showBottomSheet = false
+                }
             }
         }
         Column(
