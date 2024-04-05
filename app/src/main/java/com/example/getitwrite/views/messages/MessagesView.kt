@@ -134,7 +134,6 @@ fun ShowMessages(
                 modifier = Modifier.size(40.dp),
                 contentPadding = PaddingValues(1.dp)
             ) {
-                // Inner content including an icon and a text label
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Send,
                     contentDescription = "Send",
