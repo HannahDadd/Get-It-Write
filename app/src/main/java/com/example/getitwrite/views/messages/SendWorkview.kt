@@ -46,7 +46,7 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, closeAc
     var proposal = remember { mutableStateOf<Proposal?>(null) }
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-    Column {
+    Column(modifier = Modifier.padding(vertical = 10.dp)) {
         if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = {
@@ -62,7 +62,7 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, closeAc
         }
         TextButton(onClick = { showBottomSheet = true }) {
             Text(modifier = Modifier.align(Alignment.Bottom),
-                text = "Back to Login", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold)
+                text = "Choose proposal", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold)
         }
         proposal.value?.let {
             ProposalView(it) {

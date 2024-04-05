@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -100,48 +101,49 @@ fun ShowMessages(
                 }
             }
         }
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Text(text = messages.size.toString())
-            messages.forEach {
-                SingleMessage(it.content)
-            }
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
-        ) {
-            Text("Send work to ${user2Name}", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
-        }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            OutlinedTextField(
-                value = message.value,
-                maxLines = 1,
-                onValueChange = { message.value = it },
-                label = {
-                    Box {
-                        Text(text = "Text Message")
-                    }
-                }
-            )
-            Button(
-                onClick = {  },
-                shape = CircleShape,
-                modifier = Modifier.size(40.dp),
-                contentPadding = PaddingValues(1.dp)
+        Column(modifier = Modifier.fillMaxHeight().padding(10.dp)) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "Send",
-                    modifier = Modifier.size(20.dp)
+                Text(text = messages.size.toString())
+                messages.forEach {
+                    SingleMessage(it.content)
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { showBottomSheet = true },
+                colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+            ) {
+                Text("Send work to ${user2Name}", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+            }
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                OutlinedTextField(
+                    value = message.value,
+                    maxLines = 1,
+                    onValueChange = { message.value = it },
+                    label = {
+                        Box {
+                            Text(text = "Text Message")
+                        }
+                    }
                 )
+                Button(
+                    onClick = {  },
+                    shape = CircleShape,
+                    modifier = Modifier.size(40.dp),
+                    contentPadding = PaddingValues(1.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Send,
+                        contentDescription = "Send",
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
     }
