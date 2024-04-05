@@ -61,6 +61,7 @@ fun ToCritiqueView(requestCritique: RequestCritique, selectProposal: (String) ->
         Text(requestCritique.workTitle, fontSize = 20.sp)
         Text(requestCritique.title, fontWeight = FontWeight.Bold)
         Text(requestCritique.blurb)
+        TagCloud(tags = requestCritique.genres, action = null)
     }
 }
 

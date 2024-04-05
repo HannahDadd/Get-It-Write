@@ -11,19 +11,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.RequestCritique
-import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.TagCloud
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-import java.util.UUID
 
 @Composable
 fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navigateUp: () -> Unit) {
@@ -35,11 +31,14 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
                 .padding(10.dp)
                 .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text(toCritique.title, fontWeight = FontWeight.Bold)
-            Text("by ${toCritique.writerName}")
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(toCritique.title, fontWeight = FontWeight.Bold)
+                Text("by ${toCritique.writerName}")
+            }
             Divider()
             Text("Blurb", fontWeight = FontWeight.Bold)
             Text(toCritique.blurb)
+            TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
             Text(toCritique.text)
             Divider()
