@@ -20,6 +20,7 @@ import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.example.getitwrite.views.settings.SettingsScreen
+import com.example.getitwrite.views.toCritique.ToCritiqueDetailedView
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -79,6 +80,17 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
                 backStackEntry = backStackEntry,
                 navigateUp = actions.navigateUp
             )
+        }
+        composable(
+            "critiqueRequest/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            ToCritiqueDetailedView(toCritiques, arguments.getString("id")!!, actions.navigateUp)
         }
         composable(
             "details/{proposal_id}",
