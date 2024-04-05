@@ -72,7 +72,7 @@ fun SettingsScreen(logoutNavController: NavHostController, navigateUp: () -> Uni
     }
 }
 
-private enum class BottomSheetContent {
+enum class BottomSheetContent {
     none,
     tsAndCs,
     privacyPolicy,

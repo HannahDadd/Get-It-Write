@@ -24,20 +24,26 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -48,15 +54,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
+import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
+import com.example.getitwrite.views.settings.BottomSheetContent
+import com.example.getitwrite.views.settings.PostReAuthTask
+import com.example.getitwrite.views.settings.PrivacyPolicyView
+import com.example.getitwrite.views.settings.ReAuthView
+import com.example.getitwrite.views.settings.TsAndCsView
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowMessages(
     chatId: String,
@@ -70,8 +83,20 @@ fun ShowMessages(
     MessagesViewModel().getMessages(chatId).observe(backStackEntry) {
         messages = it
     }
+    var bottomSheetContent by remember { mutableStateOf(BottomSheetContent.none) }
+    val sheetState = rememberModalBottomSheetState()
     Column {
         DetailHeader(title = user2Name, navigateUp = navigateUp)
+        if (bottomSheetContent != BottomSheetContent.none) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    bottomSheetContent = BottomSheetContent.none
+                },
+                sheetState = sheetState
+            ) {
+                SendWorkView()
+            }
+        }
         Column(
             modifier = Modifier
                 .padding(10.dp)
@@ -83,7 +108,15 @@ fun ShowMessages(
                 SingleMessage(it.content)
             }
         }
-        Row(modifier = Modifier.fillMaxWidth()
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+        ) {
+            Text("Send work to ${user2Name}", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth()
             .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             OutlinedTextField(
                 value = message.value,

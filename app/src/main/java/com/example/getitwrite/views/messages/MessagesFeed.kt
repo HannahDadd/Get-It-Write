@@ -88,7 +88,7 @@ class ChatsViewModel(user: User) : ViewModel() {
             .whereArrayContains("users", user.id)
             .get().await()
         val items = documents.map { doc ->
-            Chat(doc.data)
+            Chat(doc.id, doc.data)
         }
         emit(items)
     }

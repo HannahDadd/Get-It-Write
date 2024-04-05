@@ -15,9 +15,12 @@ class Message(
     )
 }
 
-class Chat(val users: MutableList<String>, val id: String) {
-    constructor(data: Map<String, Any>) : this(
-        id = UUID.randomUUID().toString(),
+class Chat(
+    val users: MutableList<String>,
+    val id: String
+) {
+    constructor(id: String, data: Map<String, Any>) : this(
+        id = id,
         users = data.get("users") as MutableList<String>
     )
 }

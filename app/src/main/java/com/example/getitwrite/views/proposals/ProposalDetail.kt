@@ -19,12 +19,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.GlobalVariables
+import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 @Composable
@@ -60,11 +62,20 @@ fun ProposalDetails(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        val id = UUID.randomUUID().toString()
-                        Firebase.firestore.collection("chats").document(id)
-                            .set(mapOf("users" to listOf(user.id, proposal.writerId)))
-                            .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
-                            .addOnFailureListener {  }
+                        Firebase.firestore.collection("chats")
+                            .whereArrayContains("users", arrayOf(user.id, proposal.writerId))
+                            .get().addOnSuccessListener {
+                                if (it.isEmpty) {
+                                    val id = UUID.randomUUID().toString()
+                                    Firebase.firestore.collection("chats").document(id)
+                                        .set(mapOf("users" to listOf(user.id, proposal.writerId)))
+                                        .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
+                                        .addOnFailureListener {  }
+                                } else {
+                                    val doc = it.documents.get(0)
+                                    navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
+                                }
+                            }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Colours.Dark_Readable,
