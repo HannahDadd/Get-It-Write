@@ -26,6 +26,7 @@ import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.FindPartnersText
 import com.example.getitwrite.views.components.TagCloud
+import com.example.getitwrite.views.feed.Screen
 import com.example.getitwrite.views.messages.ChatView
 import com.example.getitwrite.views.messages.ChatViewViewModel
 import com.google.firebase.Firebase
@@ -35,8 +36,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ToCritiqueFeed(user: User, viewModel: ToCritiqueViewModel, selectCritiqueRequest: (String) -> Unit) {
-    val toCritiques by viewModel.chatsFlow.collectAsState(initial = emptyList())
+fun ToCritiqueFeed(user: User, toCritiques: List<RequestCritique>, selectCritiqueRequest: (String) -> Unit) {
     if (toCritiques.isEmpty()) {
         Column(Modifier.padding(10.dp)) {
             Text("You have nothing to critique.", fontWeight = FontWeight.Bold)
@@ -65,7 +65,7 @@ fun ToCritiqueView(requestCritique: RequestCritique, selectProposal: (String) ->
 }
 
 class ToCritiqueViewModel(user: User) : ViewModel() {
-    val chatsFlow = flow {
+    val toCritiques = flow {
         if (user.id != "") {
             val documents = Firebase.firestore.collection("users/${user.id}/requestCritiques")
                 .orderBy("timestamp", Query.Direction.DESCENDING)

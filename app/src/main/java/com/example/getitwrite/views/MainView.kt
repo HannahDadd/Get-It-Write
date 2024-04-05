@@ -39,6 +39,7 @@ import androidx.navigation.NavHostController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.R
 import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -48,7 +49,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(logoutNavController: NavHostController, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit) {
+fun MainView(logoutNavController: NavHostController, toCritiques: List<RequestCritique>, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -117,7 +118,7 @@ fun MainView(logoutNavController: NavHostController, navController: NavControlle
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowFeed(user = user, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest)
+                ShowFeed(user = user, toCritiques = toCritiques, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest)
             }
         }
     }

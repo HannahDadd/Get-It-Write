@@ -27,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.messages.ChatsFeed
 import com.example.getitwrite.views.messages.ChatsViewModel
@@ -36,7 +37,7 @@ import com.example.getitwrite.views.toCritique.ToCritiqueFeed
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 
 @Composable
-fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit) {
+fun ShowFeed(user: User, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -74,7 +75,7 @@ fun ShowFeed(user: User, proposals: List<Proposal>, selectProposal: (Proposal) -
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) {  }
-            composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, viewModel = ToCritiqueViewModel(user), selectCritiqueRequest) }
+            composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }

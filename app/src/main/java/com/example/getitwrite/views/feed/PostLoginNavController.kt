@@ -20,6 +20,7 @@ import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.example.getitwrite.views.settings.SettingsScreen
+import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
@@ -31,13 +32,14 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
     val user by viewModel.user.collectAsState(initial = User())
     val navController = rememberNavController()
     val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
+    val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(logoutNavController, navController = navController, proposals = proposals,
+            MainView(logoutNavController, toCritiques = toCritiques, navController = navController, proposals = proposals,
                 selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
                 selectCritiqueRequest = actions.selectCritiqueRequest)
         }
