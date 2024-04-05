@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 ShowLogin(navController, auth)
             }
             composable("feed") {
-                PostLoginNavController(auth, MainViewModel(auth), navController)
+                PostLoginNavController(MainViewModel(auth), navController)
             }
             composable("signup") {
                 ShowSignUp(navController = navController, auth)
@@ -74,8 +74,8 @@ class AppActions(
     val selectedProposal: (Proposal) -> Unit = { proposal: Proposal ->
         navController.navigate("details/${proposal.id}")
     }
-    val selectChat: (String, String) -> Unit = { id: String, user2Name: String ->
-        navController.navigate("chatDetails/${id}/${user2Name}")
+    val selectChat: (String, String, String) -> Unit = { id: String, user2Name: String, user2Id: String ->
+        navController.navigate("chatDetails/${id}/${user2Name}/${user2Id}")
     }
     val navigateUp: () -> Unit = {
         navController.navigateUp()
