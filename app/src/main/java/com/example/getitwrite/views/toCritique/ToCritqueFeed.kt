@@ -62,6 +62,17 @@ fun ToCritiqueView(requestCritique: RequestCritique, selectProposal: (String) ->
         Text(requestCritique.title, fontWeight = FontWeight.Bold)
         Text(requestCritique.blurb)
         TagCloud(tags = requestCritique.genres, action = null)
+        Row(modifier = Modifier.fillMaxWidth().padding()) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = DateUtils.getRelativeTimeSpanString(
+                    (requestCritique.timestamp.seconds * 1000),
+                    System.currentTimeMillis(),
+                    DateUtils.DAY_IN_MILLIS
+                ).toString(),
+                fontWeight = FontWeight.Light
+            )
+        }
     }
 }
 
