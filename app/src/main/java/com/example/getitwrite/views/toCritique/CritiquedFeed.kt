@@ -13,9 +13,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
@@ -49,7 +51,14 @@ fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit) {
 fun CritiqueView(critique: Critique, select: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(10.dp).clickable { select(critique.id) }) {
-        ProfileImage(username = critique.critiquerName, profileColour = critique.critiquerProfileColour)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProfileImage(username = critique.critiquerName, profileColour = critique.critiquerProfileColour)
+            Text(critique.critiquerName, fontSize = 20.sp)
+        }
         Text(critique.overallFeedback, fontWeight = FontWeight.Bold)
         Row(modifier = Modifier.fillMaxWidth().padding()) {
             Text(
