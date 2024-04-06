@@ -117,6 +117,8 @@ fun ToCritiqueDetailedView(user: User, toCritiques: List<RequestCritique>, id: S
                     Firebase.firestore.collection("users").document(toCritique.writerId)
                         .collection("critiques").document(id).set(critique)
                         .addOnSuccessListener {
+                            Firebase.firestore.collection("users").document(user.id)
+                                .collection("requestCritiques").document(toCritique.id).delete()
                             navigateUp()
                         }
                         .addOnFailureListener {
