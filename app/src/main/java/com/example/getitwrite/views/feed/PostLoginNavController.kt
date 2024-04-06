@@ -20,6 +20,7 @@ import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.example.getitwrite.views.settings.SettingsScreen
+import com.example.getitwrite.views.toCritique.CritiquedDetailedView
 import com.example.getitwrite.views.toCritique.CritiquedViewModel
 import com.example.getitwrite.views.toCritique.ToCritiqueDetailedView
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
@@ -100,7 +101,6 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
 //                actions.navigateUp()
 //            }
         }
-
         composable(
             "critiqued/{id}",
             arguments = listOf(
@@ -111,8 +111,8 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
             val id = arguments.getString("id")
-            val critiqued = toCritiques.filter { it.id == id }.get(0)
-            ToCritiqueDetailedView(user, toCritique, actions.navigateUp)
+            val critiqued = critiqued.filter { it.id == id }.get(0)
+            CritiquedDetailedView(critiqued, actions.navigateUp)
         }
         composable(
             "details/{proposal_id}",

@@ -25,7 +25,7 @@ class Critique (
     overallFeedback = data.get("overallFeedback") as String,
     critiquerId = data.get("critiquerId") as String,
     critiquerName = data.get("critiquerName") as String,
-    critiquerProfileColour = data.get("critiquerProfileColour") as Int,
+    critiquerProfileColour = 2,//(data.get("colour") as Long).toInt(),
     timestamp = data.get("timestamp") as Timestamp,
     rated = data.get("rated") as Boolean
     )

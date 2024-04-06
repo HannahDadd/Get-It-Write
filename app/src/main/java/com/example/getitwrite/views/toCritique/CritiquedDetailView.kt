@@ -43,7 +43,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CritiquedDetailedView(user: User, critique: Critique, navigateUp: () -> Unit) {
+fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
     val paragraphs = critique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
