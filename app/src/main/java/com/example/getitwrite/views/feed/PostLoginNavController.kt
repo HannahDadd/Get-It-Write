@@ -90,7 +90,13 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            ToCritiqueDetailedView(user, toCritiques, arguments.getString("id")!!, actions.navigateUp)
+            val id = arguments.getString("id")
+            val toCritique = toCritiques.filter { it.id == id }.get(0)
+            ToCritiqueDetailedView(user, toCritique, actions.navigateUp)
+//            ToCritiqueDetailedView(user, toCritique) {
+//                toCritiques.minus(toCritique)
+//                actions.navigateUp()
+//            }
         }
         composable(
             "details/{proposal_id}",

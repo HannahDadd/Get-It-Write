@@ -46,9 +46,8 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToCritiqueDetailedView(user: User, toCritiques: List<RequestCritique>, id: String, navigateUp: () -> Unit) {
+fun ToCritiqueDetailedView(user: User, toCritique: RequestCritique, navigateUp: () -> Unit) {
     var errorString = remember { mutableStateOf("") }
-    val toCritique = toCritiques.filter { it.id == id }.get(0)
     val overallFeedback = remember { mutableStateOf("") }
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
