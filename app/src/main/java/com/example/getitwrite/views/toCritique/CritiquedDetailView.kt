@@ -68,7 +68,7 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
                 if (critique.comments.containsValue(index)) {
                     Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 } else {
-                    Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                    Text(element)
                 }
             }
             Divider()
