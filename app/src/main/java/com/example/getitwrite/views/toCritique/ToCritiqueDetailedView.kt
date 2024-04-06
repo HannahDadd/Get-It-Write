@@ -1,6 +1,5 @@
 package com.example.getitwrite.views.toCritique
 
-import android.text.format.DateUtils
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,13 +31,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.Colours
-import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.TagCloud
-import com.example.getitwrite.views.messages.ChatView
-import com.example.getitwrite.views.messages.ChatViewViewModel
-import com.example.getitwrite.views.proposals.MakeProposalView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,10 +71,8 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
             Text(toCritique.blurb)
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
-            LazyColumn(Modifier.padding(10.dp)) {
-                items(paragraphs) { text ->
-                    Text(text, modifier = Modifier.clickable {  })
-                }
+            paragraphs.forEach {
+                Text(it, modifier = Modifier.clickable { bottomSheetText = it })
             }
             Text(toCritique.text)
             Divider()
@@ -139,7 +132,7 @@ fun CritiqueSheet(text: String, submit: (String) -> Unit) {
                 contentColor = Color.White
             )
         ) {
-            Text("Submit Critique", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+            Text("Add Comment", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
     }
 }
