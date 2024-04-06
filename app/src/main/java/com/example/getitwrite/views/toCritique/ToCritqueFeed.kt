@@ -55,9 +55,7 @@ fun ToCritiqueFeed(user: User, toCritiques: List<RequestCritique>, selectCritiqu
 @Composable
 fun ToCritiqueView(requestCritique: RequestCritique, selectProposal: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier
-            .padding(10.dp)
-            .clickable { selectProposal(requestCritique.id) }) {
+        modifier = Modifier.padding(10.dp).clickable { selectProposal(requestCritique.id) }) {
         Text(requestCritique.workTitle, fontSize = 20.sp)
         Text(requestCritique.title, fontWeight = FontWeight.Bold)
         Text(requestCritique.blurb)
