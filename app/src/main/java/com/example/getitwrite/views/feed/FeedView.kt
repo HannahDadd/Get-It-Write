@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
@@ -33,11 +34,12 @@ import com.example.getitwrite.views.messages.ChatsFeed
 import com.example.getitwrite.views.messages.ChatsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.proposals.ProposalsFeed
+import com.example.getitwrite.views.toCritique.CritiquedFeed
 import com.example.getitwrite.views.toCritique.ToCritiqueFeed
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 
 @Composable
-fun ShowFeed(user: User, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit) {
+fun ShowFeed(user: User, critiqued: List<Critique>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectCritiqued: (String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -74,7 +76,7 @@ fun ShowFeed(user: User, toCritiques: List<RequestCritique>, proposals: List<Pro
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
-            composable(Screen.YourWork.route) {  }
+            composable(Screen.YourWork.route) { CritiquedFeed(critiqued, selectCritiqued) }
             composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }

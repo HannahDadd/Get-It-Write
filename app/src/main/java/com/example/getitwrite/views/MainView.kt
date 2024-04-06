@@ -38,6 +38,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.R
+import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
@@ -49,7 +50,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(logoutNavController: NavHostController, toCritiques: List<RequestCritique>, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit) {
+fun MainView(logoutNavController: NavHostController, critiqued: List<Critique>, toCritiques: List<RequestCritique>, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit, selectCritiqued: (String) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -118,7 +119,7 @@ fun MainView(logoutNavController: NavHostController, toCritiques: List<RequestCr
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowFeed(user = user, toCritiques = toCritiques, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest)
+                ShowFeed(user = user, critiqued = critiqued, toCritiques = toCritiques, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest, selectCritiqued = selectCritiqued)
             }
         }
     }

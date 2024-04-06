@@ -16,9 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Critique
+import com.example.getitwrite.modals.RequestCritique
+import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.FindPartnersText
 import com.example.getitwrite.views.components.ProfileImage
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit) {
@@ -57,6 +65,22 @@ fun CritiqueView(critique: Critique, select: (String) -> Unit) {
                 text = "${critique.comments.size} comments",
                 fontWeight = FontWeight.Light
             )
+        }
+    }
+}
+
+class CritiquedViewModel(user: User) : ViewModel() {
+    val critiqued = flow {
+        if (user.id != "") {
+            val documents = Firebase.firestore.collection("users/${user.id}/critiques")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get().await()
+            val items = documents.map { doc ->
+                Critique(doc.id, doc.data)
+            }
+            emit(items)
+        } else {
+            emit(listOf<Critique>())
         }
     }
 }

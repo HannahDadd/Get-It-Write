@@ -20,6 +20,7 @@ import com.example.getitwrite.views.profile.ProfileView
 import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.example.getitwrite.views.settings.SettingsScreen
+import com.example.getitwrite.views.toCritique.CritiquedViewModel
 import com.example.getitwrite.views.toCritique.ToCritiqueDetailedView
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 import com.google.firebase.Firebase
@@ -34,15 +35,16 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
     val navController = rememberNavController()
     val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
+    val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(logoutNavController, toCritiques = toCritiques, navController = navController, proposals = proposals,
+            MainView(logoutNavController, critiqued = critiqued, toCritiques = toCritiques, navController = navController, proposals = proposals,
                 selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
-                selectCritiqueRequest = actions.selectCritiqueRequest)
+                selectCritiqueRequest = actions.selectCritiqueRequest, selectCritiqued = actions.selectCritiqued)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -97,6 +99,20 @@ fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHos
 //                toCritiques.minus(toCritique)
 //                actions.navigateUp()
 //            }
+        }
+
+        composable(
+            "critiqued/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            val id = arguments.getString("id")
+            val critiqued = toCritiques.filter { it.id == id }.get(0)
+            ToCritiqueDetailedView(user, toCritique, actions.navigateUp)
         }
         composable(
             "details/{proposal_id}",
