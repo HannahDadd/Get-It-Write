@@ -42,7 +42,8 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
     val overallFeedback = remember { mutableStateOf("") }
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
-    var bottomSheetText by remember { mutableStateOf("") }
+    var bottomSheetText by remember { mutableStateOf(Pair("", 1)) }
+    val comments = remember { mutableStateOf(mapOf<Int, String>()) }
     Column {
         DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
         Column(
@@ -50,15 +51,15 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
                 .padding(10.dp)
                 .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (bottomSheetText != "") {
+            if (bottomSheetText.first != "") {
                 ModalBottomSheet(
                     onDismissRequest = {
-                        bottomSheetText = ""
+                        bottomSheetText = Pair("", 1)
                     },
                     sheetState = sheetState
                 ) {
-                    CritiqueSheet(bottomSheetText) {
-                        bottomSheetText = ""
+                    CritiqueSheet(bottomSheetText) { comment: String, text: Int ->
+                        bottomSheetText = Pair("", 1)
                     }
                 }
             }
@@ -71,10 +72,9 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
             Text(toCritique.blurb)
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
-            paragraphs.forEach {
-                Text(it, modifier = Modifier.clickable { bottomSheetText = it })
+            paragraphs.forEachIndexed { index, element ->
+                Text(element, modifier = Modifier.clickable { bottomSheetText = Pair(element, index) })
             }
-            Text(toCritique.text)
             Divider()
             Row(modifier = Modifier
                 .fillMaxWidth()
@@ -108,7 +108,7 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
 }
 
 @Composable
-fun CritiqueSheet(text: String, submit: (String) -> Unit) {
+fun CritiqueSheet(pair: Pair<String, Int>, submit: (String, Int) -> Unit) {
     val comment = remember { mutableStateOf("") }
     Column(
         modifier = Modifier
@@ -116,7 +116,7 @@ fun CritiqueSheet(text: String, submit: (String) -> Unit) {
             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(text = "Paragraph:", fontWeight = FontWeight.Bold)
-        Text(text = text)
+        Text(text = pair.first)
         OutlinedTextField(value = comment.value, maxLines = 5,
             onValueChange = { comment.value = it },
             modifier = Modifier
@@ -126,7 +126,7 @@ fun CritiqueSheet(text: String, submit: (String) -> Unit) {
         )
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { submit(comment.value) },
+            onClick = { submit(comment.value, pair.second) },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Colours.Dark_Readable,
                 contentColor = Color.White
