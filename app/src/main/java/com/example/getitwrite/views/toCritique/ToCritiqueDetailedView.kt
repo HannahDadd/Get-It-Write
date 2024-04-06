@@ -32,19 +32,28 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.Critique
+import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.RequestCritique
+import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
+import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.TagCloud
+import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.firestore
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navigateUp: () -> Unit) {
+fun ToCritiqueDetailedView(user: User, toCritiques: List<RequestCritique>, id: String, navigateUp: () -> Unit) {
+    var errorString = remember { mutableStateOf("") }
     val toCritique = toCritiques.filter { it.id == id }.get(0)
     val overallFeedback = remember { mutableStateOf("") }
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
-    val comments = remember { mutableStateOf(mapOf<Int, String>()) }
+    val comments = remember { mutableStateOf(mapOf<String, Int>()) }
     Column {
         DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
         Column(
@@ -75,8 +84,8 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
             paragraphs.forEachIndexed { index, element ->
-                if (comments.value.containsKey(index)) {
-                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.value.get(index)!!) })
+                if (comments.value.containsValue(index)) {
+                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 } else {
                     Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 }
@@ -99,9 +108,21 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
                     .height(150.dp),
                 label = { Text(text = "Overall Feedback") }
             )
+            ErrorText(error = errorString)
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = {},
+                onClick = {
+                    val id = UUID.randomUUID().toString()
+                    val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
+                    Firebase.firestore.collection("users").document(toCritique.writerId)
+                        .collection("critiques").document(id).set(critique)
+                        .addOnSuccessListener {
+                            navigateUp()
+                        }
+                        .addOnFailureListener {
+                            errorString.value = it.message.toString()
+                        }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Colours.Dark_Readable,
                     contentColor = Color.White
