@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.Colours
@@ -42,7 +43,7 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
     val overallFeedback = remember { mutableStateOf("") }
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
-    var bottomSheetText by remember { mutableStateOf(Pair("", 1)) }
+    var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
     val comments = remember { mutableStateOf(mapOf<Int, String>()) }
     Column {
         DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
@@ -54,12 +55,13 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
             if (bottomSheetText.first != "") {
                 ModalBottomSheet(
                     onDismissRequest = {
-                        bottomSheetText = Pair("", 1)
+                        bottomSheetText = Triple("", 1, "")
                     },
                     sheetState = sheetState
                 ) {
-                    CritiqueSheet(bottomSheetText) { comment: String, text: Int ->
-                        bottomSheetText = Pair("", 1)
+                    CritiqueSheet(bottomSheetText) { comment: String, index: Int ->
+                        comments.value.plus(Pair(index, comment))
+                        bottomSheetText = Triple("", 1, "")
                     }
                 }
             }
@@ -73,7 +75,11 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
             paragraphs.forEachIndexed { index, element ->
-                Text(element, modifier = Modifier.clickable { bottomSheetText = Pair(element, index) })
+                if (comments.value.containsKey(index)) {
+                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.value.get(index)!!) })
+                } else {
+                    Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                }
             }
             Divider()
             Row(modifier = Modifier
@@ -81,7 +87,7 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
                 .padding()) {
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
-                    text = "Comments",
+                    text = "Comments ${comments.value.size}",
                     fontWeight = FontWeight.Light
                 )
             }
@@ -108,8 +114,8 @@ fun ToCritiqueDetailedView(toCritiques: List<RequestCritique>, id: String, navig
 }
 
 @Composable
-fun CritiqueSheet(pair: Pair<String, Int>, submit: (String, Int) -> Unit) {
-    val comment = remember { mutableStateOf("") }
+fun CritiqueSheet(pair: Triple<String, Int, String>, submit: (String, Int) -> Unit) {
+    val comment = remember { mutableStateOf(pair.third) }
     Column(
         modifier = Modifier
             .padding(10.dp)
