@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 ShowLogin(navController, auth)
             }
             composable("feed") {
-                PostLoginNavController(MainViewModel(auth), navController)
+                PostLoginNavController(navController, auth)
             }
             composable("signup") {
                 ShowSignUp(navController = navController, auth)

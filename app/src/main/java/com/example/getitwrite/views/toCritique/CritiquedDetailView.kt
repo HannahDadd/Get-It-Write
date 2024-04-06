@@ -65,6 +65,9 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
                 }
             }
             paragraphs.forEachIndexed { index, element ->
+                Text(index.toString())
+                Text(critique.comments.values.toString())
+                Text(critique.comments.containsValue(index).toString())
                 if (critique.comments.containsValue(index)) {
                     Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 } else {

@@ -31,8 +31,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun PostLoginNavController(viewModel: MainViewModel, logoutNavController: NavHostController) {
-    val user by viewModel.user.collectAsState(initial = User())
+fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
+    val user by MainViewModel(auth).user.collectAsState(initial = User())
     val navController = rememberNavController()
     val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())

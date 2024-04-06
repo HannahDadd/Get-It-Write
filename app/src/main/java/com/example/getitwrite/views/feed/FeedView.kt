@@ -8,6 +8,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -78,6 +79,7 @@ fun ShowFeed(user: User, critiqued: List<Critique>, toCritiques: List<RequestCri
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) { CritiquedFeed(critiqued, selectCritiqued) }
             composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
+            composable(Screen.Forum.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }
@@ -87,6 +89,7 @@ fun ShowFeed(user: User, critiqued: List<Critique>, toCritiques: List<RequestCri
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
     object YourWork : Screen("yourWork", "Your Work", Icons.Default.List)
     object ToCritique : Screen("toCritique", "To Critique", Icons.Default.Edit)
+    object Forum : Screen("forum", "Forum", Icons.Default.Home)
     object Messages : Screen("ShowMessages", "Messages", Icons.Default.Email)
     object FindPartners : Screen("findPartners", "Find Partners", Icons.Default.Search)
 }
