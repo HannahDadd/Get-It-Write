@@ -46,6 +46,7 @@ fun ShowFeed(user: User, critiqued: List<Critique>, questions: List<Question>, t
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
+        Screen.Forum,
         Screen.Messages,
         Screen.FindPartners
     )

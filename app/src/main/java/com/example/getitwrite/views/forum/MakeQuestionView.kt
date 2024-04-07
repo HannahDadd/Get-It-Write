@@ -36,6 +36,7 @@ fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
     Column(modifier = Modifier
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        Text("Get to know the community! No followers, just friends. Ask anything about writing, books, tips or advice.")
         OutlinedTextField(value = question.value,
             maxLines = 5,
             onValueChange = { question.value = it },
