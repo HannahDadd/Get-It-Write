@@ -92,7 +92,6 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
 
 @Composable
 fun CritiquedSheet(pair: Triple<String, Int, String>) {
-    val comment = remember { mutableStateOf(pair.third) }
     Column(
         modifier = Modifier
             .padding(10.dp)

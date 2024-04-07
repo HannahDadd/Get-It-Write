@@ -14,6 +14,8 @@ import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
+import com.example.getitwrite.views.forum.QuestionDetailView
+import com.example.getitwrite.views.forum.QuestionsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
 import com.example.getitwrite.views.profile.EditProfileView
 import com.example.getitwrite.views.profile.ProfileView
@@ -37,15 +39,16 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
     val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
+    val questions by QuestionsViewModel(user).questionsFlow.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
         startDestination = "feed"
     ) {
         composable("feed") {
-            MainView(logoutNavController, critiqued = critiqued, toCritiques = toCritiques, navController = navController, proposals = proposals,
+            MainView(logoutNavController, critiqued = critiqued, questions = questions, toCritiques = toCritiques, navController = navController, proposals = proposals,
                 selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
-                selectCritiqueRequest = actions.selectCritiqueRequest, selectCritiqued = actions.selectCritiqued)
+                selectCritiqueRequest = actions.selectCritiqueRequest, selectCritiqued = actions.selectCritiqued, selectQuestion = actions.selectQuestion)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -100,6 +103,19 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
 //                toCritiques.minus(toCritique)
 //                actions.navigateUp()
 //            }
+        }
+        composable(
+            "questions/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            val id = arguments.getString("id")
+            val question = questions.filter { it.id == id }.get(0)
+            QuestionDetailView(question, actions.navigateUp)
         }
         composable(
             "critiqued/{id}",

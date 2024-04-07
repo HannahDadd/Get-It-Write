@@ -19,14 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.Colours
-import com.example.getitwrite.GlobalVariables
-import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.Reply
 import com.example.getitwrite.modals.User
-import com.example.getitwrite.views.components.CreateTagCloud
 import com.example.getitwrite.views.components.ErrorText
-import com.example.getitwrite.views.components.SelectTagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
@@ -52,7 +48,7 @@ fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
             onClick = {
                 wordCount.value.toInt()
                 val id = UUID.randomUUID().toString()
-                val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, upVotes = 0, replies = listOf<Reply>(), timestamp = Timestamp.now())
+                val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, upVotes = 0, timestamp = Timestamp.now())
                 Firebase.firestore.collection("questions")
                     .document(id)
                     .set(q)

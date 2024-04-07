@@ -9,7 +9,6 @@ class Question (
     val questionerColour: Int,
     val questionerName: String,
     val upVotes: Int,
-    val replies: List<Reply> = listOf<Reply>(),
     val timestamp: Timestamp
 ) {
     constructor(id: String, data: Map<String, Any>) : this (
@@ -26,15 +25,17 @@ class Question (
 class Reply (
     val id: String,
     val reply: String,
-    val replyId: String,
-    val replyName: String,
+    val replierId: String,
+    val replierName: String,
+    val replierColour: Int,
     val timestamp: Timestamp
 ) {
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
         reply = data.get("reply") as String,
-        replyId = data.get("replyId") as String,
-        replyName = data.get("replyName") as String,
+        replierId = data.get("replierId") as String,
+        replierName = data.get("replierName") as String,
+        replierColour = (data.get("replierColour") as Long).toInt(),
         timestamp = data.get("timestamp") as Timestamp
     )
 }

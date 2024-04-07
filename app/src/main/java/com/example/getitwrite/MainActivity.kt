@@ -80,6 +80,9 @@ class AppActions(
     val selectCritiqued: (String) -> Unit = {
         navController.navigate("critiqued/${it}")
     }
+    val selectQuestion: (String) -> Unit = {
+        navController.navigate("questions/${it}")
+    }
     val selectChat: (String, String, String) -> Unit = { id: String, user2Name: String, user2Id: String ->
         navController.navigate("chatDetails/${id}/${user2Name}/${user2Id}")
     }

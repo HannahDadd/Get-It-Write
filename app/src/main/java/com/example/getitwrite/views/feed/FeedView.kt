@@ -29,8 +29,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
+import com.example.getitwrite.views.forum.ForumFeed
 import com.example.getitwrite.views.messages.ChatsFeed
 import com.example.getitwrite.views.messages.ChatsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
@@ -40,7 +42,7 @@ import com.example.getitwrite.views.toCritique.ToCritiqueFeed
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 
 @Composable
-fun ShowFeed(user: User, critiqued: List<Critique>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectCritiqued: (String) -> Unit) {
+fun ShowFeed(user: User, critiqued: List<Critique>, questions: List<Question>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectCritiqued: (String) -> Unit, selectQuestion: (String) -> Unit) {
     val items = listOf(
         Screen.YourWork,
         Screen.ToCritique,
@@ -79,7 +81,7 @@ fun ShowFeed(user: User, critiqued: List<Critique>, toCritiques: List<RequestCri
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
             composable(Screen.YourWork.route) { CritiquedFeed(critiqued, selectCritiqued) }
             composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
-            composable(Screen.Forum.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
+            composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }

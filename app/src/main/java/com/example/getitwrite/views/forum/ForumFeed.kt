@@ -30,16 +30,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ProfileImage
-import com.example.getitwrite.views.proposals.MakeProposalView
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForumFeed(user: User, questions: List<Question>, select: (Question) -> Unit) {
+fun ForumFeed(user: User, questions: List<Question>, select: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var questions by remember { mutableStateOf(questions) }
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
@@ -56,7 +62,8 @@ fun ForumFeed(user: User, questions: List<Question>, select: (Question) -> Unit)
                 },
                 sheetState = sheetState
             ) {
-                MakeProposalView(user) {
+                MakeQuestionView(user) {
+                    questions.plus(it)
                     showBottomSheet = false
                 }
             }
@@ -71,11 +78,11 @@ fun ForumFeed(user: User, questions: List<Question>, select: (Question) -> Unit)
 }
 
 @Composable
-fun ForumView(question: Question, select: (Question) -> Unit) {
+fun ForumView(question: Question, select: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .padding(10.dp)
-            .clickable { select(question) }) {
+            .clickable { select(question.id) }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -105,5 +112,16 @@ fun ForumView(question: Question, select: (Question) -> Unit) {
 //            )
         }
         Divider()
+    }
+}
+
+class QuestionsViewModel(user: User) : ViewModel() {
+    val questionsFlow = flow {
+        val documents = Firebase.firestore.collection("questions")
+            .get().await()
+        val items = documents.map { doc ->
+            Question(doc.id, doc.data)
+        }
+        emit(items)
     }
 }
