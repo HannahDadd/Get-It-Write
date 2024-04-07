@@ -30,16 +30,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.getitwrite.modals.Forum
-import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ProfileImage
-import com.example.getitwrite.views.components.TagCloud
 import com.example.getitwrite.views.proposals.MakeProposalView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForumFeed(user: User, proposals: List<Forum>, select: (Forum) -> Unit) {
+fun ForumFeed(user: User, questions: List<Question>, select: (Question) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     Scaffold(
@@ -64,28 +62,29 @@ fun ForumFeed(user: User, proposals: List<Forum>, select: (Forum) -> Unit) {
             }
         }
         LazyColumn(Modifier.padding(innerPadding)) {
-            items(proposals) { proposal ->
-                ProposalView(proposal, selectProposal)
+            items(questions) { q ->
+                ForumView(q, select)
+                Divider()
             }
         }
     }
 }
 
 @Composable
-fun ForumView(forum: Forum, select: (Forum) -> Unit) {
+fun ForumView(question: Question, select: (Question) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .padding(10.dp)
-            .clickable { select(forum) }) {
+            .clickable { select(question) }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProfileImage(username = forum.questionerName, profileColour = forum.questionerColour)
-            Text(forum.questionerName, fontSize = 20.sp)
+            ProfileImage(username = question.questionerName, profileColour = question.questionerColour)
+            Text(question.questionerName, fontSize = 20.sp)
         }
-        Text(forum.question, fontWeight = FontWeight.Bold)
+        Text(question.question, fontWeight = FontWeight.Bold)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,17 +92,17 @@ fun ForumView(forum: Forum, select: (Forum) -> Unit) {
         ) {
             Text(
                 text = DateUtils.getRelativeTimeSpanString(
-                    (forum.timestamp.seconds * 1000),
+                    (question.timestamp.seconds * 1000),
                     System.currentTimeMillis(),
                     DateUtils.DAY_IN_MILLIS
                 ).toString(),
                 fontWeight = FontWeight.Light
             )
             Spacer(modifier = Modifier.weight(1.0f))
-            Text(
-                text = "${proposal.wordCount} words",
-                fontWeight = FontWeight.Light
-            )
+//            Text(
+//                text = "${proposal.wordCount} words",
+//                fontWeight = FontWeight.Light
+//            )
         }
         Divider()
     }

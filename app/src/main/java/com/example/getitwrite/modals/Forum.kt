@@ -2,7 +2,7 @@ package com.example.getitwrite.modals
 
 import com.google.firebase.Timestamp
 
-class Forum (
+class Question (
     val id: String,
     val question: String,
     val questionerId: String,
