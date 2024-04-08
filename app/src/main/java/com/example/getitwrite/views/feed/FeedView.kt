@@ -45,6 +45,7 @@ import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectQuestion: (String) -> Unit) {
     val items = listOf(
         Screen.ToCritique,
+        Screen.CritiqueFrenzy,
         Screen.Forum,
         Screen.Messages,
         Screen.FindPartners
@@ -80,6 +81,7 @@ fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.Forum.route, Modifier.padding(innerPadding)) {
             composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
+            composable(Screen.CritiqueFrenzy.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
@@ -89,6 +91,7 @@ fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
     object ToCritique : Screen("toCritique", "To Critique", Icons.Default.Edit)
+    object CritiqueFrenzy : Screen("frenzy", "Critique Frenzy", Icons.Default.)
     object Forum : Screen("forum", "Forum", Icons.Default.Home)
     object Messages : Screen("ShowMessages", "Messages", Icons.Default.Email)
     object FindPartners : Screen("findPartners", "Find Partners", Icons.Default.Search)

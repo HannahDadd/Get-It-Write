@@ -44,7 +44,6 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Text("Tell our community a bit about your project to find your next critique partner.")
-        Text("No partners, no obligations, just goodwill. Post your work here and see who critiques it.")
         OutlinedTextField(value = title.value,
             maxLines = 1,
             onValueChange = { title.value = it },
