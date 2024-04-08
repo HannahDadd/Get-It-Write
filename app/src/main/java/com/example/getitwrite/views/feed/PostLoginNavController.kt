@@ -16,6 +16,7 @@ import androidx.navigation.navArgument
 import com.example.getitwrite.AppActions
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.MainView
+import com.example.getitwrite.views.critiqueFrenzy.FrenzyViewModel
 import com.example.getitwrite.views.forum.QuestionDetailView
 import com.example.getitwrite.views.forum.QuestionsViewModel
 import com.example.getitwrite.views.messages.ShowMessages
@@ -43,6 +44,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
     val questions by QuestionsViewModel().questionsFlow.collectAsState(initial = emptyList())
+    val critiqueFrenzy by FrenzyViewModel().questionsFlow.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
@@ -51,9 +53,11 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         exitTransition = { ExitTransition.None }
     ) {
         composable("feed") {
-            MainView(logoutNavController, questions = questions, toCritiques = toCritiques, navController = navController, proposals = proposals,
+            MainView(logoutNavController, questions = questions, toCritiques = toCritiques,
+                critiqueFrenzy = critiqueFrenzy, navController = navController, proposals = proposals,
                 selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
-                selectCritiqueRequest = actions.selectCritiqueRequest, selectQuestion = actions.selectQuestion)
+                selectCritiqueRequest = actions.selectCritiqueRequest, selectQuestion = actions.selectQuestion,
+                selectFrenzy = actions.selectFrenzy)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -106,11 +110,24 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
             val arguments = requireNotNull(backStackEntry.arguments)
             val id = arguments.getString("id")
             val toCritique = toCritiques.filter { it.id == id }.get(0)
-            ToCritiqueDetailedView(user, toCritique, actions.navigateUp)
+            ToCritiqueDetailedView(user, isCritiqueFrenzy = false, toCritique, actions.navigateUp)
 //            ToCritiqueDetailedView(user, toCritique) {
 //                toCritiques.minus(toCritique)
 //                actions.navigateUp()
 //            }
+        }
+        composable(
+            "critiqueFrenzy/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            val id = arguments.getString("id")
+            val toCritique = critiqueFrenzy.filter { it.id == id }.get(0)
+            ToCritiqueDetailedView(user, isCritiqueFrenzy = true, toCritique, actions.navigateUp)
         }
         composable(
             "questions/{id}",

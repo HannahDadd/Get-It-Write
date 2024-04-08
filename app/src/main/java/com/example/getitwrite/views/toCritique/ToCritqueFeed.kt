@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun ToCritiqueFeed(user: User, toCritiques: List<RequestCritique>, selectCritiqueRequest: (String) -> Unit) {
+fun ToCritiqueFeed(toCritiques: List<RequestCritique>, selectCritiqueRequest: (String) -> Unit) {
     if (toCritiques.isEmpty()) {
         Column(Modifier.padding(10.dp)) {
             Text("You have nothing to critique.", fontWeight = FontWeight.Bold)

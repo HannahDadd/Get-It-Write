@@ -32,11 +32,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ProfileImage
 import com.example.getitwrite.views.forum.MakeQuestionView
+import com.example.getitwrite.views.toCritique.ToCritiqueView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
@@ -44,7 +46,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FrenzyFeed(user: User, requests: List<RequestCritique>, select: (String) -> Unit) {
+fun FrenzyFeed(user: User, proposals: List<Proposal>, requests: List<RequestCritique>, select: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var newEntries = remember { mutableStateListOf<RequestCritique>() }
@@ -64,7 +66,7 @@ fun FrenzyFeed(user: User, requests: List<RequestCritique>, select: (String) -> 
                 },
                 sheetState = sheetState
             ) {
-                MakeQuestionView(user) {
+                MakeFrenzyView(user, proposals) {
                     newEntries.plus(it)
                     showBottomSheet = false
                 }
@@ -72,8 +74,12 @@ fun FrenzyFeed(user: User, requests: List<RequestCritique>, select: (String) -> 
         }
         LazyColumn(Modifier.padding(innerPadding)) {
             items(newEntries) {
+                ToCritiqueView(it, select)
+                Divider()
             }
             items(requests) { q ->
+                ToCritiqueView(q, select)
+                Divider()
             }
         }
     }
@@ -117,12 +123,12 @@ fun ForumView(question: Question, select: (String) -> Unit) {
     }
 }
 
-class QuestionsViewModel() : ViewModel() {
+class FrenzyViewModel() : ViewModel() {
     val questionsFlow = flow {
-        val documents = Firebase.firestore.collection("questions")
+        val documents = Firebase.firestore.collection("frenzy")
             .get().await()
         val items = documents.map { doc ->
-            Question(doc.id, doc.data)
+            RequestCritique(doc.id, doc.data)
         }
         emit(items)
     }

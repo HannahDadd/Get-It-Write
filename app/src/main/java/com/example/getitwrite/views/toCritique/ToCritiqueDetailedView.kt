@@ -46,7 +46,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToCritiqueDetailedView(user: User, toCritique: RequestCritique, navigateUp: () -> Unit) {
+fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: RequestCritique, navigateUp: () -> Unit) {
     var errorString = remember { mutableStateOf("") }
     val overallFeedback = remember { mutableStateOf("") }
     val paragraphs = toCritique.text.split("\n")
@@ -116,8 +116,10 @@ fun ToCritiqueDetailedView(user: User, toCritique: RequestCritique, navigateUp: 
                     Firebase.firestore.collection("users").document(toCritique.writerId)
                         .collection("critiques").document(id).set(critique)
                         .addOnSuccessListener {
-                            Firebase.firestore.collection("users").document(user.id)
-                                .collection("requestCritiques").document(toCritique.id).delete()
+                            if (!isCritiqueFrenzy) {
+                                Firebase.firestore.collection("users").document(user.id)
+                                    .collection("requestCritiques").document(toCritique.id).delete()
+                            }
                             navigateUp()
                         }
                         .addOnFailureListener {

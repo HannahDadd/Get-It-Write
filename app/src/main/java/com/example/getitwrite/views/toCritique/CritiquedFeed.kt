@@ -40,7 +40,6 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit, navigateUp: () -> Unit) {
     if (critiques.isEmpty()) {
-
         Column {
             DetailHeader(title = "Your Work, Critiqued", navigateUp = navigateUp)
             Column(Modifier.padding(10.dp)) {
@@ -49,7 +48,6 @@ fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit, n
             }
         }
     } else {
-
         Column {
             DetailHeader(title = "Your Work, Critiqued", navigateUp = navigateUp)
             LazyColumn(Modifier.padding(10.dp)) {

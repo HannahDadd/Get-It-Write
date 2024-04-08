@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
@@ -32,6 +33,7 @@ import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
+import com.example.getitwrite.views.critiqueFrenzy.FrenzyFeed
 import com.example.getitwrite.views.forum.ForumFeed
 import com.example.getitwrite.views.messages.ChatsFeed
 import com.example.getitwrite.views.messages.ChatsViewModel
@@ -42,7 +44,10 @@ import com.example.getitwrite.views.toCritique.ToCritiqueFeed
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 
 @Composable
-fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectQuestion: (String) -> Unit) {
+fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<RequestCritique>, toCritiques: List<RequestCritique>,
+             proposals: List<Proposal>, selectProposal: (Proposal) -> Unit,
+             selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit,
+             selectQuestion: (String) -> Unit, selectFrenzy: (String) -> Unit) {
     val items = listOf(
         Screen.ToCritique,
         Screen.CritiqueFrenzy,
@@ -80,8 +85,8 @@ fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.Forum.route, Modifier.padding(innerPadding)) {
-            composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
-            composable(Screen.CritiqueFrenzy.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
+            composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
+            composable(Screen.CritiqueFrenzy.route) { FrenzyFeed(user, proposals, critiqueFrenzy, selectFrenzy) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
@@ -91,7 +96,7 @@ fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
     object ToCritique : Screen("toCritique", "To Critique", Icons.Default.Edit)
-    object CritiqueFrenzy : Screen("frenzy", "Critique Frenzy", Icons.Default.)
+    object CritiqueFrenzy : Screen("frenzy", "Critique Frenzy", Icons.AutoMirrored.Filled.List)
     object Forum : Screen("forum", "Forum", Icons.Default.Home)
     object Messages : Screen("ShowMessages", "Messages", Icons.Default.Email)
     object FindPartners : Screen("findPartners", "Find Partners", Icons.Default.Search)
