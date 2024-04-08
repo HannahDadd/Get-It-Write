@@ -12,7 +12,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,8 +27,10 @@ import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
+import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.FindPartnersText
 import com.example.getitwrite.views.components.ProfileImage
+import com.example.getitwrite.views.settings.BottomSheetContent
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -31,17 +38,25 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit) {
+fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit, navigateUp: () -> Unit) {
     if (critiques.isEmpty()) {
-        Column(Modifier.padding(10.dp)) {
-            Text("None of your work has been critiqued.", fontWeight = FontWeight.Bold)
-            FindPartnersText()
+
+        Column {
+            DetailHeader(title = "Your Work, Critiqued", navigateUp = navigateUp)
+            Column(Modifier.padding(10.dp)) {
+                Text("None of your work has been critiqued.", fontWeight = FontWeight.Bold)
+                FindPartnersText()
+            }
         }
     } else {
-        LazyColumn(Modifier.padding(10.dp)) {
-            items(critiques) { work ->
-                CritiqueView(critique = work, selectCritique)
-                Divider()
+
+        Column {
+            DetailHeader(title = "Your Work, Critiqued", navigateUp = navigateUp)
+            LazyColumn(Modifier.padding(10.dp)) {
+                items(critiques) { work ->
+                    CritiqueView(critique = work, selectCritique)
+                    Divider()
+                }
             }
         }
     }

@@ -42,9 +42,8 @@ import com.example.getitwrite.views.toCritique.ToCritiqueFeed
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
 
 @Composable
-fun ShowFeed(user: User, critiqued: List<Critique>, questions: List<Question>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectCritiqued: (String) -> Unit, selectQuestion: (String) -> Unit) {
+fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit, selectQuestion: (String) -> Unit) {
     val items = listOf(
-        Screen.YourWork,
         Screen.ToCritique,
         Screen.Forum,
         Screen.Messages,
@@ -80,7 +79,6 @@ fun ShowFeed(user: User, critiqued: List<Critique>, questions: List<Question>, t
         }
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
-            composable(Screen.YourWork.route) { CritiquedFeed(critiqued, selectCritiqued) }
             composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
@@ -90,7 +88,6 @@ fun ShowFeed(user: User, critiqued: List<Critique>, questions: List<Question>, t
 }
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
-    object YourWork : Screen("yourWork", "Your Work", Icons.Default.List)
     object ToCritique : Screen("toCritique", "To Critique", Icons.Default.Edit)
     object Forum : Screen("forum", "Forum", Icons.Default.Home)
     object Messages : Screen("ShowMessages", "Messages", Icons.Default.Email)

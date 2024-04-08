@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -51,7 +53,7 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(logoutNavController: NavHostController, questions: List<Question>, critiqued: List<Critique>, toCritiques: List<RequestCritique>, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit, selectCritiqued: (String) -> Unit, selectQuestion: (String) -> Unit) {
+fun MainView(logoutNavController: NavHostController, questions: List<Question>, toCritiques: List<RequestCritique>, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit, selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit, selectQuestion: (String) -> Unit) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -70,6 +72,12 @@ fun MainView(logoutNavController: NavHostController, questions: List<Question>, 
                         Row {
                             Icon(Icons.Filled.Settings, contentDescription = "", Modifier.padding(end = 10.dp))
                             Text("Settings", fontSize = 18.sp)
+                        }
+                    }
+                    TextButton(onClick = { navController.navigate("yourWork") }) {
+                        Row {
+                            Icon(Icons.AutoMirrored.Filled.List, contentDescription = "", Modifier.padding(end = 10.dp))
+                            Text("Your Work", fontSize = 18.sp)
                         }
                     }
                     TextButton(onClick = {
@@ -120,7 +128,7 @@ fun MainView(logoutNavController: NavHostController, questions: List<Question>, 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowFeed(user = user, critiqued = critiqued, questions = questions, toCritiques = toCritiques, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest = selectCritiqueRequest, selectCritiqued = selectCritiqued, selectQuestion = selectQuestion)
+                ShowFeed(user = user, questions = questions, toCritiques = toCritiques, proposals = proposals, selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest = selectCritiqueRequest, selectQuestion = selectQuestion)
             }
         }
     }

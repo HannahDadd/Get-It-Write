@@ -1,5 +1,7 @@
 package com.example.getitwrite.views.feed
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,6 +25,7 @@ import com.example.getitwrite.views.proposals.ProposalDetails
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.example.getitwrite.views.settings.SettingsScreen
 import com.example.getitwrite.views.toCritique.CritiquedDetailedView
+import com.example.getitwrite.views.toCritique.CritiquedFeed
 import com.example.getitwrite.views.toCritique.CritiquedViewModel
 import com.example.getitwrite.views.toCritique.ToCritiqueDetailedView
 import com.example.getitwrite.views.toCritique.ToCritiqueViewModel
@@ -31,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+
 
 @Composable
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
@@ -43,12 +47,14 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
-        startDestination = "feed"
+        startDestination = "feed",
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
         composable("feed") {
-            MainView(logoutNavController, critiqued = critiqued, questions = questions, toCritiques = toCritiques, navController = navController, proposals = proposals,
+            MainView(logoutNavController, questions = questions, toCritiques = toCritiques, navController = navController, proposals = proposals,
                 selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
-                selectCritiqueRequest = actions.selectCritiqueRequest, selectCritiqued = actions.selectCritiqued, selectQuestion = actions.selectQuestion)
+                selectCritiqueRequest = actions.selectCritiqueRequest, selectQuestion = actions.selectQuestion)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -58,6 +64,9 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         }
         composable("settings") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
+        }
+        composable("yourWork") {
+            CritiquedFeed(critiqued, actions.selectCritiqued, navigateUp = actions.navigateUp)
         }
         composable("resetEmail") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
