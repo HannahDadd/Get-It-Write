@@ -69,12 +69,18 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
                 }
             }
         }
-        LazyColumn(Modifier.padding(innerPadding)) {
-            items(addedQuestions) {
-                ForumView(it, select)
+        if (questionList.isEmpty()) {
+            Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+                Text(text = "Loading...")
             }
-            items(questionList) { q ->
-                ForumView(q, select)
+        } else {
+            LazyColumn(Modifier.padding(innerPadding)) {
+                items(addedQuestions) {
+                    ForumView(it, select)
+                }
+                items(questionList) { q ->
+                    ForumView(q, select)
+                }
             }
         }
     }

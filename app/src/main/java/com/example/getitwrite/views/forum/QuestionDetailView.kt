@@ -55,16 +55,18 @@ fun QuestionDetailView(question: Question, navigateUp: () -> Unit) {
     val reply = remember { mutableStateOf("") }
     Column {
         DetailHeader(title = "", navigateUp = navigateUp)
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            ForumView(question, {})
-            replies.forEach {
-                ReplyView(it)
+        Column(modifier = Modifier.fillMaxWidth().padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                ForumView(question, {})
+                replies.forEach {
+                    ReplyView(it)
+                }
             }
+            Spacer(modifier = Modifier.weight(1.0f))
             OutlinedTextField(value = reply.value,
                 maxLines = 5,
                 onValueChange = { reply.value = it },

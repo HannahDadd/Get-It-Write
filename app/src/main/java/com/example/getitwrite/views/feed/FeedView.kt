@@ -96,7 +96,7 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
     object ToCritique : Screen("toCritique", "To Critique", Icons.Default.Edit)
-    object CritiqueFrenzy : Screen("frenzy", "Critique Frenzy", Icons.AutoMirrored.Filled.List)
+    object CritiqueFrenzy : Screen("frenzy", "Frenzy", Icons.AutoMirrored.Filled.List)
     object Forum : Screen("forum", "Forum", Icons.Default.Home)
     object Messages : Screen("ShowMessages", "Messages", Icons.Default.Email)
     object FindPartners : Screen("findPartners", "Find Partners", Icons.Default.Search)
