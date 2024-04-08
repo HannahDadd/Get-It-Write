@@ -31,7 +31,6 @@ import java.util.UUID
 @Composable
 fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
     var errorString = remember { mutableStateOf("") }
-    val wordCount = remember { mutableStateOf("") }
     val question = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .padding(20.dp)
@@ -47,7 +46,6 @@ fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                wordCount.value.toInt()
                 val id = UUID.randomUUID().toString()
                 val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, upVotes = 0, timestamp = Timestamp.now())
                 Firebase.firestore.collection("questions")

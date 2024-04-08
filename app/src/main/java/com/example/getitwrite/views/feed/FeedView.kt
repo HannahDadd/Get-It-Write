@@ -78,7 +78,7 @@ fun ShowFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = Screen.ToCritique.route, Modifier.padding(innerPadding)) {
+        NavHost(navController, startDestination = Screen.Forum.route, Modifier.padding(innerPadding)) {
             composable(Screen.ToCritique.route) { ToCritiqueFeed(user = user, toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }

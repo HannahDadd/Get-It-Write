@@ -35,7 +35,6 @@ import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
-
 @Composable
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
     val user by MainViewModel(auth).user.collectAsState(initial = User())
@@ -43,7 +42,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
     val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
-    val questions by QuestionsViewModel(user).questionsFlow.collectAsState(initial = emptyList())
+    val questions by QuestionsViewModel().questionsFlow.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,

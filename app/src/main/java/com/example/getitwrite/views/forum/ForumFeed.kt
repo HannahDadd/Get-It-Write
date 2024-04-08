@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,10 +43,10 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForumFeed(user: User, questions: List<Question>, select: (String) -> Unit) {
+fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-    var questions by remember { mutableStateOf(questions) }
+    var addedQuestions = remember { mutableStateListOf<Question>() }
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
@@ -63,15 +64,17 @@ fun ForumFeed(user: User, questions: List<Question>, select: (String) -> Unit) {
                 sheetState = sheetState
             ) {
                 MakeQuestionView(user) {
-                    questions.plus(it)
+                    addedQuestions.plus(it)
                     showBottomSheet = false
                 }
             }
         }
         LazyColumn(Modifier.padding(innerPadding)) {
-            items(questions) { q ->
+            items(addedQuestions) {
+                ForumView(it, select)
+            }
+            items(questionList) { q ->
                 ForumView(q, select)
-                Divider()
             }
         }
     }
@@ -115,7 +118,7 @@ fun ForumView(question: Question, select: (String) -> Unit) {
     }
 }
 
-class QuestionsViewModel(user: User) : ViewModel() {
+class QuestionsViewModel() : ViewModel() {
     val questionsFlow = flow {
         val documents = Firebase.firestore.collection("questions")
             .get().await()
