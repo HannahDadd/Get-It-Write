@@ -1,7 +1,6 @@
 package com.example.getitwrite.views.forum
 
 import android.text.format.DateUtils
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,8 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -19,8 +16,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,38 +29,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import com.example.getitwrite.Colours
-import com.example.getitwrite.modals.Critique
-import com.example.getitwrite.modals.Message
-import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.Reply
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.ProfileImage
-import com.example.getitwrite.views.components.TagCloud
-import com.example.getitwrite.views.messages.MessagesViewModel
-import com.example.getitwrite.views.proposals.ProposalsViewModel
-import com.example.getitwrite.views.toCritique.CritiqueView
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 @Composable
 fun QuestionDetailView(question: Question, user: User,
                        backStackEntry: NavBackStackEntry, navigateUp: () -> Unit) {
     var errorString = remember { mutableStateOf("") }
-    var replies = listOf<Reply>()
+    var replies = remember { mutableStateListOf<Reply>() }
     RepliesViewModel().getReplies(question.id).observe(backStackEntry) {
-        replies = it
+        var ids = replies.map { it.id }
+        it.forEach {
+            if (!ids.contains(it.id)) {
+                replies.add(it)
+            }
+        }
     }
     val reply = remember { mutableStateOf("") }
     Column {
@@ -154,7 +144,7 @@ class RepliesViewModel : ViewModel() {
 
     fun getReplies(questionId: String): LiveData<List<Reply>> {
         Firebase.firestore.collection("questions").document(questionId)
-            .collection("messages").addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            .collection("replies").addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
                 if (e != null) {
                     replies.value = null
                     return@EventListener
@@ -170,15 +160,3 @@ class RepliesViewModel : ViewModel() {
         return replies
     }
 }
-//
-//class RepliedViewModel(question: Question) : ViewModel() {
-//    val replies = flow {
-//        val documents = Firebase.firestore.collection("questions/${question.id}/replies")
-//            .orderBy("timestamp", Query.Direction.DESCENDING)
-//            .get().await()
-//        val items = documents.map { doc ->
-//            Reply(doc.id, doc.data)
-//        }
-//        emit(items)
-//    }
-//}
