@@ -29,29 +29,43 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Critique
+import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.Reply
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
+import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.ProfileImage
 import com.example.getitwrite.views.components.TagCloud
+import com.example.getitwrite.views.messages.MessagesViewModel
 import com.example.getitwrite.views.proposals.ProposalsViewModel
 import com.example.getitwrite.views.toCritique.CritiqueView
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 @Composable
-fun QuestionDetailView(question: Question, navigateUp: () -> Unit) {
-    val replies by RepliedViewModel(question).replies.collectAsState(initial = emptyList())
+fun QuestionDetailView(question: Question, user: User,
+                       backStackEntry: NavBackStackEntry, navigateUp: () -> Unit) {
+    var errorString = remember { mutableStateOf("") }
+    var replies = listOf<Reply>()
+    RepliesViewModel().getReplies(question.id).observe(backStackEntry) {
+        replies = it
+    }
     val reply = remember { mutableStateOf("") }
     Column {
         DetailHeader(title = "", navigateUp = navigateUp)
@@ -73,9 +87,24 @@ fun QuestionDetailView(question: Question, navigateUp: () -> Unit) {
                 modifier = Modifier.fillMaxWidth().height(150.dp),
                 label = { Text(text = "Question") }
             )
+            ErrorText(error = errorString)
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
+                          if (reply.value != "") {
+                              val id = UUID.randomUUID().toString()
+                              val r = Reply(id = id, reply = reply.value, replierId = user.id, replierName = user.displayName, replierColour = user.colour, timestamp = Timestamp.now())
+                              Firebase.firestore.collection("questions").document(question.id)
+                                  .collection("replies").document(id).set(r)
+                                  .addOnSuccessListener {
+                                      reply.value = ""
+                                  }
+                                  .addOnFailureListener {
+                                      errorString.value = it.message.toString()
+                                  }
+                          } else {
+                              errorString.value = "Reply cannot be empty"
+                          }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Colours.Dark_Readable,
@@ -120,14 +149,36 @@ fun ReplyView(reply: Reply) {
     }
 }
 
-class RepliedViewModel(question: Question) : ViewModel() {
-    val replies = flow {
-        val documents = Firebase.firestore.collection("questions/${question.id}/replies")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .get().await()
-        val items = documents.map { doc ->
-            Reply(doc.id, doc.data)
-        }
-        emit(items)
+class RepliesViewModel : ViewModel() {
+    var replies: MutableLiveData<List<Reply>> = MutableLiveData()
+
+    fun getReplies(questionId: String): LiveData<List<Reply>> {
+        Firebase.firestore.collection("questions").document(questionId)
+            .collection("messages").addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+                if (e != null) {
+                    replies.value = null
+                    return@EventListener
+                }
+
+                var savedLists: MutableList<Reply> = mutableListOf()
+                for (doc in value!!) {
+                    savedLists.add(Reply(doc.id, doc.data!!))
+                }
+                replies.value = savedLists
+            })
+
+        return replies
     }
 }
+//
+//class RepliedViewModel(question: Question) : ViewModel() {
+//    val replies = flow {
+//        val documents = Firebase.firestore.collection("questions/${question.id}/replies")
+//            .orderBy("timestamp", Query.Direction.DESCENDING)
+//            .get().await()
+//        val items = documents.map { doc ->
+//            Reply(doc.id, doc.data)
+//        }
+//        emit(items)
+//    }
+//}

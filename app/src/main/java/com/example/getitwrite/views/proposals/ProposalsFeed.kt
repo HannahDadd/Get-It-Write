@@ -59,9 +59,15 @@ fun ProposalsFeed(user: User, proposals: List<Proposal>, selectProposal: (Propos
                 }
             }
         }
-        LazyColumn(Modifier.padding(innerPadding)) {
-            items(proposals) { proposal ->
-                ProposalView(proposal, selectProposal)
+        if (proposals.isEmpty()) {
+            Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+                Text(text = "Loading...")
+            }
+        } else {
+            LazyColumn(Modifier.padding(innerPadding)) {
+                items(proposals) { proposal ->
+                    ProposalView(proposal, selectProposal)
+                }
             }
         }
     }

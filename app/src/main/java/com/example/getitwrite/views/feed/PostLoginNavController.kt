@@ -140,7 +140,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
             val arguments = requireNotNull(backStackEntry.arguments)
             val id = arguments.getString("id")
             val question = questions.filter { it.id == id }.get(0)
-            QuestionDetailView(question, actions.navigateUp)
+            QuestionDetailView(question, user, backStackEntry, actions.navigateUp)
         }
         composable(
             "critiqued/{id}",
