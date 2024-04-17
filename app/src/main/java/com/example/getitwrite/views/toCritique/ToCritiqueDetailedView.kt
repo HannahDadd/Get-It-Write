@@ -52,7 +52,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
-    val comments = remember { mutableStateOf(mapOf<String, Int>()) }
+    val comments = remember { mutableStateOf(mapOf<String, Long>()) }
     Column {
         DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
         Column(
@@ -83,7 +83,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
             paragraphs.forEachIndexed { index, element ->
-                if (comments.value.containsValue(index)) {
+                if (comments.value.containsValue(index.toLong())) {
                     Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 } else {
                     Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })

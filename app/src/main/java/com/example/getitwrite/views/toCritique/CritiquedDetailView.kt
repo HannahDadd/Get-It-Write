@@ -47,6 +47,7 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
     val paragraphs = critique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
+    val comments = critique.comments.map {(k,v)-> v to k}.toMap<Long, String>()
     Column {
         DetailHeader(title = critique.projectTitle, navigateUp = navigateUp)
         Column(
@@ -65,8 +66,8 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
                 }
             }
             paragraphs.forEachIndexed { index, element ->
-                if (critique.comments.containsValue(index)) {
-                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                if (critique.comments.containsValue(index.toLong())) {
+                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.get(index.toLong()) ?: "")})
                 } else {
                     Text(element)
                 }

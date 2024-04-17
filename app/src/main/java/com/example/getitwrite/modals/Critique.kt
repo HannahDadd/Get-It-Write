@@ -5,7 +5,7 @@ import java.util.TreeMap
 
 class Critique (
     val id: String,
-    val comments: Map<String, Any>,
+    val comments: Map<String, Long>,
     val overallFeedback: String,
     val critiquerId: String,
     val text: String,
@@ -18,7 +18,7 @@ class Critique (
 ) {
     constructor(id: String, data: Map<String, Any>) : this (
     id = id,
-    comments = data.get("comments") as Map<String, Any>,
+    comments = data["comments"] as Map<String, Long>,
     text = data.get("text") as String,
     projectTitle = data.get("projectTitle") as String,
     title = data.get("title") as String,
