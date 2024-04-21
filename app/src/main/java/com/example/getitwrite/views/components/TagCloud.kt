@@ -78,8 +78,8 @@ private fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?, 
         ),
         onClick = {
             if (action != null) {
-                action(tagString)
-                bgColour.value = Colours.Dark_Readable
+
+                bgColour.value = if (action(tagString)) Colours.Dark_Readable else Colours.Dark_Background
             }
         }) {
         Text(text = tagString, color = Color.White)

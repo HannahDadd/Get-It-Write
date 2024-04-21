@@ -52,7 +52,13 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
         ) {
             QuestionSection(bio, "Tell other writers about yourself.")
             SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres, preSelectedTags = user.writingGenres) {
-                genreTags.value.add(it)
+                if (genreTags.value.contains(it)) {
+                    genreTags.value.remove(it)
+                    return@SelectTagCloud false
+                } else {
+                    genreTags.value.add(it)
+                    return@SelectTagCloud true
+                }
             }
             QuestionSection(writing, "Tell other writers about your writing.")
             CreateTagCloud("Who are your favourite authors?") {
@@ -71,8 +77,8 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
                                 bio = bio.value,
                                 writing = writing.value,
                                 critiqueStyle = critiqueStyle.value,
-                                authors = authorTags,
-                                writingGenres = genreTags,
+                                authors = authorTags.value,
+                                writingGenres = genreTags.value,
                                 colour = user.colour,
                                 blockedUserIds = user.blockedUserIds
                             )
