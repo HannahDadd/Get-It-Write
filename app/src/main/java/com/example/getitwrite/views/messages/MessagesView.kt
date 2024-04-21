@@ -38,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -119,9 +120,8 @@ fun ShowMessages(
             ) {
                 Text("Send work to ${user2Name}", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
             }
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center) {
                 OutlinedTextField(
                     value = message.value,
                     maxLines = 1,

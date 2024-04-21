@@ -2,17 +2,24 @@ package com.example.getitwrite.views.forum
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,39 +76,47 @@ fun QuestionDetailView(question: Question, user: User,
                 replies.forEach {
                     ReplyView(it)
                 }
-            }
-            Spacer(modifier = Modifier.weight(1.0f))
-            OutlinedTextField(value = reply.value,
-                maxLines = 5,
-                onValueChange = { reply.value = it },
-                modifier = Modifier.fillMaxWidth().height(150.dp),
-                label = { Text(text = "Question") }
-            )
-            ErrorText(error = errorString)
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-                          if (reply.value != "") {
-                              val id = UUID.randomUUID().toString()
-                              val r = Reply(id = id, reply = reply.value, replierId = user.id, replierName = user.displayName, replierColour = user.colour, timestamp = Timestamp.now())
-                              Firebase.firestore.collection("questions").document(question.id)
-                                  .collection("replies").document(id).set(r)
-                                  .addOnSuccessListener {
-                                      reply.value = ""
-                                  }
-                                  .addOnFailureListener {
-                                      errorString.value = it.message.toString()
-                                  }
-                          } else {
-                              errorString.value = "Reply cannot be empty"
-                          }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Colours.Dark_Readable,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Reply", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+                ErrorText(error = errorString)
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedTextField(
+                        value = reply.value,
+                        maxLines = 1,
+                        onValueChange = { reply.value = it },
+                        label = {
+                            Box {
+                                Text(text = "Text Message")
+                            }
+                        }
+                    )
+                    Button(
+                        onClick = {
+                            if (reply.value != "") {
+                                val id = UUID.randomUUID().toString()
+                                val r = Reply(id = id, reply = reply.value, replierId = user.id, replierName = user.displayName, replierColour = user.colour, timestamp = Timestamp.now())
+                                Firebase.firestore.collection("questions").document(question.id)
+                                    .collection("replies").document(id).set(r)
+                                    .addOnSuccessListener {
+                                        reply.value = ""
+                                    }
+                                    .addOnFailureListener {
+                                        errorString.value = it.message.toString()
+                                    }
+                            } else {
+                                errorString.value = "Reply cannot be empty"
+                            }
+                        },
+                        shape = CircleShape,
+                        modifier = Modifier.size(40.dp),
+                        contentPadding = PaddingValues(1.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Send,
+                            contentDescription = "Send",
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
             }
         }
     }
@@ -125,12 +140,21 @@ fun ReplyView(reply: Reply) {
                 .fillMaxWidth()
                 .padding()
         ) {
-            Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = DateUtils.getRelativeTimeSpanString(
                     (reply.timestamp.seconds * 1000),
                     System.currentTimeMillis(),
                     DateUtils.DAY_IN_MILLIS
+                ).toString(),
+                fontWeight = FontWeight.Light
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = DateUtils.getRelativeTimeSpanString(
+                    (reply.timestamp.seconds * 1000),
+                    System.currentTimeMillis(),
+                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.WEEK_IN_MILLIS.toInt()
                 ).toString(),
                 fontWeight = FontWeight.Light
             )
