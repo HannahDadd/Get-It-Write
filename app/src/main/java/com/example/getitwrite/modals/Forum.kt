@@ -8,7 +8,6 @@ class Question (
     val questionerId: String,
     val questionerColour: Int,
     val questionerName: String,
-    val upVotes: Int,
     val timestamp: Timestamp
 ) {
     constructor(id: String, data: Map<String, Any>) : this (
@@ -16,7 +15,6 @@ class Question (
         question = data.get("question") as String,
         questionerId = data.get("questionerId") as String,
         questionerName = data.get("questionerName") as String,
-        upVotes = (data.get("upVotes") as Long).toInt(),
         questionerColour = (data.get("questionerColour") as Long).toInt(),
         timestamp = data.get("timestamp") as Timestamp
     )

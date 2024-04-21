@@ -1,5 +1,7 @@
 package com.example.getitwrite.views.feed
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
@@ -84,7 +86,14 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = Screen.Forum.route, Modifier.padding(innerPadding)) {
+        NavHost(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None },
+            navController = navController,
+            startDestination = Screen.Forum.route,
+            modifier = Modifier.padding(innerPadding)) {
             composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
             composable(Screen.CritiqueFrenzy.route) { FrenzyFeed(user, proposals, critiqueFrenzy, selectFrenzy) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }

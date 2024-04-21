@@ -47,7 +47,7 @@ fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 val id = UUID.randomUUID().toString()
-                val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, upVotes = 0, timestamp = Timestamp.now())
+                val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, timestamp = Timestamp.now())
                 Firebase.firestore.collection("questions")
                     .document(id)
                     .set(q)

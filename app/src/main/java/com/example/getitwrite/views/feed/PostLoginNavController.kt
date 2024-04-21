@@ -50,7 +50,9 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         navController = navController,
         startDestination = "feed",
         enterTransition = { EnterTransition.None },
-        exitTransition = { ExitTransition.None }
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
     ) {
         composable("feed") {
             MainView(logoutNavController, questions = questions, toCritiques = toCritiques,

@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -22,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Critique
-import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
@@ -52,7 +50,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
-    val comments = remember { mutableStateOf(mapOf<String, Int>()) }
+    var comments = remember { mutableStateMapOf<String, Long>() }
     Column {
         DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
         Column(
@@ -68,7 +66,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                     sheetState = sheetState
                 ) {
                     CritiqueSheet(bottomSheetText) { comment: String, index: Int ->
-                        comments.value.plus(Pair(index, comment))
+                        comments.plus(Pair(index, comment))
                         bottomSheetText = Triple("", 1, "")
                     }
                 }
@@ -83,7 +81,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
             paragraphs.forEachIndexed { index, element ->
-                if (comments.value.containsValue(index)) {
+                if (comments.containsValue(index.toLong())) {
                     Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 } else {
                     Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
@@ -95,7 +93,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                 .padding()) {
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
-                    text = "Comments ${comments.value.size}",
+                    text = "Comments ${comments.size}",
                     fontWeight = FontWeight.Light
                 )
             }
@@ -112,7 +110,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     val id = UUID.randomUUID().toString()
-                    val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
+                    val critique = Critique(id, comments = comments, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
                     Firebase.firestore.collection("users").document(toCritique.writerId)
                         .collection("critiques").document(id).set(critique)
                         .addOnSuccessListener {

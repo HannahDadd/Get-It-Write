@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
@@ -47,6 +48,7 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
     val paragraphs = critique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
+    val comments = critique.comments.map {(k,v)-> v to k}.toMap<Long, String>()
     Column {
         DetailHeader(title = critique.projectTitle, navigateUp = navigateUp)
         Column(
@@ -65,8 +67,8 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
                 }
             }
             paragraphs.forEachIndexed { index, element ->
-                if (critique.comments.containsValue(index)) {
-                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                if (critique.comments.containsValue(index.toLong())) {
+                    Text(element, style = TextStyle(background = Colours.bold, fontSize = 16.sp), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.get(index.toLong()) ?: "")})
                 } else {
                     Text(element)
                 }
