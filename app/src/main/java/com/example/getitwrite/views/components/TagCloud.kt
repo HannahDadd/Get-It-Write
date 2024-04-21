@@ -35,8 +35,8 @@ fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
             )
             RoundedButton(modifier = Modifier, onClick = {
                 tagsInCloud.add(text)
-                text = ""
                 addAction(text)
+                text = ""
             })
         }
         TagCloud(tags = tagsInCloud, action = {

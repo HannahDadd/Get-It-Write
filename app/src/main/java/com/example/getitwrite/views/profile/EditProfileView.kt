@@ -41,8 +41,8 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
     val bio = remember { mutableStateOf(user.bio) }
     val writing = remember { mutableStateOf(user.writing) }
     val critiqueStyle = remember { mutableStateOf(user.critiqueStyle) }
-    val genreTags = user.writingGenres
-    val authorTags = user.authors
+    val genreTags = remember { mutableStateOf(user.writingGenres) }
+    val authorTags = remember { mutableStateOf(user.authors) }
     var errorString = remember { mutableStateOf("") }
     Column {
         DetailHeader(title = user.displayName, navigateUp = navigateUp)
@@ -52,11 +52,11 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
         ) {
             QuestionSection(bio, "Tell other writers about yourself.")
             SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres, preSelectedTags = user.writingGenres) {
-                genreTags.add(it)
+                genreTags.value.add(it)
             }
             QuestionSection(writing, "Tell other writers about your writing.")
             CreateTagCloud("Who are your favourite authors?") {
-                authorTags.add(it)
+                authorTags.value.add(it)
             }
             QuestionSection(critiqueStyle, "Tell other writers about your critique style.")
             ErrorText(error = errorString)
@@ -74,7 +74,7 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
                                 authors = authorTags,
                                 writingGenres = genreTags,
                                 colour = user.colour,
-                                arrayListOf()
+                                blockedUserIds = user.blockedUserIds
                             )
                         )
                         .addOnSuccessListener {
