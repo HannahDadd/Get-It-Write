@@ -35,6 +35,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -58,8 +59,11 @@ import androidx.navigation.NavHostController
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Message
 import com.example.getitwrite.modals.Proposal
+import com.example.getitwrite.modals.Reply
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
+import com.example.getitwrite.views.components.ErrorText
+import com.example.getitwrite.views.forum.RepliesViewModel
 import com.example.getitwrite.views.settings.BottomSheetContent
 import com.example.getitwrite.views.settings.PostReAuthTask
 import com.example.getitwrite.views.settings.PrivacyPolicyView
@@ -70,6 +74,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,10 +87,16 @@ fun ShowMessages(
     backStackEntry: NavBackStackEntry,
     navigateUp: () -> Unit
 ) {
-    val message = remember { mutableStateOf("") }
-    var messages = listOf<Message>()
+    var errorString = remember { mutableStateOf("") }
+    var message = remember { mutableStateOf("") }
+    var messages = remember { mutableStateListOf<Message>() }
     MessagesViewModel().getMessages(chatId).observe(backStackEntry) {
-        messages = it
+        var ids = messages.map { it.id }
+        it.forEach {
+            if (!ids.contains(it.id)) {
+                messages.add(it)
+            }
+        }
     }
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
@@ -106,7 +117,6 @@ fun ShowMessages(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(text = messages.size.toString())
                 messages.forEach {
                     SingleMessage(it.content)
                 }
@@ -119,6 +129,7 @@ fun ShowMessages(
             ) {
                 Text("Send work to ${user2Name}", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
             }
+            ErrorText(error = errorString)
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -133,7 +144,20 @@ fun ShowMessages(
                     }
                 )
                 Button(
-                    onClick = {  },
+                    onClick = {
+                        if (message.value != "") {
+                            val id = UUID.randomUUID().toString()
+                            val m = Message(content = message.value, created = Timestamp.now(), senderId = user.id, id = id)
+                            Firebase.firestore.collection("chats").document(chatId)
+                                .collection("messages").document(id).set(m)
+                                .addOnSuccessListener {
+                                    message.value = ""
+                                }
+                                .addOnFailureListener {
+                                    errorString.value = it.message.toString()
+                                }
+                        }
+                    },
                     shape = CircleShape,
                     modifier = Modifier.size(40.dp),
                     contentPadding = PaddingValues(1.dp)
@@ -162,8 +186,7 @@ class MessagesViewModel : ViewModel() {
 
                 var savedLists: MutableList<Message> = mutableListOf()
                 for (doc in value!!) {
-//                    savedLists.add(Message(doc.data!!))
-                    savedLists.add(Message(content = "Hello", created = Timestamp.now(), senderID = ""))
+                    savedLists.add(Message(doc.id, doc.data!!))
                 }
                 messages.value = savedLists
             })
@@ -179,14 +202,14 @@ fun SingleMessage(text: String) {
             modifier = Modifier.background(
                 color = Color.Green,
                 shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
-            )//.width(xxxx)
+            )
         ) {
             Text(text)
         }
         Column(
             modifier = Modifier
                 .background(
-                    color = Color.Black,
+                    color = Color.Green,
                     shape = TriangleEdgeShape(10)
                 )
                 .width(8.dp)

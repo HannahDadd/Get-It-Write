@@ -96,9 +96,10 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID:
                     Firebase.firestore.collection("users").document(user2Id)
                         .collection("requestCritiques").document(id).set(requestCritique)
                         .addOnSuccessListener {
-                            val message = Message(content = "WORK SENT!\\n${user.displayName} sent their work entitled '${requestCritique.title}'", created = Timestamp.now(), senderID = user.id)
+                            val id = UUID.randomUUID().toString()
+                            val message = Message(content = "WORK SENT!\\n${user.displayName} sent their work entitled '${requestCritique.title}'", created = Timestamp.now(), senderId = user.id, id = id)
                             Firebase.firestore.collection("chats").document(chatID)
-                                .collection("messages").document().set(message)
+                                .collection("messages").document(id).set(message)
                             closeAction()
                         }
                         .addOnFailureListener {

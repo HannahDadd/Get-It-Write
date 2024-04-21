@@ -6,12 +6,14 @@ import java.util.UUID
 class Message(
     val content: String,
     val created: Timestamp,
-    val senderID: String
+    val senderId: String,
+    val id: String
 ) {
-    constructor(data: Map<String, Any>) : this (
-        content = data.get("content") as String,
-        senderID = data.get("senderID") as String,
-        created = data.get("created") as Timestamp
+    constructor(id: String, data: Map<String, Any>) : this (
+        id = id,
+        content = data["content"] as String,
+        senderId = data["senderId"] as String,
+        created = data["created"] as Timestamp
     )
 }
 
@@ -21,6 +23,6 @@ class Chat(
 ) {
     constructor(id: String, data: Map<String, Any>) : this(
         id = id,
-        users = data.get("users") as MutableList<String>
+        users = data["users"] as MutableList<String>
     )
 }
