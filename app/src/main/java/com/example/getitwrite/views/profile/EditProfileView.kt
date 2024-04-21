@@ -51,7 +51,7 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             QuestionSection(bio, "Tell other writers about yourself.")
-            SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres) {
+            SelectTagCloud("Which genres do you write?", answers = GlobalVariables.genres, preSelectedTags = user.writingGenres) {
                 genreTags.add(it)
             }
             QuestionSection(writing, "Tell other writers about your writing.")
@@ -81,14 +81,13 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
                             errorString.value = "Updated!"
                         }
                         .addOnFailureListener { errorString.value = "Network error" }
-
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Colours.Dark_Readable,
                     contentColor = Color.White
                 )
             ) {
-                Text("Edit Profile", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+                Text("Update Profile", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
             }
         }
     }

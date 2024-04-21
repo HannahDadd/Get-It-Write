@@ -40,32 +40,36 @@ fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
             })
         }
         TagCloud(tags = tagsInCloud, action = {
-            tagsInCloud.remove(it)
+                tagsInCloud.remove(it)
         })
     }
 }
 
 @Composable
-fun SelectTagCloud(question: String, answers: MutableList<String>, clickAction: (input: String) -> Boolean) {
+fun SelectTagCloud(question: String, answers: MutableList<String>, preSelectedTags: MutableList<String> = mutableListOf(), clickAction: (input: String) -> Boolean) {
     Column(modifier = Modifier.padding(vertical = 10.dp)) {
         Text(question, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 4.dp))
-        TagCloud(tags = answers, action = clickAction)
+        TagCloud(tags = answers, action = clickAction, preSelectedTags = preSelectedTags)
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TagCloud(tags: MutableList<String>, action: ((input: String) -> Boolean)?) {
+fun TagCloud(tags: MutableList<String>, action: ((input: String) -> Boolean)?, preSelectedTags: MutableList<String>? = null) {
     FlowRow() {
         for (tag in tags) {
-            SingleTag(tag, action)
+            if (preSelectedTags != null) {
+                SingleTag(tag, action, preSelectedTags.contains(tag))
+            } else {
+                SingleTag(tag, action, false)
+            }
         }
     }
 }
 
 @Composable
-private fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?) {
-    var bgColour = remember { mutableStateOf( Colours.Dark_Background) }
+private fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?, isSelected: Boolean) {
+    var bgColour = remember { mutableStateOf( if(isSelected) Colours.Dark_Readable else Colours.Dark_Background) }
     TextButton(modifier = Modifier
         .padding(4.dp)
         .background(

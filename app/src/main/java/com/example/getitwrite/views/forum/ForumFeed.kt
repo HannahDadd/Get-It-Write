@@ -37,6 +37,7 @@ import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ProfileImage
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -50,7 +51,7 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                text = { Text("Add question") },
+                text = { Text("Ask question") },
                 icon = { Icon(Icons.Filled.Add, contentDescription = "") },
                 onClick = { showBottomSheet = true }
             )
@@ -115,10 +116,6 @@ fun ForumView(question: Question, select: (String) -> Unit) {
                 fontWeight = FontWeight.Light
             )
             Spacer(modifier = Modifier.weight(1.0f))
-//            Text(
-//                text = "${proposal.wordCount} words",
-//                fontWeight = FontWeight.Light
-//            )
         }
         Divider()
     }
@@ -127,6 +124,7 @@ fun ForumView(question: Question, select: (String) -> Unit) {
 class QuestionsViewModel() : ViewModel() {
     val questionsFlow = flow {
         val documents = Firebase.firestore.collection("questions")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .get().await()
         val items = documents.map { doc ->
             Question(doc.id, doc.data)

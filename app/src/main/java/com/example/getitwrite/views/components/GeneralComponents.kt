@@ -61,7 +61,7 @@ fun QuestionSection(response: MutableState<String>, question: String) {
         Text(question, fontWeight = FontWeight.Bold)
         OutlinedTextField(
             value = response.value,
-            maxLines = 1,
+            maxLines = 5,
             onValueChange = { response.value = it },
             modifier = Modifier
                 .fillMaxWidth()

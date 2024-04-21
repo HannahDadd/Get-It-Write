@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,7 +69,12 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
             }
             paragraphs.forEachIndexed { index, element ->
                 if (critique.comments.containsValue(index.toLong())) {
-                    Text(element, style = TextStyle(background = Colours.bold, fontSize = 16.sp), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.get(index.toLong()) ?: "")})
+                    Text(element, style = TextStyle(background = Colours.bold,
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        lineHeight = 24.sp,
+                        letterSpacing = 0.5.sp), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.get(index.toLong()) ?: "")})
                 } else {
                     Text(element)
                 }

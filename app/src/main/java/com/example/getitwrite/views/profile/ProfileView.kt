@@ -2,6 +2,7 @@ package com.example.getitwrite.views.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -29,16 +30,6 @@ fun ProfileView(navController: NavController, ownProfile: Boolean, user: User, n
                 .padding(10.dp)
                 .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Bio", fontWeight = FontWeight.Bold)
-            Text(user.bio)
-            Text("Favourite authors", fontWeight = FontWeight.Bold)
-            TagCloud(tags = user.authors, action = null)
-            Text("Writing", fontWeight = FontWeight.Bold)
-            Text(user.writing)
-            Text("Writing Genres", fontWeight = FontWeight.Bold)
-            TagCloud(tags = user.writingGenres, action = null)
-            Text("Critique Style", fontWeight = FontWeight.Bold)
-            Text(user.critiqueStyle)
             if (ownProfile) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
@@ -50,6 +41,16 @@ fun ProfileView(navController: NavController, ownProfile: Boolean, user: User, n
                     Text("Edit Profile", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
                 }
             }
+            Text("Bio", fontWeight = FontWeight.Bold)
+            Text(user.bio)
+            Text("Favourite authors", fontWeight = FontWeight.Bold)
+            TagCloud(tags = user.authors, action = null)
+            Text("Writing", fontWeight = FontWeight.Bold)
+            Text(user.writing)
+            Text("Writing Genres", fontWeight = FontWeight.Bold)
+            TagCloud(tags = user.writingGenres, action = null)
+            Text("Critique Style", fontWeight = FontWeight.Bold)
+            Text(user.critiqueStyle)
         }
     }
 }
