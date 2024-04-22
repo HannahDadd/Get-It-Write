@@ -18,15 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.getitwrite.Colours
-import com.example.getitwrite.GlobalVariables
-import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 @Composable

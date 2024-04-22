@@ -5,13 +5,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -23,6 +27,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ReportAndBlockUser() {
     var showButtons = remember { mutableStateOf(false) }
+    val shouldShowDialog = remember { mutableStateOf(false) }
+    if (shouldShowDialog.value) {
+        MyAlertDialog(shouldShowDialog = shouldShowDialog)
+    }
     Column {
         Row(
             modifier = Modifier
@@ -30,7 +38,7 @@ fun ReportAndBlockUser() {
                 .padding()
         ) {
             Spacer(modifier = Modifier.weight(1.0f))
-            TextButton(onClick = { showButtons.value = true }) {
+            TextButton(onClick = { showButtons.value = !showButtons.value }) {
                 Icon(Icons.Filled.Info, contentDescription = "", Modifier.padding(end = 10.dp))
             }
         }
@@ -50,7 +58,7 @@ fun ReportAndBlockUser() {
                     }
                 }
                 Spacer(modifier = Modifier.weight(1.0f))
-                TextButton(onClick = {  }) {
+                TextButton(onClick = { shouldShowDialog.value = true }) {
                     Text("Block user",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Light,
@@ -58,5 +66,30 @@ fun ReportAndBlockUser() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun MyAlertDialog(shouldShowDialog: MutableState<Boolean>) {
+    if (shouldShowDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                shouldShowDialog.value = false
+            },
+            title = { Text(text = "Are you sure you want to block this user?") },
+            text = { Text(text = "You cannot undo this.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        shouldShowDialog.value = false
+                    }
+                ) {
+                    Text(
+                        text = "Confirm",
+                        color = Color.White
+                    )
+                }
+            }
+        )
     }
 }

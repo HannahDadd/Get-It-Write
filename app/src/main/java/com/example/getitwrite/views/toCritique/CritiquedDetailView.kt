@@ -37,6 +37,7 @@ import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.ErrorText
+import com.example.getitwrite.views.components.ReportAndBlockUser
 import com.example.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -91,6 +92,7 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
             }
             Text(text = "Overall feedback:", fontWeight = FontWeight.Bold)
             Text(text = critique.overallFeedback)
+            ReportAndBlockUser()
         }
     }
 }

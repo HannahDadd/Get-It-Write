@@ -39,7 +39,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
     val authorNotes = remember { mutableStateOf("") }
     val genreTags = remember { mutableStateOf(mutableListOf<String>()) }
     val triggerWarnings = ArrayList<String>()
-    var projectType = ArrayList<String>()
+    var projectType = remember { mutableStateOf(mutableListOf<String>()) }
     Column(modifier = Modifier
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
@@ -66,7 +66,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
             label = { Text(text = "Author's notes") }
         )
         SelectTagCloud(question = "Select project type", answers = GlobalVariables.typeOfProject) {
-            projectType.add(it)
+            projectType.value.add(it)
         }
         OutlinedTextField(value = wordCount.value,
             maxLines = 1,
@@ -87,7 +87,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
                         errorString.value = "Your project needs a title!"
                     } else {
                         val id = UUID.randomUUID().toString()
-                        val p = Proposal(id = id, title = title.value, typeOfProject = projectType, blurb = blurb.value, triggerWarnings = triggerWarnings, genres = genreTags.value, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = parsedInt, writerId = user.id, writerName = user.displayName)
+                        val p = Proposal(id = id, title = title.value, typeOfProject = projectType.value, blurb = blurb.value, triggerWarnings = triggerWarnings, genres = genreTags.value, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = parsedInt, writerId = user.id, writerName = user.displayName)
                         Firebase.firestore.collection("proposals")
                             .document(id)
                             .set(p)

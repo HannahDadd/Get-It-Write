@@ -51,8 +51,8 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
              selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit,
              selectQuestion: (String) -> Unit, selectFrenzy: (String) -> Unit) {
     val items = listOf(
-        Screen.ToCritique,
         Screen.CritiqueFrenzy,
+        Screen.ToCritique,
         Screen.Forum,
         Screen.Messages,
         Screen.FindPartners
@@ -94,8 +94,8 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             navController = navController,
             startDestination = Screen.Forum.route,
             modifier = Modifier.padding(innerPadding)) {
-            composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
             composable(Screen.CritiqueFrenzy.route) { FrenzyFeed(user, proposals, critiqueFrenzy, selectFrenzy) }
+            composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
             composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }

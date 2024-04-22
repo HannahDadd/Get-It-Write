@@ -36,6 +36,7 @@ import com.example.getitwrite.modals.Chat
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ProfileImage
+import com.example.getitwrite.views.components.ReportAndBlockUser
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -77,10 +78,10 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
         } else {
             LazyColumn(Modifier.padding(innerPadding)) {
                 items(addedQuestions) {
-                    ForumView(it, select)
+                    ForumView(it, true, select)
                 }
                 items(questionList) { q ->
-                    ForumView(q, select)
+                    ForumView(q, true, select)
                 }
             }
         }
@@ -88,7 +89,7 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
 }
 
 @Composable
-fun ForumView(question: Question, select: (String) -> Unit) {
+fun ForumView(question: Question, isFeed: Boolean, select: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .padding(10.dp)
@@ -102,6 +103,9 @@ fun ForumView(question: Question, select: (String) -> Unit) {
             Text(question.questionerName, fontSize = 20.sp)
         }
         Text(question.question, fontWeight = FontWeight.Bold)
+        if (!isFeed) {
+            ReportAndBlockUser()
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

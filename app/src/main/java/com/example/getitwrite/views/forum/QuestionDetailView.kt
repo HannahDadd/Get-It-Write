@@ -43,6 +43,7 @@ import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.ErrorText
 import com.example.getitwrite.views.components.ProfileImage
+import com.example.getitwrite.views.components.ReportAndBlockUser
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
@@ -72,7 +73,7 @@ fun QuestionDetailView(question: Question, user: User,
                 modifier = Modifier.verticalScroll(rememberScrollState(0)),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                ForumView(question, {})
+                ForumView(question, false, {})
                 replies.forEach {
                     ReplyView(it)
                 }
@@ -134,6 +135,7 @@ fun ReplyView(reply: Reply) {
             Text(reply.replierName, fontSize = 20.sp)
         }
         Text(reply.reply)
+        ReportAndBlockUser()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
