@@ -105,58 +105,57 @@ fun ShowMessages(
             ) {
                 messages.forEach {
                     if (it.senderId == user.id) {
-                        SingleOwnMessage(it.content)
+                        SingleOwnMessage(it.content, it.created)
                     } else {
-                        SingleOtherMessage(it.content)
+                        SingleOtherMessage(it.content, it.created)
                     }
                 }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { showBottomSheet = true },
-                colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
-            ) {
-                Text("Send work to ${user2Name}", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
-            }
-            ErrorText(error = errorString)
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedTextField(
-                    value = message.value,
-                    maxLines = 1,
-                    onValueChange = { message.value = it },
-                    label = {
-                        Box {
-                            Text(text = "Text Message")
-                        }
-                    }
-                )
+                ErrorText(error = errorString)
                 Button(
-                    onClick = {
-                        if (message.value != "") {
-                            val id = UUID.randomUUID().toString()
-                            val m = Message(content = message.value, created = Timestamp.now(), senderId = user.id, id = id)
-                            Firebase.firestore.collection("chats").document(chatId)
-                                .collection("messages").document(id).set(m)
-                                .addOnSuccessListener {
-                                    message.value = ""
-                                }
-                                .addOnFailureListener {
-                                    errorString.value = it.message.toString()
-                                }
-                        }
-                    },
-                    shape = CircleShape,
-                    modifier = Modifier.size(40.dp),
-                    contentPadding = PaddingValues(1.dp)
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { showBottomSheet = true },
+                    colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
                 ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Send,
-                        contentDescription = "Send",
-                        modifier = Modifier.size(20.dp)
+                    Text("Send work to $user2Name", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+                }
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    OutlinedTextField(
+                        value = message.value,
+                        maxLines = 1,
+                        onValueChange = { message.value = it },
+                        label = {
+                            Box {
+                                Text(text = "Text Message")
+                            }
+                        }
                     )
+                    Button(
+                        onClick = {
+                            if (message.value != "") {
+                                val id = UUID.randomUUID().toString()
+                                val m = Message(content = message.value, created = Timestamp.now(), senderId = user.id, id = id)
+                                Firebase.firestore.collection("chats").document(chatId)
+                                    .collection("messages").document(id).set(m)
+                                    .addOnSuccessListener {
+                                        message.value = ""
+                                    }
+                                    .addOnFailureListener {
+                                        errorString.value = it.message.toString()
+                                    }
+                            }
+                        },
+                        shape = CircleShape,
+                        modifier = Modifier.size(40.dp),
+                        contentPadding = PaddingValues(1.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Send,
+                            contentDescription = "Send",
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
             }
         }

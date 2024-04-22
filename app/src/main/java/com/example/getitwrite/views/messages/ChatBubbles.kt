@@ -1,5 +1,6 @@
 package com.example.getitwrite.views.messages
 
+import android.text.format.DateUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -17,60 +18,90 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.getitwrite.Colours
+import com.google.firebase.Timestamp
 
 @Composable
-fun SingleOwnMessage(text: String) {
-    Row(Modifier.height(IntrinsicSize.Max)) {
-        Spacer(modifier = Modifier.weight(1.0f))
-        Column(
-            modifier = Modifier.background(
-                color = Colours.paleBlue,
-                shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
+fun SingleOwnMessage(text: String, timestamp: Timestamp) {
+    Column(modifier = Modifier.padding(vertical = 10.dp)) {
+        Row(Modifier.height(IntrinsicSize.Max)) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = DateUtils.getRelativeTimeSpanString(
+                    (timestamp.seconds * 1000),
+                    System.currentTimeMillis(),
+                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.MINUTE_IN_MILLIS.toInt()
+                ).toString(),
+                fontWeight = FontWeight.Light
             )
-                .padding(10.dp)
-        ) {
-            Text(text)
         }
-        Column(
-            modifier = Modifier
-                .background(
-                    color = Colours.paleBlue,
-                    shape = OwnTriangleEdgeShape(30)
-                )
-                .width(8.dp)
-                .fillMaxHeight()
-        ) {
+        Row(Modifier.height(IntrinsicSize.Max)
+            .padding(vertical = 5.dp)) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Column(
+                modifier = Modifier
+                    .background(
+                        color = Colours.paleBlue,
+                        shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
+                    )
+                    .padding(10.dp)
+            ) {
+                Text(text)
+            }
+            Column(
+                modifier = Modifier
+                    .background(
+                        color = Colours.paleBlue,
+                        shape = OwnTriangleEdgeShape(30)
+                    )
+                    .width(8.dp)
+                    .fillMaxHeight()
+            ) {
+            }
         }
     }
 }
 
 
 @Composable
-fun SingleOtherMessage(text: String) {
-    Row(Modifier.height(IntrinsicSize.Max)) {
-        Column(
-            modifier = Modifier
-                .background(
-                    color = Colours.bold,
-                    shape = OtherTriangleEdgeShape(30)
-                )
-                .width(8.dp)
-                .fillMaxHeight()
-        ) {}
-        Column(
-            modifier = Modifier.background(
-                color = Colours.bold,
-                shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
-            )
-                .padding(10.dp)
-        ) {
-            Text(text)
+fun SingleOtherMessage(text: String, timestamp: Timestamp) {
+    Column(modifier = Modifier.padding(vertical = 10.dp)) {
+        Text(
+            text = DateUtils.getRelativeTimeSpanString(
+                (timestamp.seconds * 1000),
+                System.currentTimeMillis(),
+                DateUtils.DAY_IN_MILLIS
+            ).toString(),
+            fontWeight = FontWeight.Light
+        )
+        Row(Modifier.height(IntrinsicSize.Max)
+            .padding(vertical = 5.dp)) {
+            Column(
+                modifier = Modifier
+                    .background(
+                        color = Colours.bold,
+                        shape = OtherTriangleEdgeShape(30)
+                    )
+                    .width(8.dp)
+                    .fillMaxHeight()
+            ) {}
+            Column(
+                modifier = Modifier
+                    .background(
+                        color = Colours.bold,
+                        shape = RoundedCornerShape(0.dp, 4.dp, 4.dp, 4.dp)
+                    )
+                    .padding(10.dp)
+            ) {
+                Text(text)
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
         }
-        Spacer(modifier = Modifier.weight(1.0f))
     }
 }
 

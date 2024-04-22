@@ -69,7 +69,7 @@ fun QuestionDetailView(question: Question, user: User,
         Column(modifier = Modifier.fillMaxWidth().padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
+                modifier = Modifier.verticalScroll(rememberScrollState(0)),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 ForumView(question, {})
@@ -127,8 +127,7 @@ fun ReplyView(reply: Reply) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(10.dp)) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             ProfileImage(username = reply.replierName, profileColour = reply.replierColour)
@@ -140,20 +139,12 @@ fun ReplyView(reply: Reply) {
                 .fillMaxWidth()
                 .padding()
         ) {
-            Text(
-                text = DateUtils.getRelativeTimeSpanString(
-                    (reply.timestamp.seconds * 1000),
-                    System.currentTimeMillis(),
-                    DateUtils.DAY_IN_MILLIS
-                ).toString(),
-                fontWeight = FontWeight.Light
-            )
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = DateUtils.getRelativeTimeSpanString(
                     (reply.timestamp.seconds * 1000),
                     System.currentTimeMillis(),
-                    DateUtils.MINUTE_IN_MILLIS,
+                    DateUtils.SECOND_IN_MILLIS,
                     DateUtils.WEEK_IN_MILLIS.toInt()
                 ).toString(),
                 fontWeight = FontWeight.Light
