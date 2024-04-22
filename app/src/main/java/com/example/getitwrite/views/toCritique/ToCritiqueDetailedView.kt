@@ -28,8 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.getitwrite.Colours
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
@@ -50,7 +52,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
     val paragraphs = toCritique.text.split("\n")
     val sheetState = rememberModalBottomSheetState()
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
-    var comments = remember { mutableStateMapOf<String, Long>() }
+    var comments = remember { mutableStateOf(mutableStateMapOf<String, Long>()) }
     Column {
         DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
         Column(
@@ -66,7 +68,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                     sheetState = sheetState
                 ) {
                     CritiqueSheet(bottomSheetText) { comment: String, index: Int ->
-                        comments.plus(Pair(index, comment))
+                        comments.value.put(comment, index.toLong())
                         bottomSheetText = Triple("", 1, "")
                     }
                 }
@@ -81,8 +83,13 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()
             paragraphs.forEachIndexed { index, element ->
-                if (comments.containsValue(index.toLong())) {
-                    Text(element, style = TextStyle(background = Colours.bold), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                if (comments.value.containsValue(index.toLong())) {
+                    Text(element, style = TextStyle(background = Colours.bold,
+                        fontFamily = FontFamily.Default,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                        lineHeight = 24.sp,
+                        letterSpacing = 0.5.sp), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 } else {
                     Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 }
@@ -93,7 +100,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                 .padding()) {
                 Spacer(modifier = Modifier.weight(1.0f))
                 Text(
-                    text = "Comments ${comments.size}",
+                    text = "Comments ${comments.value.size}",
                     fontWeight = FontWeight.Light
                 )
             }
@@ -110,7 +117,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     val id = UUID.randomUUID().toString()
-                    val critique = Critique(id, comments = comments, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
+                    val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
                     Firebase.firestore.collection("users").document(toCritique.writerId)
                         .collection("critiques").document(id).set(critique)
                         .addOnSuccessListener {
