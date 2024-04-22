@@ -57,6 +57,7 @@ import com.example.getitwrite.views.components.ErrorText
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import java.util.UUID
@@ -103,7 +104,11 @@ fun ShowMessages(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 messages.forEach {
-                    SingleMessage(it.content)
+                    if (it.senderId == user.id) {
+                        SingleOwnMessage(it.content)
+                    } else {
+                        SingleOtherMessage(it.content)
+                    }
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -163,7 +168,9 @@ class MessagesViewModel : ViewModel() {
 
     fun getMessages(chatId: String): LiveData<List<Message>> {
         Firebase.firestore.collection("chats").document(chatId)
-            .collection("messages").addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            .collection("messages")
+            .orderBy("created", Query.Direction.ASCENDING)
+            .addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
                 if (e != null) {
                     messages.value = null
                     return@EventListener
@@ -177,44 +184,5 @@ class MessagesViewModel : ViewModel() {
             })
 
         return messages
-    }
-}
-
-@Composable
-fun SingleMessage(text: String) {
-    Row(Modifier.height(IntrinsicSize.Max)) {
-        Column(
-            modifier = Modifier.background(
-                color = Color.Green,
-                shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
-            )
-        ) {
-            Text(text)
-        }
-        Column(
-            modifier = Modifier
-                .background(
-                    color = Color.Green,
-                    shape = TriangleEdgeShape(10)
-                )
-                .width(8.dp)
-                .fillMaxHeight()
-        ) {
-        }
-    }
-}
-
-class TriangleEdgeShape(val offset: Int) : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val trianglePath = Path().apply {
-            moveTo(x = 0f, y = size.height - offset)
-            lineTo(x = 0f, y = size.height)
-            lineTo(x = 0f + offset, y = size.height)
-        }
-        return Outline.Generic(path = trianglePath)
     }
 }

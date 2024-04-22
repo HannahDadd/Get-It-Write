@@ -16,4 +16,5 @@ object Colours {
     val Dark_Background = Color(0xFF475B63)
     val signOutGrey = Color(0xFF444444)
     val bold = Color(0xFFBACDB0)
+    val paleBlue = Color(0xFFD7E5F0)
 }
