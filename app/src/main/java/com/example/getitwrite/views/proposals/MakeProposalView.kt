@@ -37,7 +37,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
     val wordCount = remember { mutableStateOf("") }
     val blurb = remember { mutableStateOf("") }
     val authorNotes = remember { mutableStateOf("") }
-    val genreTags = ArrayList<String>()
+    val genreTags = remember { mutableStateOf(mutableListOf<String>()) }
     val triggerWarnings = ArrayList<String>()
     var projectType = ArrayList<String>()
     Column(modifier = Modifier
@@ -57,7 +57,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
             label = { Text(text = "Blurb") }
         )
         SelectTagCloud(question = "Genres", answers = GlobalVariables.genres) {
-            genreTags.add(it)
+            genreTags.value.add(it)
         }
         OutlinedTextField(value = authorNotes.value,
             maxLines = 5,
@@ -81,18 +81,26 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                wordCount.value.toInt()
-                val id = UUID.randomUUID().toString()
-                val p = Proposal(id = id, title = title.value, typeOfProject = projectType, blurb = blurb.value, triggerWarnings = triggerWarnings, genres = genreTags, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = wordCount.value.toInt(), writerId = user.id, writerName = user.displayName)
-                Firebase.firestore.collection("proposals")
-                    .document(id)
-                    .set(p)
-                    .addOnSuccessListener {
-                        onSuccess()
+                val parsedInt = wordCount.value.toIntOrNull()
+                if (parsedInt != null) {
+                    if (title.value == "") {
+                        errorString.value = "Your project needs a title!"
+                    } else {
+                        val id = UUID.randomUUID().toString()
+                        val p = Proposal(id = id, title = title.value, typeOfProject = projectType, blurb = blurb.value, triggerWarnings = triggerWarnings, genres = genreTags.value, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = parsedInt, writerId = user.id, writerName = user.displayName)
+                        Firebase.firestore.collection("proposals")
+                            .document(id)
+                            .set(p)
+                            .addOnSuccessListener {
+                                onSuccess()
+                            }
+                            .addOnFailureListener { e ->
+                                errorString.value = e.toString()
+                            }
                     }
-                    .addOnFailureListener { e ->
-                        errorString.value = e.toString()
-                    }
+                } else {
+                    errorString.value = "Word count needs to be a number. Characters like 'k' or ',' are not allowed."
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
         ) {
