@@ -93,15 +93,34 @@ fun MakeFrenzyView(user: User, proposals: List<Proposal>, onSuccess: (RequestCri
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 proposal.value?.let {
-                    val id = UUID.randomUUID().toString()
-                    val requestCritique = RequestCritique(id = id, title = it.title, blurb = it.blurb, genres = it.genres, triggerWarnings = it.triggerWarnings, workTitle = title.value, text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
-                    Firebase.firestore.collection("frenzy").document(id).set(requestCritique)
-                        .addOnSuccessListener {
-                            onSuccess(requestCritique)
-                        }
-                        .addOnFailureListener {
-                            errorString.value = it.message.toString()
-                        }
+                    if (text.value == "") {
+                        errorString.value = "Paste or type your project above."
+                    } else if (title.value == "") {
+                        errorString.value = "Please include a title."
+                    } else if (text.value.split("\\s+".toRegex()).size > 5000) {
+                        errorString.value = "Word limit of 5000. Please select a smaller piece of text e.g. a single chapter, query or synopsis. This ensures reviews are quick."
+                    } else {
+                        val id = UUID.randomUUID().toString()
+                        val requestCritique = RequestCritique(
+                            id = id,
+                            title = it.title,
+                            blurb = it.blurb,
+                            genres = it.genres,
+                            triggerWarnings = it.triggerWarnings,
+                            workTitle = title.value,
+                            text = text.value,
+                            timestamp = Timestamp.now(),
+                            writerId = user.id,
+                            writerName = user.displayName
+                        )
+                        Firebase.firestore.collection("frenzy").document(id).set(requestCritique)
+                            .addOnSuccessListener {
+                                onSuccess(requestCritique)
+                            }
+                            .addOnFailureListener {
+                                errorString.value = it.message.toString()
+                            }
+                    }
                 } ?: run {
                     errorString.value = "Choose proposal to request a critique for."
                 }

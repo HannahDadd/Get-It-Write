@@ -76,7 +76,7 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID:
         OutlinedTextField(value = title.value, maxLines = 1, onValueChange = { title.value = it },
             label = {
                 Box {
-                    Text(text = "Critique Title e.g. Chaper 1")
+                    Text(text = "Critique Title e.g. Chapter 1")
                 }
             }
         )
@@ -91,20 +91,28 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID:
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 proposal.value?.let {
-                    val id = UUID.randomUUID().toString()
-                    val requestCritique = RequestCritique(id = id, title = it.title, blurb = it.blurb, genres = it.genres, triggerWarnings = it.triggerWarnings, workTitle = title.value, text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
-                    Firebase.firestore.collection("users").document(user2Id)
-                        .collection("requestCritiques").document(id).set(requestCritique)
-                        .addOnSuccessListener {
-                            val id = UUID.randomUUID().toString()
-                            val message = Message(content = "WORK SENT!\\n${user.displayName} sent their work entitled '${requestCritique.title}'", created = Timestamp.now(), senderId = user.id, id = id)
-                            Firebase.firestore.collection("chats").document(chatID)
-                                .collection("messages").document(id).set(message)
-                            closeAction()
-                        }
-                        .addOnFailureListener {
-                            errorString.value = it.message.toString()
-                        }
+                    if (text.value == "") {
+                        errorString.value = "Paste or type your project above."
+                    } else if (title.value == "") {
+                        errorString.value = "Please include a title."
+                    } else if (text.value.split("\\s+".toRegex()).size > 5000) {
+                        errorString.value = "Word limit of 5000. Please select a smaller piece of text e.g. a single chapter, query or synopsis. This ensures reviews are quick."
+                    } else {
+                        val id = UUID.randomUUID().toString()
+                        val requestCritique = RequestCritique(id = id, title = it.title, blurb = it.blurb, genres = it.genres, triggerWarnings = it.triggerWarnings, workTitle = title.value, text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
+                        Firebase.firestore.collection("users").document(user2Id)
+                            .collection("requestCritiques").document(id).set(requestCritique)
+                            .addOnSuccessListener {
+                                val id = UUID.randomUUID().toString()
+                                val message = Message(content = "WORK SENT! ${user.displayName} sent their work entitled '${requestCritique.title}'", created = Timestamp.now(), senderId = user.id, id = id)
+                                Firebase.firestore.collection("chats").document(chatID)
+                                    .collection("messages").document(id).set(message)
+                                closeAction()
+                            }
+                            .addOnFailureListener {
+                                errorString.value = it.message.toString()
+                            }
+                    }
                 } ?: run {
                     errorString.value = "Choose proposal to request a critique for."
                 }
