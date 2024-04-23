@@ -4,19 +4,18 @@ import com.google.firebase.Timestamp
 import java.util.TreeMap
 
 class User(
-    val id: String = "",
+    override var id: String,
     val displayName: String = "",
     val bio: String = "",
     val writing: String = "",
     val critiqueStyle: String = "",
-    val authors: MutableList<String> = mutableListOf<String>(),
-    val writingGenres: MutableList<String> = mutableListOf<String>(),
+    val authors: MutableList<String> = mutableListOf(),
+    val writingGenres: MutableList<String> = mutableListOf(),
     val colour: Int = 1,
-    val blockedUserIds: MutableList<String> = mutableListOf<String>(),
+    val blockedUserIds: MutableList<String> = mutableListOf(),
     var photoURL: String = "",
     var rating: Int = 3
-) {
-
+) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
         displayName = data.get("displayName") as String,

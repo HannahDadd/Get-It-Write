@@ -4,11 +4,11 @@ import com.google.firebase.Timestamp
 import java.util.UUID
 
 class Message(
+    override var id: String,
     val content: String,
     val created: Timestamp,
-    val senderId: String,
-    val id: String
-) {
+    val senderId: String
+) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
         content = data["content"] as String,
@@ -18,9 +18,9 @@ class Message(
 }
 
 class Chat(
-    val users: MutableList<String>,
-    val id: String
-) {
+    override var id: String,
+    val users: MutableList<String>
+) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this(
         id = id,
         users = data["users"] as MutableList<String>

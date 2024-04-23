@@ -3,13 +3,13 @@ package com.example.getitwrite.modals
 import com.google.firebase.Timestamp
 
 class Question (
-    val id: String,
+    override var id: String,
     val question: String,
     val questionerId: String,
     val questionerColour: Int,
     val questionerName: String,
     val timestamp: Timestamp
-) {
+) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
         question = data.get("question") as String,
@@ -21,13 +21,13 @@ class Question (
 }
 
 class Reply (
-    val id: String,
+    override var id: String,
     val reply: String,
     val replierId: String,
     val replierName: String,
     val replierColour: Int,
     val timestamp: Timestamp
-) {
+) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
         reply = data.get("reply") as String,
