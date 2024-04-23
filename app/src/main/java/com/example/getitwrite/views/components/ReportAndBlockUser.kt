@@ -23,13 +23,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.getitwrite.modals.User
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 @Composable
-fun ReportAndBlockUser() {
+fun ReportAndBlockUser(userToBlock: String, user: User) {
     var showButtons = remember { mutableStateOf(false) }
     val shouldShowDialog = remember { mutableStateOf(false) }
     if (shouldShowDialog.value) {
-        MyAlertDialog(shouldShowDialog = shouldShowDialog)
+        MyAlertDialog(shouldShowDialog = shouldShowDialog, user = user, blockUserId = userToBlock)
     }
     Column {
         Row(
@@ -70,18 +73,40 @@ fun ReportAndBlockUser() {
 }
 
 @Composable
-fun MyAlertDialog(shouldShowDialog: MutableState<Boolean>) {
+fun MyAlertDialog(shouldShowDialog: MutableState<Boolean>, user: User, blockUserId: String) {
+    var lowerTextString = remember { mutableStateOf("You cannot undo this.") }
     if (shouldShowDialog.value) {
         AlertDialog(
             onDismissRequest = {
                 shouldShowDialog.value = false
             },
             title = { Text(text = "Are you sure you want to block this user?") },
-            text = { Text(text = "You cannot undo this.") },
+            text = { Text(text = lowerTextString.value) },
             confirmButton = {
                 Button(
                     onClick = {
-                        shouldShowDialog.value = false
+                        val blockedUserIds = user.blockedUserIds
+                        blockedUserIds.add(blockUserId)
+                        Firebase.firestore.collection("users").document(user.id)
+                            .set(
+                                User(
+                                    id = user.id,
+                                    displayName = user.displayName,
+                                    bio = user.bio,
+                                    writing = user.writing,
+                                    critiqueStyle = user.critiqueStyle,
+                                    authors = user.authors,
+                                    writingGenres = user.writingGenres,
+                                    colour = user.colour,
+                                    blockedUserIds = blockedUserIds
+                                )
+                            )
+                            .addOnSuccessListener {
+                                shouldShowDialog.value = false
+                            }
+                            .addOnFailureListener { e ->
+                                lowerTextString.value = "There's been a problem. Please try again later."
+                            }
                     }
                 ) {
                     Text(

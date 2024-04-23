@@ -73,9 +73,9 @@ fun QuestionDetailView(question: Question, user: User,
                 modifier = Modifier.verticalScroll(rememberScrollState(0)),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                ForumView(question, false, {})
+                ForumView(user, question, false, {})
                 replies.forEach {
-                    ReplyView(it)
+                    ReplyView(it, user)
                 }
                 ErrorText(error = errorString)
                 Row(modifier = Modifier.fillMaxWidth(),
@@ -124,7 +124,7 @@ fun QuestionDetailView(question: Question, user: User,
 }
 
 @Composable
-fun ReplyView(reply: Reply) {
+fun ReplyView(reply: Reply, user: User) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(10.dp)) {
         Row(
@@ -135,7 +135,7 @@ fun ReplyView(reply: Reply) {
             Text(reply.replierName, fontSize = 20.sp)
         }
         Text(reply.reply)
-        ReportAndBlockUser()
+        ReportAndBlockUser(userToBlock = reply.replierId, user = user)
         Row(
             modifier = Modifier
                 .fillMaxWidth()

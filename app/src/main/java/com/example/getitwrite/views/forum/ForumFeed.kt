@@ -78,10 +78,10 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
         } else {
             LazyColumn(Modifier.padding(innerPadding)) {
                 items(addedQuestions) {
-                    ForumView(it, true, select)
+                    ForumView(user, it, true, select)
                 }
                 items(questionList) { q ->
-                    ForumView(q, true, select)
+                    ForumView(user, q, true, select)
                 }
             }
         }
@@ -89,7 +89,7 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
 }
 
 @Composable
-fun ForumView(question: Question, isFeed: Boolean, select: (String) -> Unit) {
+fun ForumView(user: User, question: Question, isFeed: Boolean, select: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .padding(10.dp)
@@ -104,7 +104,7 @@ fun ForumView(question: Question, isFeed: Boolean, select: (String) -> Unit) {
         }
         Text(question.question, fontWeight = FontWeight.Bold)
         if (!isFeed) {
-            ReportAndBlockUser()
+            ReportAndBlockUser(userToBlock = question.questionerId, user = user)
         }
         Row(
             modifier = Modifier

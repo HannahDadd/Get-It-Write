@@ -92,7 +92,6 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
             }
             Text(text = "Overall feedback:", fontWeight = FontWeight.Bold)
             Text(text = critique.overallFeedback)
-            ReportAndBlockUser()
         }
     }
 }
