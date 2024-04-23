@@ -18,9 +18,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
+import com.example.getitwrite.views.components.ReportAndBlockUser
 import com.example.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -37,7 +39,6 @@ fun ProposalDetails(
     val proposal: Proposal? = remember(proposalId) {
         proposals.find { it.id == proposalId }
     }
-
     if (proposal != null) {
         Column {
             DetailHeader(title = proposal.title, navigateUp = navigateUp)
@@ -46,6 +47,14 @@ fun ProposalDetails(
             ) {
                 Text("Blurb", fontWeight = FontWeight.Bold)
                 Text(proposal.blurb)
+                ReportAndBlockUser(
+                    userToBlock = proposal.writerId,
+                    user = user,
+                    contentToReport = proposal,
+                    contentToReportType = ContentToReportType.proposals,
+                    questionId = null,
+                    chatId = null
+                )
                 Divider()
                 Text("Author's notes", fontWeight = FontWeight.Bold)
                 Text(proposal.authorNotes)

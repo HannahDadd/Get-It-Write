@@ -38,7 +38,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
     val blurb = remember { mutableStateOf("") }
     val authorNotes = remember { mutableStateOf("") }
     val genreTags = remember { mutableStateOf(mutableListOf<String>()) }
-    val triggerWarnings = ArrayList<String>()
+    val triggerWarnings = remember { mutableStateOf(mutableListOf<String>()) }
     var projectType = remember { mutableStateOf(mutableListOf<String>()) }
     Column(modifier = Modifier
         .padding(20.dp)
@@ -75,7 +75,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
             label = { Text(text = "Word Count") }
         )
         CreateTagCloud(question = "Trigger Warnings") {
-            triggerWarnings.add(it)
+            triggerWarnings.value.add(it)
         }
         ErrorText(error = errorString)
         Button(
@@ -87,7 +87,7 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
                         errorString.value = "Your project needs a title!"
                     } else {
                         val id = UUID.randomUUID().toString()
-                        val p = Proposal(id = id, title = title.value, typeOfProject = projectType.value, blurb = blurb.value, triggerWarnings = triggerWarnings, genres = genreTags.value, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = parsedInt, writerId = user.id, writerName = user.displayName)
+                        val p = Proposal(id = id, title = title.value, typeOfProject = projectType.value, blurb = blurb.value, triggerWarnings = triggerWarnings.value, genres = genreTags.value, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = parsedInt, writerId = user.id, writerName = user.displayName)
                         Firebase.firestore.collection("proposals")
                             .document(id)
                             .set(p)
