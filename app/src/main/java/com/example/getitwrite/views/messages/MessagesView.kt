@@ -102,7 +102,9 @@ fun ShowMessages(
                 }
             }
         }
-        Column(modifier = Modifier.fillMaxHeight().padding(10.dp)) {
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .padding(10.dp)) {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -111,7 +113,7 @@ fun ShowMessages(
                     if (it.senderId == user.id) {
                         SingleOwnMessage(it.content, it.created)
                     } else {
-                        SingleOtherMessage(it.content, it.created)
+                        SingleOtherMessage(user = user, message = it, chatId = chatId)
                     }
                 }
                 ErrorText(error = errorString)
