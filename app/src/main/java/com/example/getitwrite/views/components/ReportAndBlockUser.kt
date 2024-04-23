@@ -1,6 +1,5 @@
 package com.example.getitwrite.views.components
 
-import android.text.format.DateUtils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
@@ -30,27 +28,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.getitwrite.Colours
-import com.example.getitwrite.modals.Proposal
-import com.example.getitwrite.modals.RequestCritique
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.User
-import com.example.getitwrite.views.critiqueFrenzy.MakeFrenzyView
-import com.example.getitwrite.views.messages.SelectProposalView
-import com.example.getitwrite.views.proposals.ProposalView
+import com.example.getitwrite.modals.UserGeneratedContent
 import com.google.firebase.Firebase
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
-import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReportAndBlockUser(userToBlock: String, user: User) {
+fun ReportAndBlockUser(userToBlock: String,
+                       user: User,
+                       contentToReport: UserGeneratedContent,
+                       contentToReportType: ContentToReportType,
+                       questionId: String?,
+                       chatId: String?) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var showButtons = remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
@@ -65,7 +62,11 @@ fun ReportAndBlockUser(userToBlock: String, user: User) {
             },
             sheetState = sheetState
         ) {
-            ReportContent()
+            ReportContent(contentToReport = contentToReport,
+                user = user,
+                contentToReportType = contentToReportType,
+                questionId = questionId,
+                chatId = chatId)
         }
     }
     Column {
@@ -153,16 +154,26 @@ fun MyAlertDialog(shouldShowDialog: MutableState<Boolean>, user: User, blockUser
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReportContent() {
+fun ReportContent(contentToReport: UserGeneratedContent,
+                  user: User,
+                  contentToReportType: ContentToReportType,
+                  questionId: String?,
+                  chatId: String?) {
     var errorString = remember { mutableStateOf("") }
     val comments = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .fillMaxHeight()
         .padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text("Would you like to add any notes about the content you are reporting?")
-        OutlinedTextField(value = comments.value, maxLines = 5, onValueChange = { comments.value = it })
+        OutlinedTextField(
+            value = comments.value,
+            maxLines = 5,
+            onValueChange = { comments.value = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+        )
         Text(
             text = "The content will be reviewed and appropriate action will be taken, which can include deleting the perpetrators account. Upon refresh, you'll find the content has been removed from the app.",
             fontWeight = FontWeight.Light
@@ -172,13 +183,38 @@ fun ReportContent() {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-//                Firebase.firestore.collection("reportedContent").document(id).set(requestCritique)
-//                    .addOnSuccessListener {
-//                        errorString.value = "Reported!"
-//                    }
-//                    .addOnFailureListener {
-//                        errorString.value = it.message.toString()
-//                    }
+                Firebase.firestore.collection("reportedContent").document(contentToReport.id).set(contentToReport)
+                    .addOnSuccessListener {
+                        if (contentToReportType == ContentToReportType.CRITIQUE) {
+                            Firebase.firestore.collection("users").document(user.id)
+                                .collection("critiques").document(contentToReport.id).delete()
+                        } else if (contentToReportType == ContentToReportType.REQUESTCRITIQUE) {
+                            Firebase.firestore.collection("users").document(user.id)
+                                .collection("requestCritiques").document(contentToReport.id).delete()
+                        } else {
+                            questionId?.let {
+                                Firebase.firestore.collection("questions").document(it)
+                                    .collection("replies").document(contentToReport.id).delete()
+                            } ?: run {
+                                chatId?.let {
+                                    Firebase.firestore.collection("chats").document(it)
+                                        .collection("messages").document(contentToReport.id).delete()
+                                } ?: run {
+                                    if (contentToReportType == ContentToReportType.questions) {
+                                        Firebase.firestore.collection("questions").document(contentToReport.id).delete()
+                                    } else if (contentToReportType == ContentToReportType.proposals) {
+                                        Firebase.firestore.collection("proposals").document(contentToReport.id).delete()
+                                    } else {
+                                        errorString.value = "Content not valid."
+                                    }
+                                }
+                            }
+                        }
+                        errorString.value = "Reported!"
+                    }
+                    .addOnFailureListener {
+                        errorString.value = it.message.toString()
+                    }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
         ) {

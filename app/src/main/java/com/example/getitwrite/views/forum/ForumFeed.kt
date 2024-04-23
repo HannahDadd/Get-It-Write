@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.example.getitwrite.modals.Chat
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.ProfileImage
@@ -103,8 +104,13 @@ fun ForumView(user: User, question: Question, isFeed: Boolean, select: (String) 
             Text(question.questionerName, fontSize = 20.sp)
         }
         Text(question.question, fontWeight = FontWeight.Bold)
-        if (!isFeed) {
-            ReportAndBlockUser(userToBlock = question.questionerId, user = user)
+        if (isFeed) {
+            ReportAndBlockUser(userToBlock = question.questionerId,
+                user = user,
+                contentToReport = question,
+                contentToReportType = ContentToReportType.questions,
+                questionId = null,
+                chatId = null)
         }
         Row(
             modifier = Modifier

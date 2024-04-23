@@ -37,6 +37,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.Question
 import com.example.getitwrite.modals.Reply
 import com.example.getitwrite.modals.User
@@ -75,7 +76,7 @@ fun QuestionDetailView(question: Question, user: User,
             ) {
                 ForumView(user, question, false, {})
                 replies.forEach {
-                    ReplyView(it, user)
+                    ReplyView(it, user, question.id)
                 }
                 ErrorText(error = errorString)
                 Row(modifier = Modifier.fillMaxWidth(),
@@ -124,7 +125,7 @@ fun QuestionDetailView(question: Question, user: User,
 }
 
 @Composable
-fun ReplyView(reply: Reply, user: User) {
+fun ReplyView(reply: Reply, user: User, questionId: String) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(10.dp)) {
         Row(
@@ -135,7 +136,12 @@ fun ReplyView(reply: Reply, user: User) {
             Text(reply.replierName, fontSize = 20.sp)
         }
         Text(reply.reply)
-        ReportAndBlockUser(userToBlock = reply.replierId, user = user)
+        ReportAndBlockUser(userToBlock = reply.replierId,
+            user = user,
+            contentToReport = reply,
+            contentToReportType = ContentToReportType.OTHER,
+            questionId = questionId,
+            chatId = null)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
