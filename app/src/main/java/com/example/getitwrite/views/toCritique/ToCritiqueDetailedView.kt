@@ -33,11 +33,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.ErrorText
+import com.example.getitwrite.views.components.ReportAndBlockUser
 import com.example.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -79,6 +81,14 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
             }
             Divider()
             Text("Blurb", fontWeight = FontWeight.Bold)
+            ReportAndBlockUser(
+                userToBlock = toCritique.writerId,
+                user = user,
+                contentToReport = toCritique,
+                contentToReportType = ContentToReportType.REQUESTCRITIQUE,
+                questionId = null,
+                chatId = null
+            )
             Text(toCritique.blurb)
             TagCloud(tags = toCritique.triggerWarnings, action = null)
             Divider()

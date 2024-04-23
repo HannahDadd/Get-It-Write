@@ -71,7 +71,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable("yourWork") {
-            CritiquedFeed(critiqued, actions.selectCritiqued, navigateUp = actions.navigateUp)
+            CritiquedFeed(user = user, critiqued, actions.selectCritiqued, navigateUp = actions.navigateUp)
         }
         composable("resetEmail") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)

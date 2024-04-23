@@ -21,15 +21,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.FindPartnersText
 import com.example.getitwrite.views.components.ProfileImage
+import com.example.getitwrite.views.components.ReportAndBlockUser
 import com.example.getitwrite.views.settings.BottomSheetContent
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
@@ -38,7 +41,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit, navigateUp: () -> Unit) {
+fun CritiquedFeed(user: User, critiques: List<Critique>, selectCritique: (String) -> Unit, navigateUp: () -> Unit) {
     if (critiques.isEmpty()) {
         Column {
             DetailHeader(title = "Your Work, Critiqued", navigateUp = navigateUp)
@@ -52,7 +55,7 @@ fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit, n
             DetailHeader(title = "Your Work, Critiqued", navigateUp = navigateUp)
             LazyColumn(Modifier.padding(10.dp)) {
                 items(critiques) { work ->
-                    CritiqueView(critique = work, selectCritique)
+                    CritiqueView(user = user, critique = work, selectCritique)
                     Divider()
                 }
             }
@@ -61,7 +64,7 @@ fun CritiquedFeed(critiques: List<Critique>, selectCritique: (String) -> Unit, n
 }
 
 @Composable
-fun CritiqueView(critique: Critique, select: (String) -> Unit) {
+fun CritiqueView(user: User, critique: Critique, select: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.padding(10.dp).clickable { select(critique.id) }) {
         Row(
@@ -72,7 +75,17 @@ fun CritiqueView(critique: Critique, select: (String) -> Unit) {
             ProfileImage(username = critique.critiquerName, profileColour = critique.critiquerProfileColour)
             Text(critique.critiquerName, fontSize = 20.sp)
         }
-        Text(critique.overallFeedback, fontWeight = FontWeight.Bold)
+        ReportAndBlockUser(
+            userToBlock = critique.critiquerId,
+            user = user,
+            contentToReport = critique,
+            contentToReportType = ContentToReportType.CRITIQUE,
+            questionId = null,
+            chatId = null
+        )
+        Text(text = critique.overallFeedback,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)
         Row(modifier = Modifier.fillMaxWidth().padding()) {
             Text(
                 text = DateUtils.getRelativeTimeSpanString(

@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.getitwrite.Colours
+import com.example.getitwrite.modals.ContentToReportType
 import com.example.getitwrite.modals.Critique
 import com.example.getitwrite.modals.RequestCritique
 import com.example.getitwrite.modals.User

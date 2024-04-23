@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import java.util.TreeMap
 
 class Critique (
-    val id: String,
+    override var id: String,
     val comments: Map<String, Long>,
     val overallFeedback: String,
     val critiquerId: String,
@@ -15,7 +15,7 @@ class Critique (
     val critiquerProfileColour: Int,
     val timestamp: Timestamp,
     val rated: Boolean
-) {
+) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this (
     id = id,
     comments = data["comments"] as Map<String, Long>,
