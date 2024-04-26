@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +35,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +61,7 @@ import com.example.getitwrite.modals.Proposal
 import com.example.getitwrite.modals.User
 import com.example.getitwrite.views.components.DetailHeader
 import com.example.getitwrite.views.components.ErrorText
+import com.example.getitwrite.views.proposals.ProposalView
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
@@ -102,20 +107,25 @@ fun ShowMessages(
                 }
             }
         }
-        Column(modifier = Modifier
-            .fillMaxHeight()
-            .padding(10.dp)) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                messages.forEach {
-                    if (it.senderId == user.id) {
-                        SingleOwnMessage(it.content, it.created)
-                    } else {
-                        SingleOtherMessage(user = user, message = it, chatId = chatId)
-                    }
+        val lazyListState = rememberLazyListState()
+        LaunchedEffect(key1 = messages.size) {
+            lazyListState.animateScrollToItem(messages.size + 1)
+        }
+        LazyColumn(
+            state = lazyListState,
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(messages) { it ->
+                if (it.senderId == user.id) {
+                    SingleOwnMessage(it.content, it.created)
+                } else {
+                    SingleOtherMessage(user = user, message = it, chatId = chatId)
                 }
+            }
+            item {
                 ErrorText(error = errorString)
                 Button(
                     modifier = Modifier.fillMaxWidth(),

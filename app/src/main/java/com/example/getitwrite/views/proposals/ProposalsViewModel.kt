@@ -1,12 +1,14 @@
 package com.example.getitwrite.views.proposals
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.getitwrite.modals.Proposal
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.tasks.await
 
 class ProposalsViewModel : ViewModel() {
