@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Get It Write</string>
+    <string name="facebook_app_id">1577650032814169</string>
+    <string name="fb_login_protocol_scheme">fb1577650032814169</string>
+    <string name="facebook_client_token">56789</string>
 </resources>
