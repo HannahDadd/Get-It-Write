@@ -2,10 +2,12 @@ package hannah.bd.getitwrite.views.feed
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -52,7 +54,8 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
-        popExitTransition = { ExitTransition.None }
+        popExitTransition = { ExitTransition.None },
+        modifier = Modifier.fillMaxSize()
     ) {
         composable("feed") {
             MainView(logoutNavController, questions = questions, toCritiques = toCritiques,

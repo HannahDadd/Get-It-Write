@@ -5,7 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,7 +45,8 @@ class MainActivity : ComponentActivity() {
             popEnterTransition = { EnterTransition.None },
             popExitTransition = { ExitTransition.None },
             navController = navController,
-            startDestination = destination
+            startDestination = destination,
+            modifier = Modifier.fillMaxSize()
         ) {
             composable("login") {
                 ShowLogin(navController, auth)
