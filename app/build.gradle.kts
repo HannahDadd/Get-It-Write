@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.getitwrite"
+    namespace = "hannah.bd.getitwrite"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.getitwrite"
+        applicationId = "hannah.bd.getitwrite"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -33,6 +33,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -71,7 +72,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
-    implementation("com.facebook.android:facebook-login:latest.release")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
