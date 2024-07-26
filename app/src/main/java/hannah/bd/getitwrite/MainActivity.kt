@@ -21,11 +21,11 @@ import hannah.bd.getitwrite.views.login.ShowSignUp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import hannah.bd.getitwrite.views.login.ShowOpeningPage
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
     private var destination = "login"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -48,6 +48,9 @@ class MainActivity : ComponentActivity() {
             startDestination = destination,
             modifier = Modifier.fillMaxSize()
         ) {
+            composable("onboarding") {
+                ShowOpeningPage(navController)
+            }
             composable("login") {
                 ShowLogin(navController, auth)
             }

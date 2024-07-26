@@ -1,23 +1,37 @@
 package hannah.bd.getitwrite.views.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
@@ -25,13 +39,20 @@ import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.views.components.ErrorText
 import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.views.components.ReportContent
+import hannah.bd.getitwrite.views.settings.TsAndCsView
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf("") }
-    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+        .padding(20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Image(painter = painterResource(id = R.drawable.sitting), modifier = Modifier.fillMaxWidth(), contentDescription = "", contentScale = ContentScale.FillWidth)
         Text("Login", fontSize = 40.sp, fontWeight = FontWeight.Bold)
         ErrorText(error = errorString)

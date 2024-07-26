@@ -53,7 +53,8 @@ fun ErrorText(error: MutableState<String>) {
 
 @Composable
 fun QuestionSection(response: MutableState<String>, question: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(20.dp), modifier = Modifier.padding(vertical = 10.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier.padding(vertical = 10.dp)) {
         Text(question, fontWeight = FontWeight.Bold)
         OutlinedTextField(
             value = response.value,

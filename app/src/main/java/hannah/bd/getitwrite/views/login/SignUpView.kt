@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,15 +35,29 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.views.settings.TsAndCsView
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
     var email = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var confirmPassword = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf("") }
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
 
     Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                sheetState = sheetState
+            ) {
+                TsAndCsView()
+            }
+        }
         Image(painter = painterResource(id = R.drawable.building), modifier = Modifier.fillMaxWidth(), contentDescription = "", contentScale = ContentScale.FillWidth)
         Text("Sign Up", fontSize = 40.sp, fontWeight = FontWeight.Bold)
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
@@ -63,6 +82,12 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Confirm Password") }
             )
+        }
+        TextButton(onClick = { showBottomSheet = true }) {
+            Text("By signing up you agree you were over 18 and our terms and conditions.",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Light,
+                color = Color.Red)
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
