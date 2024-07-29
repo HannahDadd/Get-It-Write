@@ -25,7 +25,7 @@ import hannah.bd.getitwrite.views.login.ShowOpeningPage
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
-    private var destination = "login"
+    private var destination = "onboarding"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.fillMaxSize()
         ) {
             composable("onboarding") {
-                ShowOpeningPage(navController)
+                ShowOpeningPage(navController, auth)
             }
             composable("login") {
                 ShowLogin(navController, auth)

@@ -1,14 +1,18 @@
 package hannah.bd.getitwrite.views.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -20,11 +24,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
 
 @Composable
@@ -51,6 +59,33 @@ fun ErrorText(error: MutableState<String>) {
     Text(error.value, color = Color.Red)
 }
 
+@Composable
+fun ImageButtonWithText(
+    painter: Painter,
+    contentDescription: String,
+    buttonText: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(150.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+    ) {
+        Image(
+            painter = painter,
+            contentDescription = contentDescription,
+            modifier = Modifier.fillMaxSize()
+        )
+        Text(
+            text = buttonText,
+            color = Color.White,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
+}
 @Composable
 fun QuestionSection(response: MutableState<String>, question: String) {
     Column(verticalArrangement = Arrangement.spacedBy(20.dp),
