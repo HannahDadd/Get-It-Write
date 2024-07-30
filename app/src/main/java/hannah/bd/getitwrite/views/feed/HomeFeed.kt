@@ -17,10 +17,12 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.ListItemDefaults.contentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.ImageButtonWithText
 
 @Composable
@@ -55,14 +58,27 @@ fun HomeFeed() {
         Triple(R.drawable.romance, "Romance", "crime"),
         Triple(R.drawable.thriller, "Thriller", "crime"))
     Column {
-
-        LazyRow {
-            item {
-                SquareTileButton(
-                    title = "To critique",
-                    wordCount = "100 words",
-                    onClick = {}
-                )
+        Column(
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.primary)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "title",
+                style = MaterialTheme.typography.titleLarge,
+//                color = contentColor,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    SquareTileButton(
+                        title = "To critique",
+                        wordCount = "100 words",
+                        onClick = {}
+                    )
+                }
             }
         }
 
@@ -117,14 +133,14 @@ fun SquareTileButton(
         Icon(Icons.Filled.Notifications, contentDescription = "", tint = Color.White)
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineMedium,
+            style = AppTypography.headlineMedium,
             color = Color.White,
             fontSize = 18.sp
         )
         Spacer(modifier = Modifier.weight(1.0f))
         Text(
             text = wordCount,
-            style = MaterialTheme.typography.labelSmall,
+            style = AppTypography.labelSmall,
             fontWeight = FontWeight.Bold,
             color = Color.White,
             fontSize = 18.sp

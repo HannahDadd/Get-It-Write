@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.SnackbarDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Edit
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,7 +59,7 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
     val navController = rememberNavController()
     Scaffold(
         bottomBar = {
-            BottomNavigation(backgroundColor = Colours.bold) {
+            BottomNavigation(backgroundColor = MaterialTheme.colorScheme.background) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 items.forEach { screen ->
@@ -65,9 +67,9 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
                         icon = { Icon(
                             imageVector = screen.resourceId,
                             contentDescription = screen.label,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(20.dp),
+                            tint = MaterialTheme.colorScheme.onBackground
                         ) },
-                        label = { Text(screen.label, fontWeight = FontWeight.Light, fontSize = 8.sp) },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {
                             navController.navigate(screen.route) {

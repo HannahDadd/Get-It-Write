@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,7 +34,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             GetItWriteTheme {
-                NavigationComponent(navController)
+                Surface(tonalElevation = 5.dp) {
+                    NavigationComponent(navController)
+                }
             }
         }
     }
