@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
@@ -69,7 +71,6 @@ fun ImageButtonWithText(
     Box(
         modifier = Modifier
             .size(150.dp)
-            .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onClick)
     ) {
         Image(
@@ -77,13 +78,19 @@ fun ImageButtonWithText(
             contentDescription = contentDescription,
             modifier = Modifier.fillMaxSize()
         )
-        Text(
-            text = buttonText,
-            color = Color.White,
-            fontSize = 20.sp,
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
+        Surface(
+            color = Color.White, modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.2F)
+        ) {
+            Text(
+                text = buttonText,
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(bottom = 5.dp)
+                    .align(Alignment.BottomCenter)
+            )
+        }
     }
 }
 @Composable

@@ -95,7 +95,7 @@ fun MainView(logoutNavController: NavHostController, questions: List<Question>, 
             topBar = {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Colours.bold,
+                        containerColor = Colours.Dark_Background,
                         titleContentColor = Colours.Dark_Readable,
                     ),
                     title = {

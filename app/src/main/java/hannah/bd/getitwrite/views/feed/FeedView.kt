@@ -47,9 +47,10 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
              selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit,
              selectQuestion: (String) -> Unit, selectFrenzy: (String) -> Unit) {
     val items = listOf(
-        Screen.CritiqueFrenzy,
-        Screen.ToCritique,
-        Screen.Forum,
+        Screen.Home,
+//        Screen.CritiqueFrenzy,
+//        Screen.ToCritique,
+//        Screen.Forum,
         Screen.Messages,
         Screen.FindPartners
     )
@@ -88,8 +89,11 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             popEnterTransition = { EnterTransition.None },
             popExitTransition = { ExitTransition.None },
             navController = navController,
-            startDestination = Screen.Forum.route,
-            modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+            startDestination = Screen.Home.route,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()) {
+            composable(Screen.Home.route) { HomeFeed() }
             composable(Screen.CritiqueFrenzy.route) { FrenzyFeed(user, proposals, critiqueFrenzy, selectFrenzy) }
             composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
@@ -100,6 +104,7 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
 }
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
+    object Home : Screen("homeFeed", "", Icons.Default.Home)
     object ToCritique : Screen("toCritique", "Critique Swap", Icons.Default.Edit)
     object CritiqueFrenzy : Screen("frenzy", "All Critiques", Icons.AutoMirrored.Filled.List)
     object Forum : Screen("forum", "Forum", Icons.Default.Home)
