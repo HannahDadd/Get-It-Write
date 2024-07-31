@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,10 +16,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -70,7 +76,7 @@ fun AIPromo() {
         modifier = Modifier
             .height(250.dp)
             .fillMaxWidth()
-            .clickable(onClick = {  }),
+            .clickable(onClick = { }),
         contentAlignment = Alignment.Center
     ) {
         Image(
@@ -88,7 +94,10 @@ fun AIPromo() {
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
-            modifier = Modifier.background(Color.White).align(Alignment.Center).width(200.dp)
+            modifier = Modifier
+                .background(Color.White)
+                .align(Alignment.Center)
+                .width(200.dp)
         )
     }
 }
@@ -156,5 +165,69 @@ fun WorkToCritique() {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun RecomendedCritiquers() {
+    Column(
+        modifier = Modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Text(
+            text = "Recommended critique partners",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            item {
+                SquareTileButton(
+                    title = "Hannah",
+                    wordCount = "Why? Frequently critiques works quickly.",
+                    backgroundColour = MaterialTheme.colorScheme.tertiary,
+                    textColour = MaterialTheme.colorScheme.onTertiary,
+                    icon = Icons.Default.AccountCircle,
+                    onClick = {}
+                )
+            }
+            item {
+                SquareTileButton(
+                    title = "Hannah",
+                    wordCount = "Why? Frequently critiques sci fi, like you.",
+                    backgroundColour = MaterialTheme.colorScheme.tertiary,
+                    textColour = MaterialTheme.colorScheme.onTertiary,
+                    icon = Icons.Default.AccountCircle,
+                    onClick = {}
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CheckYourMessages() {
+    Column {
+        Divider()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.background(MaterialTheme.colorScheme.secondary)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Messages",
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            Icon(
+                Icons.Default.KeyboardArrowRight,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.onSecondary
+            )
+        }
+        Divider()
     }
 }

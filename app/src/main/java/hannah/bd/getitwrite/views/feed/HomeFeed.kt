@@ -65,7 +65,13 @@ fun HomeFeed() {
             CritiquedWord()
         }
         item {
+            JoinTheConvo()
+        }
+        item {
             AIPromo()
+        }
+        item {
+            RecomendedCritiquers()
         }
         item {
             DarkBackgroundCards("Quick Query Feedback")
