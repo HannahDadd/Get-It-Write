@@ -59,93 +59,13 @@ fun HomeFeed() {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
         item {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    text = "Welcome",
-                    style = MaterialTheme.typography.displayMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    item {
-                        SquareTileButton(
-                            title = "To critique",
-                            wordCount = "100 words",
-                            backgroundColour = MaterialTheme.colorScheme.primary,
-                            textColour = MaterialTheme.colorScheme.onPrimary,
-                            icon = Icons.Default.Notifications,
-                            onClick = {}
-                        )
-                    }
-                }
-            }
+            WorkToCritique()
         }
         item {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                Text(
-                    text = "Your work, critiqued by your writing friends",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(15.dp)
-                ) {
-                    item {
-                        SquareTileButton(
-                            title = "Get feedback on something!",
-                            wordCount = "",
-                            backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                            textColour = MaterialTheme.colorScheme.onTertiaryContainer,
-                            icon = Icons.Default.Send,
-                            onClick = {}
-                        )
-                    }
-                    item {
-                        SquareTileButton(
-                            title = "Title",
-                            wordCount = "100 words",
-                            backgroundColour = MaterialTheme.colorScheme.tertiary,
-                            textColour = MaterialTheme.colorScheme.onTertiary,
-                            icon = Icons.Default.Edit,
-                            onClick = {}
-                        )
-                    }
-                }
-            }
+            CritiquedWord()
         }
         item {
-            Box(
-                modifier = Modifier
-                    .height(250.dp)
-                    .fillMaxWidth()
-                    .clickable(onClick = {  }),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.aibg),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(10.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
-                Text(
-                    text = "Get AI feedback on your writing, instantly",
-                    color = Color.Black,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.background(Color.White).align(Alignment.Center).width(200.dp)
-                )
-            }
+            AIPromo()
         }
         item {
             DarkBackgroundCards("Quick Query Feedback")
@@ -173,37 +93,6 @@ fun HomeFeed() {
 //                )
 //            }
 //        }
-    }
-}
-
-@Composable
-fun DarkBackgroundCards(title: String) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.secondary)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                SquareTileButton(
-                    title = "To critique",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
-                    textColour = MaterialTheme.colorScheme.onSecondaryContainer,
-                    icon = Icons.Default.Email,
-                    onClick = {}
-                )
-            }
-        }
     }
 }
 
