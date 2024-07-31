@@ -92,7 +92,7 @@ fun SquareTileButton(
         )
         Text(
             text = title,
-            style = AppTypography.headlineMedium,
+            style = AppTypography.titleSmall,
             color = textColour,
             fontSize = 18.sp
         )
@@ -100,7 +100,6 @@ fun SquareTileButton(
         Text(
             text = wordCount,
             style = AppTypography.labelSmall,
-            fontWeight = FontWeight.Bold,
             color = textColour,
             fontSize = 18.sp
         )

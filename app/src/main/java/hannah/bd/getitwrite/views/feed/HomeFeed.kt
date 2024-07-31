@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,7 +57,7 @@ fun HomeFeed() {
                         wordCount = "100 words",
                         backgroundColour = MaterialTheme.colorScheme.primary,
                         textColour = MaterialTheme.colorScheme.onPrimary,
-                        icon = Icons.Default.Edit,
+                        icon = Icons.Default.Notifications,
                         onClick = {}
                     )
                 }
@@ -64,7 +66,7 @@ fun HomeFeed() {
         item {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Text(
                     text = "Your work, critiqued by your writing friends",
@@ -72,8 +74,18 @@ fun HomeFeed() {
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
+                    item {
+                        SquareTileButton(
+                            title = "Get feedback on something!",
+                            wordCount = "",
+                            backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
+                            textColour = MaterialTheme.colorScheme.onTertiaryContainer,
+                            icon = Icons.Default.Send,
+                            onClick = {}
+                        )
+                    }
                     item {
                         SquareTileButton(
                             title = "Title",
@@ -137,8 +149,8 @@ fun DarkBackgroundCards(title: String) {
                 SquareTileButton(
                     title = "To critique",
                     wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.secondary,
-                    textColour = MaterialTheme.colorScheme.onSecondary,
+                    backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
+                    textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                     icon = Icons.Default.Email,
                     onClick = {}
                 )
