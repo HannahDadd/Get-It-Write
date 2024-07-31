@@ -40,7 +40,6 @@ import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
 import hannah.bd.getitwrite.views.forum.ForumFeed
 import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.messages.ChatsViewModel
-import hannah.bd.getitwrite.views.proposals.ProposalsFeed
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueFeed
 
 @Composable
@@ -100,7 +99,6 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
-            composable(Screen.FindPartners.route) { ProposalsFeed(user = user, proposals = proposals, selectProposal = selectProposal) }
         }
     }
 }

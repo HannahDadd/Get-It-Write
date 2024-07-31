@@ -68,7 +68,7 @@ fun FeedNavHost(user: User, questions: List<Question>, critiqueFrenzy: List<Requ
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            arguments.getString("id")?.let { ProposalNavHost(it) }
+            arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
         composable("feed") {
             HomeFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, navController)

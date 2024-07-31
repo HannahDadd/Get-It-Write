@@ -153,23 +153,6 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
             val critiqued = critiqued.filter { it.id == id }.get(0)
             CritiquedDetailedView(critiqued, actions.navigateUp)
         }
-        composable(
-            "details/{proposal_id}",
-            arguments = listOf(
-                navArgument("proposal_id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            ProposalDetails(
-                proposalId = arguments.getString("proposal_id")!!,
-                proposals = proposals,
-                user = user,
-                navController = navController,
-                navigateUp = actions.navigateUp
-            )
-        }
     }
 }
 
