@@ -1,45 +1,22 @@
 package hannah.bd.getitwrite.views.feed
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.SnackbarDefaults.backgroundColor
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.ListItemDefaults.contentColor
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.R
-import hannah.bd.getitwrite.theme.AppTypography
-import hannah.bd.getitwrite.views.components.ImageButtonWithText
+import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
 fun HomeFeed() {
@@ -57,93 +34,116 @@ fun HomeFeed() {
         Triple(R.drawable.memoir, "Memoir", "crime"),
         Triple(R.drawable.romance, "Romance", "crime"),
         Triple(R.drawable.thriller, "Thriller", "crime"))
-    Column {
-        Column(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.primary)
-                .padding(16.dp)
-        ) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        item {
             Text(
-                text = "title",
-                style = MaterialTheme.typography.titleLarge,
-//                color = contentColor,
-                modifier = Modifier.padding(bottom = 8.dp)
+                text = "Welcome",
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(16.dp)
             )
+        }
+        item {
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(16.dp)
             ) {
                 item {
                     SquareTileButton(
                         title = "To critique",
                         wordCount = "100 words",
+                        backgroundColour = MaterialTheme.colorScheme.primary,
+                        textColour = MaterialTheme.colorScheme.onPrimary,
+                        icon = Icons.Default.Edit,
                         onClick = {}
                     )
                 }
             }
         }
-
-        LazyRow {
-            items(genres) {(image, name, dest) ->
-
-                ImageButtonWithText(
-                    painter = painterResource(image),
-                    contentDescription = "",
-                    buttonText = name,
-                    onClick = { /* Handle Click */ }
+        item {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = "Your work, critiqued by your writing friends",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    item {
+                        SquareTileButton(
+                            title = "Title",
+                            wordCount = "100 words",
+                            backgroundColour = MaterialTheme.colorScheme.tertiary,
+                            textColour = MaterialTheme.colorScheme.onTertiary,
+                            icon = Icons.Default.Edit,
+                            onClick = {}
+                        )
+                    }
+                }
             }
         }
-        LazyRow {
-            items(images) {(image, name, dest) ->
-
-                ImageButtonWithText(
-                    painter = painterResource(image),
-                    contentDescription = "",
-                    buttonText = name,
-                    onClick = { /* Handle Click */ }
-                )
-            }
+        item {
+            DarkBackgroundCards("Quick Query Feedback")
         }
+
+//        LazyRow {
+//            items(genres) {(image, name, dest) ->
+//
+//                ImageButtonWithText(
+//                    painter = painterResource(image),
+//                    contentDescription = "",
+//                    buttonText = name,
+//                    onClick = { /* Handle Click */ }
+//                )
+//            }
+//        }
+//        LazyRow {
+//            items(images) {(image, name, dest) ->
+//
+//                ImageButtonWithText(
+//                    painter = painterResource(image),
+//                    contentDescription = "",
+//                    buttonText = name,
+//                    onClick = { /* Handle Click */ }
+//                )
+//            }
+//        }
     }
-
 }
 
 @Composable
-fun SquareTileButton(
-    title: String,
-    wordCount: String,
-    onClick: () -> Unit
-) {
+fun DarkBackgroundCards(title: String) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
-            .size(150.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFFFA726), // Dark orange (start)
-                        Color(0xFFF57C00)  // Darker orange (end)
-                    )
-                )
-            )
-            .clickable(onClick = onClick)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondary)
+            .padding(16.dp)
     ) {
-        Icon(Icons.Filled.Notifications, contentDescription = "", tint = Color.White)
         Text(
             text = title,
-            style = AppTypography.headlineMedium,
-            color = Color.White,
-            fontSize = 18.sp
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSecondary
         )
-        Spacer(modifier = Modifier.weight(1.0f))
-        Text(
-            text = wordCount,
-            style = AppTypography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            fontSize = 18.sp
-        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            item {
+                SquareTileButton(
+                    title = "To critique",
+                    wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.secondary,
+                    textColour = MaterialTheme.colorScheme.onSecondary,
+                    icon = Icons.Default.Email,
+                    onClick = {}
+                )
+            }
+        }
     }
 }
+

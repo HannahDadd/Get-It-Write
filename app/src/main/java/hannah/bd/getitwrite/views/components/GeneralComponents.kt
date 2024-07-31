@@ -1,11 +1,13 @@
 package hannah.bd.getitwrite.views.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,8 +21,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -32,10 +36,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
+import hannah.bd.getitwrite.theme.AppTypography
 
 @Composable
 fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
@@ -59,6 +65,46 @@ fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
 @Composable
 fun ErrorText(error: MutableState<String>) {
     Text(error.value, color = Color.Red)
+}
+
+@Composable
+fun SquareTileButton(
+    title: String,
+    wordCount: String,
+    backgroundColour: Color,
+    textColour: Color,
+    icon: ImageVector,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .size(150.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(color = backgroundColour)
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Icon(
+            icon,
+            contentDescription = "",
+            tint = textColour
+        )
+        Text(
+            text = title,
+            style = AppTypography.headlineMedium,
+            color = textColour,
+            fontSize = 18.sp
+        )
+        Spacer(modifier = Modifier.weight(1.0f))
+        Text(
+            text = wordCount,
+            style = AppTypography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = textColour,
+            fontSize = 18.sp
+        )
+    }
 }
 
 @Composable

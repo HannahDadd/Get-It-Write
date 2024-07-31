@@ -1,7 +1,6 @@
 package hannah.bd.getitwrite.theme
 import androidx.compose.ui.graphics.Color
 
-
 val primaryLight = Color(0xFF4C662B)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFCDEDA3)
