@@ -54,7 +54,6 @@ fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
             modifier = modifier.size(40.dp),
             contentPadding = PaddingValues(1.dp)
         ) {
-            // Inner content including an icon and a text label
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = "Favorite",

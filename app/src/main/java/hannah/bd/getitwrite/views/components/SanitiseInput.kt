@@ -12,6 +12,11 @@ class CheckInput {
             val notEmpty = str != ""
             if (match.isEmpty() || notEmpty) return input else return null
         }
+
+        fun verifyCanBeEmpty(input: String) : String? {
+            val match = Profanities.list.filter { input.contains(it, ignoreCase = true) }
+            if (match.isEmpty()) return input else return null
+        }
     }
 }
 

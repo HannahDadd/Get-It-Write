@@ -1,14 +1,19 @@
 package hannah.bd.getitwrite.views.proposals
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,6 +31,7 @@ import hannah.bd.getitwrite.views.components.ReportAndBlockUser
 import hannah.bd.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.theme.AppTypography
 import java.util.UUID
 
 @Composable
@@ -34,33 +40,10 @@ fun ProposalDetails(
     user: User,
     navController: NavController
 ) {
-    Column {
-        DetailHeader(title = proposal.title, navigateUp = { navController.navigateUp() })
-        Column(
-            modifier = Modifier.padding(10.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Text("Blurb", fontWeight = FontWeight.Bold)
-            Text(proposal.blurb)
-            ReportAndBlockUser(
-                userToBlock = proposal.writerId,
-                user = user,
-                contentToReport = proposal,
-                contentToReportType = ContentToReportType.proposals,
-                questionId = null,
-                chatId = null
-            )
-            Divider()
-            Text("Author's notes", fontWeight = FontWeight.Bold)
-            Text(proposal.authorNotes)
-            Text(text = "${proposal.wordCount} words", fontWeight = FontWeight.Light)
-            Divider()
-            Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Bold)
-            Text("Genres", fontWeight = FontWeight.Bold)
-            TagCloud(tags = proposal.genres, action = null)
-            Text("Trigger warnings:", fontWeight = FontWeight.Bold)
-            TagCloud(tags = proposal.triggerWarnings, action = null)
+    Scaffold(
+        bottomBar = {
             Button(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
                 onClick = {
                     Firebase.firestore.collection("chats")
                         .whereArrayContains("users", arrayOf(user.id, proposal.writerId))
@@ -70,7 +53,7 @@ fun ProposalDetails(
                                 Firebase.firestore.collection("chats").document(id)
                                     .set(mapOf("users" to listOf(user.id, proposal.writerId)))
                                     .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
-                                    .addOnFailureListener {  }
+                                    .addOnFailureListener { }
                             } else {
                                 val doc = it.documents.get(0)
                                 navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
@@ -82,8 +65,54 @@ fun ProposalDetails(
                     contentColor = Color.White
                 )
             ) {
-                Text("Send Author Message", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+                Text(
+                    "Send Author Message",
+                    Modifier.padding(10.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            DetailHeader(title = proposal.title, navigateUp = { navController.navigateUp() })
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text("Blurb", style = AppTypography.titleMedium,)
+                Text(proposal.blurb)
+                Divider()
+                if (proposal.authorNotes.isNotBlank()) {
+                    Text("Author's notes", style = AppTypography.titleMedium,)
+                    Text(proposal.authorNotes)
+                }
+                Text(text = "${proposal.wordCount} words", style = AppTypography.labelMedium,)
+                Divider()
+                if (proposal.typeOfProject.isNotEmpty()) {
+                    Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Bold)
+                }
+                Text("Genres", style = AppTypography.titleMedium,)
+                TagCloud(tags = proposal.genres, action = null)
+                Text("Trigger warnings:", style = AppTypography.titleMedium,)
+                if (proposal.triggerWarnings.isEmpty()) {
+                    Text("None")
+                } else {
+                    TagCloud(tags = proposal.triggerWarnings, action = null)
+                }
+                ReportAndBlockUser(
+                    userToBlock = proposal.writerId,
+                    user = user,
+                    contentToReport = proposal,
+                    contentToReportType = ContentToReportType.proposals,
+                    questionId = null,
+                    chatId = null
+                )
+            }
         }
     }
 }

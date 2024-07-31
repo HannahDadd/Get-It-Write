@@ -30,15 +30,15 @@ import hannah.bd.getitwrite.R
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FindPartnersByGenre(navController: NavHostController) {
-    val genres = listOf(Triple(R.drawable.scifi, "Sci Fi", "scifi"),
-        Triple(R.drawable.crime, "Crime", "crime"),
+    val genres = listOf(Triple(R.drawable.scifi, "Sci Fi", "Science Fiction"),
+        Triple(R.drawable.crime, "Crime", "Mystery"),
         Triple(R.drawable.dystopian, "Dystopian", "crime"),
-        Triple(R.drawable.fantasy, "Fantasy", "crime"),
-        Triple(R.drawable.histroical, "Historical", "crime"),
-        Triple(R.drawable.magicalrealism, "Magical Realism", "crime"),
-        Triple(R.drawable.memoir, "Memoir", "crime"),
-        Triple(R.drawable.romance, "Romance", "crime"),
-        Triple(R.drawable.thriller, "Thriller", "crime"))
+        Triple(R.drawable.fantasy, "Fantasy", "Fantasy"),
+        Triple(R.drawable.histroical, "Historical", "Historical"),
+        Triple(R.drawable.magicalrealism, "Magical Realism", "Magical Realism"),
+        Triple(R.drawable.memoir, "Memoir", "Memoir"),
+        Triple(R.drawable.romance, "Romance", "Romance"),
+        Triple(R.drawable.thriller, "Thriller", "Thriller"))
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {

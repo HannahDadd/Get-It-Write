@@ -97,7 +97,6 @@ fun ProposalView(proposal: Proposal, selectProposal: (Proposal) -> Unit) {
             .clickable { selectProposal(proposal) }) {
         Text(proposal.title, fontWeight = FontWeight.Bold)
         Text(proposal.blurb)
-        Text(proposal.typeOfProject.joinToString(", "), fontWeight = FontWeight.Light)
         TagCloud(tags = proposal.genres, action = null)
         Row(
             modifier = Modifier

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
@@ -16,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -38,6 +40,7 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.modals.UserGeneratedContent
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.theme.AppTypography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,19 +90,22 @@ fun ReportAndBlockUser(userToBlock: String,
             ) {
                 TextButton(onClick = { showBottomSheet = true }) {
                     Row {
-                        Icon(Icons.Filled.Warning, contentDescription = "", Modifier.padding(end = 10.dp))
+                        Icon(Icons.Filled.Warning,
+                            contentDescription = "",
+                            Modifier
+                                .padding(end = 10.dp)
+                                .size(10.dp),
+                            tint = MaterialTheme.colorScheme.error,)
                         Text("Report content",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Light,
-                            color = Color.Red)
+                            style = AppTypography.labelSmall,
+                            color = MaterialTheme.colorScheme.error)
                     }
                 }
                 Spacer(modifier = Modifier.weight(1.0f))
                 TextButton(onClick = { shouldShowDialog.value = true }) {
                     Text("Block user",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Light,
-                        color = Color.Red)
+                        style = AppTypography.labelSmall,
+                        color = MaterialTheme.colorScheme.error)
                 }
             }
         }
