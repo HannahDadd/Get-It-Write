@@ -108,38 +108,6 @@ fun SquareTileButton(
 }
 
 @Composable
-fun ImageButtonWithText(
-    painter: Painter,
-    contentDescription: String,
-    buttonText: String,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .size(150.dp)
-            .clickable(onClick = onClick)
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = contentDescription,
-            modifier = Modifier.fillMaxSize()
-        )
-        Surface(
-            color = Color.White, modifier = Modifier
-                .fillMaxSize()
-                .alpha(0.2F)
-        ) {
-            Text(
-                text = buttonText,
-                color = Color.White,
-                fontSize = 20.sp,
-                modifier = Modifier.padding(bottom = 5.dp)
-                    .align(Alignment.BottomCenter)
-            )
-        }
-    }
-}
-@Composable
 fun QuestionSection(response: MutableState<String>, question: String) {
     Column(verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier.padding(vertical = 10.dp)) {

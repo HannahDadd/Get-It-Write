@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -40,7 +42,7 @@ import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun DarkBackgroundCards(title: String) {
+fun QuickQueryCritique() {
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
@@ -49,8 +51,8 @@ fun DarkBackgroundCards(title: String) {
             .padding(16.dp)
     ) {
         Text(
-            text = title,
-            style = MaterialTheme.typography.headlineSmall,
+            text = "Quick Query Critique",
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSecondary
         )
         LazyRow(
@@ -60,9 +62,19 @@ fun DarkBackgroundCards(title: String) {
                 SquareTileButton(
                     title = "To critique",
                     wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.primaryContainer,
+                    textColour = MaterialTheme.colorScheme.onPrimaryContainer,
+                    icon = Icons.Default.Email,
+                    onClick = {}
+                )
+            }
+            item {
+                SquareTileButton(
+                    title = "Add your own.",
+                    wordCount = "",
                     backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
                     textColour = MaterialTheme.colorScheme.onSecondaryContainer,
-                    icon = Icons.Default.Email,
+                    icon = Icons.Default.Add,
                     onClick = {}
                 )
             }
@@ -213,7 +225,6 @@ fun CheckYourMessages() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                //.background(MaterialTheme.colorScheme.secondary)
                 .padding(16.dp)
         ) {
             Text(
