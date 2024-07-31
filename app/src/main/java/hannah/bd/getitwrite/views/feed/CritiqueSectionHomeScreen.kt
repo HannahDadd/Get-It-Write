@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.MaterialTheme
@@ -74,6 +75,17 @@ fun QuickQueryCritique() {
                     onClick = {}
                 )
             }
+            item {
+                SquareTileButton(
+                    title = "View more.",
+                    wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
+                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
+                    icon = Icons.Default.ArrowForward,
+                    size = 150.dp,
+                    onClick = {}
+                )
+            }
         }
     }
 }
@@ -112,6 +124,17 @@ fun FreeForAll() {
                     backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
                     textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                     icon = Icons.Default.Add,
+                    size = 150.dp,
+                    onClick = {}
+                )
+            }
+            item {
+                SquareTileButton(
+                    title = "View more.",
+                    wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
+                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
+                    icon = Icons.Default.ArrowForward,
                     size = 150.dp,
                     onClick = {}
                 )

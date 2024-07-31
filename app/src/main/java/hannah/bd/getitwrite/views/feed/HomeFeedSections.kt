@@ -63,7 +63,7 @@ fun AIPromo() {
                 .clip(RoundedCornerShape(10.dp))
         )
         Text(
-            text = "Use AI to get instant feedback on your writing.",
+            text = "Tap here to get instant AI feedback on your writing.",
             color = Color.Black,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
@@ -166,7 +166,7 @@ fun RecomendedCritiquers() {
         ) {
             SquareTileButton(
                 title = "Hannah",
-                wordCount = "Frequently critiques works quickly.",
+                wordCount = "Critiques weekly.",
                 backgroundColour = MaterialTheme.colorScheme.tertiary,
                 textColour = MaterialTheme.colorScheme.onTertiary,
                 icon = Icons.Default.AccountCircle,
@@ -175,7 +175,7 @@ fun RecomendedCritiquers() {
             )
             SquareTileButton(
                 title = "Hannah",
-                wordCount = "Frequently critiques sci fi, like you.",
+                wordCount = "Critques Sci Fi.",
                 backgroundColour = MaterialTheme.colorScheme.tertiary,
                 textColour = MaterialTheme.colorScheme.onTertiary,
                 icon = Icons.Default.AccountCircle,
@@ -184,7 +184,7 @@ fun RecomendedCritiquers() {
             )
             SquareTileButton(
                 title = "Hannah",
-                wordCount = "Frequently critiques works quickly.",
+                wordCount = "Writes Sci Fi.",
                 backgroundColour = MaterialTheme.colorScheme.tertiary,
                 textColour = MaterialTheme.colorScheme.onTertiary,
                 icon = Icons.Default.AccountCircle,
