@@ -18,6 +18,7 @@ val provider = GoogleFont.Provider(
 
 val bodyFontFamily = FontFamily(
     Font(
+        //googleFont = GoogleFont("Edu VIC WA NT Beginner"),
         googleFont = GoogleFont("Gupter"),
         fontProvider = provider,
     )

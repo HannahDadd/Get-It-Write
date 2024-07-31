@@ -43,6 +43,7 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
 import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.views.feed.HomeFeed
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -125,7 +126,7 @@ fun MainView(logoutNavController: NavHostController, questions: List<Question>, 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, proposals = proposals,
+                HomeFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, proposals = proposals,
                     selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest = selectCritiqueRequest,
                     selectQuestion = selectQuestion, selectFrenzy = selectFrenzy)
             }

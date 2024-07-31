@@ -38,20 +38,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.modals.Proposal
+import hannah.bd.getitwrite.modals.Question
+import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun HomeFeed() {
+fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<RequestCritique>, toCritiques: List<RequestCritique>,
+             proposals: List<Proposal>, selectProposal: (Proposal) -> Unit,
+             selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit,
+             selectQuestion: (String) -> Unit, selectFrenzy: (String) -> Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
         item {
-            WorkToCritique()
+            WorkToCritique(user.displayName, toCritiques)
         }
         item {
             CritiquedWord()
         }
         item {
-            JoinTheConvo()
+            JoinTheConvo(questions)
         }
         item {
             AIPromo()
@@ -68,9 +75,9 @@ fun HomeFeed() {
         item {
             PositiveFeedback()
         }
-        item {
-            FreeForAll()
-        }
+//        item {
+//            FreeForAll()
+//        }
         item {
             FindPartnersByGenre()
         }

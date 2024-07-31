@@ -6,11 +6,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,15 +66,59 @@ fun PositiveFeedback() {
 }
 
 @Composable
-fun FreeForAll() {
+fun QuickQueryCritique() {
     Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondary)
+            .padding(16.dp)
     ) {
         Text(
-            text = "Free for all! No partners, no swaps, just feedback.",
+            text = "Quick query critique",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSecondary
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            item {
+                SquareTileButton(
+                    title = "To critique",
+                    wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.primaryContainer,
+                    textColour = MaterialTheme.colorScheme.onPrimaryContainer,
+                    icon = Icons.Default.Email,
+                    onClick = {}
+                )
+            }
+            item {
+                SquareTileButton(
+                    title = "Add your own.",
+                    wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
+                    textColour = MaterialTheme.colorScheme.onSecondaryContainer,
+                    icon = Icons.Default.Add,
+                    onClick = {}
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun FreeForAll() {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.secondary)
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "No partners, no swaps, just feedback.",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSecondary
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -80,19 +126,19 @@ fun FreeForAll() {
             item {
                 SquareTileButton(
                     title = "To critique",
-                    wordCount = "100 words",
-                    backgroundColour = MaterialTheme.colorScheme.primary,
-                    textColour = MaterialTheme.colorScheme.onPrimary,
-                    icon = Icons.Default.Notifications,
+                    wordCount = "",
+                    backgroundColour = MaterialTheme.colorScheme.primaryContainer,
+                    textColour = MaterialTheme.colorScheme.onPrimaryContainer,
+                    icon = Icons.Default.Email,
                     onClick = {}
                 )
             }
             item {
                 SquareTileButton(
-                    title = "Add yours",
+                    title = "Add your own.",
                     wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.primaryContainer,
-                    textColour = MaterialTheme.colorScheme.onPrimaryContainer,
+                    backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
+                    textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                     icon = Icons.Default.Add,
                     onClick = {}
                 )

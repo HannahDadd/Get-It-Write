@@ -94,15 +94,13 @@ fun SquareTileButton(
         Text(
             text = title,
             style = AppTypography.titleSmall,
-            color = textColour,
-            fontSize = 18.sp
+            color = textColour
         )
         Spacer(modifier = Modifier.weight(1.0f))
         Text(
             text = wordCount,
             style = AppTypography.labelSmall,
-            color = textColour,
-            fontSize = 18.sp
+            color = textColour
         )
     }
 }

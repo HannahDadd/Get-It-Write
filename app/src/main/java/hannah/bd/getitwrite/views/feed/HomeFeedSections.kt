@@ -39,48 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.views.components.SquareTileButton
-
-@Composable
-fun QuickQueryCritique() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.secondary)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Quick Query Critique",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSecondary
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            item {
-                SquareTileButton(
-                    title = "To critique",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.primaryContainer,
-                    textColour = MaterialTheme.colorScheme.onPrimaryContainer,
-                    icon = Icons.Default.Email,
-                    onClick = {}
-                )
-            }
-            item {
-                SquareTileButton(
-                    title = "Add your own.",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
-                    textColour = MaterialTheme.colorScheme.onSecondaryContainer,
-                    icon = Icons.Default.Add,
-                    onClick = {}
-                )
-            }
-        }
-    }
-}
 
 @Composable
 fun AIPromo() {
@@ -101,7 +61,7 @@ fun AIPromo() {
                 .clip(RoundedCornerShape(10.dp))
         )
         Text(
-            text = "Instantly evaluate your writing with AI.",
+            text = "Use our AI to get instant feedback on your writing.",
             color = Color.Black,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
@@ -130,7 +90,7 @@ fun CritiquedWord() {
         ) {
             item {
                 SquareTileButton(
-                    title = "Get feedback on something!",
+                    title = "Send work to your critique partners.",
                     wordCount = "",
                     backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
                     textColour = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -153,28 +113,30 @@ fun CritiquedWord() {
 }
 
 @Composable
-fun WorkToCritique() {
+fun WorkToCritique(username: String, toCritiques: List<RequestCritique>) {
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            text = "Welcome",
-            style = MaterialTheme.typography.displayMedium,
+            text = "Welcome " + username,
+            style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            item {
-                SquareTileButton(
-                    title = "To critique",
-                    wordCount = "100 words",
-                    backgroundColour = MaterialTheme.colorScheme.primary,
-                    textColour = MaterialTheme.colorScheme.onPrimary,
-                    icon = Icons.Default.Notifications,
-                    onClick = {}
-                )
+        if (!toCritiques.isEmpty()) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(toCritiques) {
+                    SquareTileButton(
+                        title = it.title,
+                        wordCount = it.text.trim().split("\\s+".toRegex()).size.toString() + " words",
+                        backgroundColour = MaterialTheme.colorScheme.primary,
+                        textColour = MaterialTheme.colorScheme.onPrimary,
+                        icon = Icons.Default.Notifications,
+                        onClick = {}
+                    )
+                }
             }
         }
     }
@@ -197,7 +159,7 @@ fun RecomendedCritiquers() {
             item {
                 SquareTileButton(
                     title = "Hannah",
-                    wordCount = "Why? Frequently critiques works quickly.",
+                    wordCount = "Frequently critiques works quickly.",
                     backgroundColour = MaterialTheme.colorScheme.tertiary,
                     textColour = MaterialTheme.colorScheme.onTertiary,
                     icon = Icons.Default.AccountCircle,
@@ -207,7 +169,7 @@ fun RecomendedCritiquers() {
             item {
                 SquareTileButton(
                     title = "Hannah",
-                    wordCount = "Why? Frequently critiques sci fi, like you.",
+                    wordCount = "Frequently critiques sci fi, like you.",
                     backgroundColour = MaterialTheme.colorScheme.tertiary,
                     textColour = MaterialTheme.colorScheme.onTertiary,
                     icon = Icons.Default.AccountCircle,
