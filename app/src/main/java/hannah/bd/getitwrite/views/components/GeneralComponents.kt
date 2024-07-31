@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
@@ -75,11 +76,12 @@ fun SquareTileButton(
     backgroundColour: Color,
     textColour: Color,
     icon: ImageVector,
+    size: Dp,
     onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
-            .size(150.dp)
+            .size(size)
             .clip(RoundedCornerShape(8.dp))
             .background(color = backgroundColour)
             .clickable(onClick = onClick)
@@ -93,7 +95,6 @@ fun SquareTileButton(
         )
         Text(
             text = title,
-            style = AppTypography.titleSmall,
             color = textColour
         )
         Spacer(modifier = Modifier.weight(1.0f))

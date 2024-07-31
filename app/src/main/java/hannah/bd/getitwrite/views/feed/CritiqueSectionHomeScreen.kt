@@ -6,10 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
@@ -19,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -31,44 +36,9 @@ import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun PositiveFeedback() {
-    Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Text(
-            text = "Positive feedback only!",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            item {
-                ImageButtonWithTextCentred(
-                    painter = painterResource(id = R.drawable.positivebg),
-                    buttonText = "Title",
-                    size = 150.dp,
-                    onClick = {})
-            }
-            item {
-                SquareTileButton(
-                    title = "Add yours",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
-                    icon = Icons.Default.Add,
-                    onClick = {}
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun QuickQueryCritique() {
     Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondary)
@@ -89,6 +59,7 @@ fun QuickQueryCritique() {
                     backgroundColour = MaterialTheme.colorScheme.primaryContainer,
                     textColour = MaterialTheme.colorScheme.onPrimaryContainer,
                     icon = Icons.Default.Email,
+                    size = 150.dp,
                     onClick = {}
                 )
             }
@@ -99,6 +70,7 @@ fun QuickQueryCritique() {
                     backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
                     textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                     icon = Icons.Default.Add,
+                    size = 150.dp,
                     onClick = {}
                 )
             }
@@ -112,13 +84,12 @@ fun FreeForAll() {
         verticalArrangement = Arrangement.spacedBy(20.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.secondary)
             .padding(16.dp)
     ) {
         Text(
             text = "No partners, no swaps, just feedback.",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSecondary
+            color = MaterialTheme.colorScheme.onSurface
         )
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -127,9 +98,10 @@ fun FreeForAll() {
                 SquareTileButton(
                     title = "To critique",
                     wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.primaryContainer,
-                    textColour = MaterialTheme.colorScheme.onPrimaryContainer,
+                    backgroundColour = MaterialTheme.colorScheme.primary,
+                    textColour = MaterialTheme.colorScheme.onPrimary,
                     icon = Icons.Default.Email,
+                    size = 150.dp,
                     onClick = {}
                 )
             }
@@ -140,6 +112,7 @@ fun FreeForAll() {
                     backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
                     textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                     icon = Icons.Default.Add,
+                    size = 150.dp,
                     onClick = {}
                 )
             }
@@ -164,12 +137,11 @@ fun ImageButtonWithTextCentred(
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier.size(size)
+                .clip(RoundedCornerShape(8.dp))
         )
         Text(
             text = buttonText,
             color = Color.Black,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .background(Color.White)

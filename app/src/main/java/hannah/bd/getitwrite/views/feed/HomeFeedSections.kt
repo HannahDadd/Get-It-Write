@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -61,7 +63,7 @@ fun AIPromo() {
                 .clip(RoundedCornerShape(10.dp))
         )
         Text(
-            text = "Use our AI to get instant feedback on your writing.",
+            text = "Use AI to get instant feedback on your writing.",
             color = Color.Black,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
@@ -78,7 +80,7 @@ fun AIPromo() {
 fun CritiquedWord() {
     Column(
         modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = "Your work, critiqued by your writing friends",
@@ -95,6 +97,7 @@ fun CritiquedWord() {
                     backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
                     textColour = MaterialTheme.colorScheme.onTertiaryContainer,
                     icon = Icons.Default.Send,
+                    size = 150.dp,
                     onClick = {}
                 )
             }
@@ -105,6 +108,7 @@ fun CritiquedWord() {
                     backgroundColour = MaterialTheme.colorScheme.tertiary,
                     textColour = MaterialTheme.colorScheme.onTertiary,
                     icon = Icons.Default.Edit,
+                    size = 150.dp,
                     onClick = {}
                 )
             }
@@ -134,6 +138,7 @@ fun WorkToCritique(username: String, toCritiques: List<RequestCritique>) {
                         backgroundColour = MaterialTheme.colorScheme.primary,
                         textColour = MaterialTheme.colorScheme.onPrimary,
                         icon = Icons.Default.Notifications,
+                        size = 150.dp,
                         onClick = {}
                     )
                 }
@@ -142,40 +147,50 @@ fun WorkToCritique(username: String, toCritiques: List<RequestCritique>) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecomendedCritiquers() {
     Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
             text = "Recommended critique partners",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
         )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
+        FlowRow(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            item {
-                SquareTileButton(
-                    title = "Hannah",
-                    wordCount = "Frequently critiques works quickly.",
-                    backgroundColour = MaterialTheme.colorScheme.tertiary,
-                    textColour = MaterialTheme.colorScheme.onTertiary,
-                    icon = Icons.Default.AccountCircle,
-                    onClick = {}
-                )
-            }
-            item {
-                SquareTileButton(
-                    title = "Hannah",
-                    wordCount = "Frequently critiques sci fi, like you.",
-                    backgroundColour = MaterialTheme.colorScheme.tertiary,
-                    textColour = MaterialTheme.colorScheme.onTertiary,
-                    icon = Icons.Default.AccountCircle,
-                    onClick = {}
-                )
-            }
+            SquareTileButton(
+                title = "Hannah",
+                wordCount = "Frequently critiques works quickly.",
+                backgroundColour = MaterialTheme.colorScheme.tertiary,
+                textColour = MaterialTheme.colorScheme.onTertiary,
+                icon = Icons.Default.AccountCircle,
+                size = 120.dp,
+                onClick = {}
+            )
+            SquareTileButton(
+                title = "Hannah",
+                wordCount = "Frequently critiques sci fi, like you.",
+                backgroundColour = MaterialTheme.colorScheme.tertiary,
+                textColour = MaterialTheme.colorScheme.onTertiary,
+                icon = Icons.Default.AccountCircle,
+                size = 120.dp,
+                onClick = {}
+            )
+            SquareTileButton(
+                title = "Hannah",
+                wordCount = "Frequently critiques works quickly.",
+                backgroundColour = MaterialTheme.colorScheme.tertiary,
+                textColour = MaterialTheme.colorScheme.onTertiary,
+                icon = Icons.Default.AccountCircle,
+                size = 120.dp,
+                onClick = {}
+            )
         }
     }
 }

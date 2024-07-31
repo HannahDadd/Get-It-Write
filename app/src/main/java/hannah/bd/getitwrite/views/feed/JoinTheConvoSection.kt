@@ -44,7 +44,7 @@ fun RectangleTileButton(
 ) {
     Column(
         modifier = Modifier
-            .height(100.dp)
+            .height(75.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(color = backgroundColour)
@@ -54,7 +54,6 @@ fun RectangleTileButton(
     ) {
         Text(
             text = title,
-            style = AppTypography.titleSmall,
             color = textColour
         )
         Spacer(modifier = Modifier.weight(1.0f))
@@ -86,7 +85,7 @@ fun RectangleTileButtonNoDate(
 ) {
     Column(
         modifier = Modifier
-            .size(150.dp, 100.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .background(color = backgroundColour)
             .clickable(onClick = onClick)
@@ -119,30 +118,24 @@ fun JoinTheConvo(questions: List<Question>) {
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondary)
-            .padding(vertical = 16.dp)
+            .padding(16.dp)
     ) {
         Text(
             text = "Join the conversation",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSecondary,
-            modifier = Modifier.padding(horizontal = 16.dp)
         )
         if(questions.isEmpty()) {
             Text(
                 text = "Loading...",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSecondary,
-                modifier = Modifier.padding(horizontal = 16.dp)
             )
         } else {
-            Column {
-
-            }
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                item { Spacer(modifier = Modifier.padding(1.dp)) }
-                items(questions.subList(0, 3)) {
+                questions.subList(0, 3).forEach {
                     RectangleTileButton(
                         title = it.question,
                         seconds = it.timestamp,
@@ -151,15 +144,12 @@ fun JoinTheConvo(questions: List<Question>) {
                         onClick = {}
                     )
                 }
-                item {
-                    RectangleTileButtonNoDate(
-                        title = "View more",
-                        backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                        textColour = MaterialTheme.colorScheme.onTertiaryContainer,
-                        onClick = {}
-                    )
-                }
-                item { Spacer(modifier = Modifier.padding(0.dp)) }
+                RectangleTileButtonNoDate(
+                    title = "View more",
+                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
+                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
+                    onClick = {}
+                )
             }
         }
     }

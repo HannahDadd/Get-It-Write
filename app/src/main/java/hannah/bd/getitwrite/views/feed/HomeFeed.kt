@@ -49,8 +49,7 @@ fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
              proposals: List<Proposal>, selectProposal: (Proposal) -> Unit,
              selectChat: (String, String, String) -> Unit, selectCritiqueRequest: (String) -> Unit,
              selectQuestion: (String) -> Unit, selectFrenzy: (String) -> Unit) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyColumn {
         item {
             WorkToCritique(user.displayName, toCritiques)
         }
@@ -58,13 +57,13 @@ fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             CritiquedWord()
         }
         item {
-            JoinTheConvo(questions)
+            RecomendedCritiquers()
         }
         item {
             AIPromo()
         }
         item {
-            RecomendedCritiquers()
+            JoinTheConvo(questions)
         }
         item {
             FindPartnersByAudience()
@@ -73,11 +72,11 @@ fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             QuickQueryCritique()
         }
         item {
+            FreeForAll()
+        }
+        item {
             PositiveFeedback()
         }
-//        item {
-//            FreeForAll()
-//        }
         item {
             FindPartnersByGenre()
         }
