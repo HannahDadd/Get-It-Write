@@ -126,9 +126,9 @@ fun MainView(logoutNavController: NavHostController, questions: List<Question>, 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                HomeFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, proposals = proposals,
-                    selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest = selectCritiqueRequest,
-                    selectQuestion = selectQuestion, selectFrenzy = selectFrenzy)
+//                HomeFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, proposals = proposals,
+//                    selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest = selectCritiqueRequest,
+//                    selectQuestion = selectQuestion, selectFrenzy = selectFrenzy)
             }
         }
     }

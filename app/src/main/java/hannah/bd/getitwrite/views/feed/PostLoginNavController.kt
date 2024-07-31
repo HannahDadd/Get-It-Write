@@ -42,7 +42,7 @@ import kotlinx.coroutines.tasks.await
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
     val user by MainViewModel(auth).user.collectAsState(initial = User(id = "ERROR"))
     val navController = rememberNavController()
-    val proposals by ProposalsViewModel().proposalsFlow.collectAsState(initial = emptyList())
+    val proposals by ProposalsViewModel("").proposalsFlow.collectAsState(initial = emptyList())
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
     val questions by QuestionsViewModel().questionsFlow.collectAsState(initial = emptyList())
@@ -58,11 +58,8 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         modifier = Modifier.fillMaxSize()
     ) {
         composable("feed") {
-            MainView(logoutNavController, questions = questions, toCritiques = toCritiques,
-                critiqueFrenzy = critiqueFrenzy, navController = navController, proposals = proposals,
-                selectProposal = actions.selectedProposal, selectChat = actions.selectChat, user = user,
-                selectCritiqueRequest = actions.selectCritiqueRequest, selectQuestion = actions.selectQuestion,
-                selectFrenzy = actions.selectFrenzy)
+            FeedNavHost(questions = questions, toCritiques = toCritiques,
+                critiqueFrenzy = critiqueFrenzy, user = user)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
