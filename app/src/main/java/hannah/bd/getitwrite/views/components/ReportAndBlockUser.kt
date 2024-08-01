@@ -72,21 +72,10 @@ fun ReportAndBlockUser(userToBlock: String,
         }
     }
     Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding()
-        ) {
-            Spacer(modifier = Modifier.weight(1.0f))
-            TextButton(onClick = { showButtons.value = !showButtons.value }) {
-                Icon(Icons.Filled.Info, contentDescription = "", Modifier.padding(end = 10.dp))
-            }
-        }
         if (showButtons.value) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding()
             ) {
                 TextButton(onClick = { showBottomSheet = true }) {
                     Row {
@@ -107,6 +96,16 @@ fun ReportAndBlockUser(userToBlock: String,
                         style = AppTypography.labelSmall,
                         color = MaterialTheme.colorScheme.error)
                 }
+            }
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 10.dp)
+        ) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextButton(onClick = { showButtons.value = !showButtons.value }) {
+                Icon(Icons.Filled.Info, contentDescription = "")
             }
         }
     }

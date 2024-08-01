@@ -163,8 +163,9 @@ fun DetailHeader(
     navigateUp: () -> Unit
 ) {
     TopAppBar(
-        title = { Text(text = title) },
-        backgroundColor = Color.White,
+        title = { Text(text = title, color = MaterialTheme.colorScheme.onSecondary) },
+        backgroundColor = MaterialTheme.colorScheme.secondary,
+        contentColor = MaterialTheme.colorScheme.onSecondary,
         navigationIcon = {
             IconButton(onClick = navigateUp) {
                 androidx.compose.material.Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "")
