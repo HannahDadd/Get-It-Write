@@ -1,4 +1,4 @@
-package hannah.bd.getitwrite.views.feed
+package hannah.bd.getitwrite.views.toCritique
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

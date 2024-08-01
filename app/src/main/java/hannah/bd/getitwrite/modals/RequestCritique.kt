@@ -27,3 +27,19 @@ class RequestCritique(
         writerName = data["writerName"] as String
     )
 }
+
+class RequestPositivity(
+    override var id: String,
+    val text: String,
+    val writerId: String,
+    val writerName: String,
+    val comments: Map<String, String>
+) : UserGeneratedContent {
+    constructor(id: String, data: Map<String, Any>) : this(
+        id = id,
+        text = data["text"] as String,
+        writerId = data["writerId"] as String,
+        writerName = data["writerName"] as String,
+        comments = data["comments"] as Map<String, String>,
+    )
+}

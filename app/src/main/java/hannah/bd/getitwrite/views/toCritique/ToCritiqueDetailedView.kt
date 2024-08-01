@@ -1,5 +1,6 @@
 package hannah.bd.getitwrite.views.toCritique
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.Colours
@@ -94,14 +97,20 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
             Divider()
             paragraphs.forEachIndexed { index, element ->
                 if (comments.value.containsValue(index.toLong())) {
-                    Text(element, style = TextStyle(background = Colours.bold,
-                        fontFamily = FontFamily.Default,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
-                        letterSpacing = 0.5.sp), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                    Text(
+                        text = element,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .clickable { bottomSheetText = Triple(element, index, "") }
+                    )
                 } else {
-                    Text(element, modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
+                    Text(element,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.clickable { bottomSheetText = Triple(element, index, "") })
                 }
             }
             Divider()

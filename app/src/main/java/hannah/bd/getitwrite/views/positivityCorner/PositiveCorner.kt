@@ -1,11 +1,10 @@
-package hannah.bd.getitwrite.views.feed
+package hannah.bd.getitwrite.views.positivityCorner
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PositiveFeedback() {
+fun PositiveFeedback(onTap: () -> Unit, onCreate: () -> Unit) {
     Column(
         modifier = Modifier.padding(16.dp),
     ) {
@@ -28,10 +27,10 @@ fun PositiveFeedback() {
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(vertical = 16.dp)
         )
-        RectangleTileButtonPositive(onClick = {})
-        TextButton(onClick = { /*TODO*/ }) {
+        RectangleTileButtonPositive(onClick = onTap)
+        TextButton(onClick = onCreate) {
             Text(
-                text = "Need some positive vibes? Add your work.",
+                text = "Need some positive vibes? Add your work to the mix.",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )

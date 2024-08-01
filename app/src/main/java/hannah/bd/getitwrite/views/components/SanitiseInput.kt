@@ -6,6 +6,7 @@ object Profanities {
 
 class CheckInput {
     companion object {
+        val errorStringText = "Input text is empty or contains profanities."
         fun verify(input: String) : String? {
             var str = input.filter { !it.isWhitespace() }
             val match = Profanities.list.filter { str.contains(it, ignoreCase = true) }
@@ -19,5 +20,3 @@ class CheckInput {
         }
     }
 }
-
-class TextInappropriateException(message:String): Exception(message)
