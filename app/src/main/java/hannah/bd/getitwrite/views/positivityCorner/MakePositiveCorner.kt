@@ -41,11 +41,11 @@ import java.util.UUID
 fun MakePositiveCorner(user: User, close: () -> Unit) {
     val text = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf("") }
-    val ids by MakePositiveCornerViewModel().proposalsFlow.collectAsState(initial = emptyList())
+     val ids by MakePositiveCornerViewModel().proposalsFlow.collectAsState(initial = emptyList())
     Column(modifier = Modifier
         .fillMaxHeight()
         .padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text("Note: there is a 500 word limit and no text with trigger warnings in positivity corner.")
+        Text("500 word limit without any trigger warnings.")
         OutlinedTextField(value = text.value,
             maxLines = 10,
             onValueChange = { text.value = it },
@@ -56,20 +56,13 @@ fun MakePositiveCorner(user: User, close: () -> Unit) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                CheckInput.verify(text.value)?.let {
+                if (CheckInput.isStringGood(text.value, 500)) {
                     val id = UUID.randomUUID().toString()
                     val requestCritique = RequestPositivity(id = id, text = text.value, writerName = user.displayName, writerId = user.id, comments = mapOf())
                     Firebase.firestore.collection("positivityPeices").document(id).set(requestCritique)
                         .addOnSuccessListener {
                             val newIds = ids.plus(id)
-                            Firebase.firestore.collection("positivityPeices").document("ids").set(mapOf("ids" to listOf(id)))
-                                .addOnSuccessListener {
-                                    println("Preferences successfully updated!")
-                                }
-                                .addOnFailureListener { e ->
-                                    println("Error updating preferences: $e")
-                                }
-                            Firebase.firestore.collection("positivityPeices").document("ids").set(requestCritique)
+                            Firebase.firestore.collection("positivityPeices").document("ids").set(mapOf("ids" to newIds))
                                 .addOnSuccessListener {
                                     close()
                                 }
@@ -80,7 +73,7 @@ fun MakePositiveCorner(user: User, close: () -> Unit) {
                         .addOnFailureListener {
                             errorString.value = it.message.toString()
                         }
-                } ?: run {
+                } else {
                     errorString.value = CheckInput.errorStringText
                 }
             },
@@ -93,7 +86,7 @@ fun MakePositiveCorner(user: User, close: () -> Unit) {
 
 class MakePositiveCornerViewModel() : ViewModel() {
     val proposalsFlow = flow {
-        val ids = Firebase.firestore.collection("positivityCorner")
+        val ids = Firebase.firestore.collection("positivityPeices")
             .document("ids").get().await()
         val idsArray = ids["ids"] as MutableList<String>
         emit(idsArray)

@@ -6,17 +6,27 @@ object Profanities {
 
 class CheckInput {
     companion object {
-        val errorStringText = "Input text is empty or contains profanities."
-        fun verify(input: String) : String? {
+        val errorStringText = "Input text is empty, too long or contains profanities."
+
+        fun isStringGood(input: String, wordCount: Int) : Boolean {
+            return CheckInput.verify(input) && CheckInput.checkLength(input, wordCount)
+        }
+
+        fun verify(input: String) : Boolean {
             var str = input.filter { !it.isWhitespace() }
             val match = Profanities.list.filter { str.contains(it, ignoreCase = true) }
             val notEmpty = str != ""
-            if (match.isEmpty() || notEmpty) return input else return null
+            if (match.isEmpty() || notEmpty) return true else return false
         }
 
-        fun verifyCanBeEmpty(input: String) : String? {
+        fun checkLength(input: String, maxWordCound: Int) : Boolean {
+            val words = input.trim().split("\\s+".toRegex()).size
+            return words < maxWordCound
+        }
+
+        fun verifyCanBeEmpty(input: String) : Boolean {
             val match = Profanities.list.filter { input.contains(it, ignoreCase = true) }
-            if (match.isEmpty()) return input else return null
+            if (match.isEmpty()) return true else return false
         }
     }
 }

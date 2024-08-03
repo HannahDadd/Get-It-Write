@@ -86,7 +86,7 @@ fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             FreeForAll()
         }
         item {
-            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.none }) {
+            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
                 bottomSheet = HomeSheetContent.makeNewPositive
             }
         }
