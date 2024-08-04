@@ -40,7 +40,7 @@ import java.util.UUID
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MakeFrenzyView(user: User, proposals: List<Proposal>, onSuccess: (RequestCritique) -> Unit) {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     val title = remember { mutableStateOf("") }
     val text = remember { mutableStateOf("") }
     var proposal = remember { mutableStateOf<Proposal?>(null) }

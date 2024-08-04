@@ -49,7 +49,7 @@ import hannah.bd.getitwrite.views.settings.TsAndCsView
 fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White)

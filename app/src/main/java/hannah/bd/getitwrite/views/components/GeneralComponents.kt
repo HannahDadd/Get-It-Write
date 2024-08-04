@@ -64,8 +64,8 @@ fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun ErrorText(error: MutableState<String>) {
-    Text(error.value, color = Color.Red)
+fun ErrorText(error: MutableState<String?>) {
+    error.value?.let { Text(it, color = MaterialTheme.colorScheme.error) }
 }
 
 @Composable

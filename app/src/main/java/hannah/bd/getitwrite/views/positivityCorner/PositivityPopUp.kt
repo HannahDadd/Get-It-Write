@@ -50,7 +50,7 @@ fun PositivityPopUp(user: User,
 ) {
     val peice by PositivityViewModel().randPiece.collectAsState(initial = null)
     val comment = remember { mutableStateOf("") }
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     LazyColumn(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)

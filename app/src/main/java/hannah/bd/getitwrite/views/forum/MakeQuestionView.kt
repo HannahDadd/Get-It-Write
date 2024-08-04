@@ -29,7 +29,7 @@ import java.util.UUID
 
 @Composable
 fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     val question = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .padding(20.dp)

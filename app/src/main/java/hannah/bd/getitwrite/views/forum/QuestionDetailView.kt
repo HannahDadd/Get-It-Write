@@ -51,7 +51,7 @@ import java.util.UUID
 @Composable
 fun QuestionDetailView(question: Question, user: User,
                        backStackEntry: NavBackStackEntry, navigateUp: () -> Unit) {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     var replies = remember { mutableStateListOf<Reply>() }
     RepliesViewModel().getReplies(question.id).observe(backStackEntry) {
         var ids = replies.map { it.id }

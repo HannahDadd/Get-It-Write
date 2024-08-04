@@ -43,7 +43,7 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
     var email = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var confirmPassword = remember { mutableStateOf("") }
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
 

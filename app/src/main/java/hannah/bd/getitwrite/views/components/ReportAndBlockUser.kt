@@ -164,7 +164,7 @@ fun ReportContent(contentToReport: UserGeneratedContent,
                   contentToReportType: ContentToReportType,
                   questionId: String?,
                   chatId: String?) {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     val comments = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .fillMaxHeight()

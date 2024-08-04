@@ -43,7 +43,7 @@ fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
     val critiqueStyle = remember { mutableStateOf("") }
     val genreTags = ArrayList<String>()
     val authorTags = ArrayList<String>()
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     Column(modifier = Modifier
         .padding(20.dp)
         .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {

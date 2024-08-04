@@ -34,7 +34,7 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
     val critiqueStyle = remember { mutableStateOf(user.critiqueStyle) }
     val genreTags = remember { mutableStateOf(user.writingGenres) }
     val authorTags = remember { mutableStateOf(user.authors) }
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     Column {
         DetailHeader(title = user.displayName, navigateUp = navigateUp)
         Column(modifier = Modifier

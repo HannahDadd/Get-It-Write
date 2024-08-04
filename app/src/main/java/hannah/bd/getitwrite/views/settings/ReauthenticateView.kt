@@ -31,7 +31,7 @@ import com.google.firebase.firestore.firestore
 fun ReAuthView(logoutNavController: NavHostController, nextTask: PostReAuthTask) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
 
     val openAlertDialog = remember { mutableStateOf(false) }
     val showEmailReset = remember { mutableStateOf(false) }

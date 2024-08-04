@@ -19,7 +19,7 @@ import hannah.bd.getitwrite.views.components.ErrorText
 
 @Composable
 fun ChangeEmailView() {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     val email = remember { mutableStateOf("") }
     Column {
         OutlinedTextField(

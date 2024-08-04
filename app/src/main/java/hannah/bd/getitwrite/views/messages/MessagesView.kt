@@ -64,7 +64,7 @@ fun ShowMessages(
     backStackEntry: NavBackStackEntry,
     navigateUp: () -> Unit
 ) {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     var message = remember { mutableStateOf("") }
     var messages = remember { mutableStateListOf<Message>() }
     MessagesViewModel().getMessages(chatId).observe(backStackEntry) {

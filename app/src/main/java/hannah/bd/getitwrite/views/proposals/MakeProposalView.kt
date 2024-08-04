@@ -32,7 +32,7 @@ import java.util.UUID
 
 @Composable
 fun MakeProposalView(user: User, onSuccess: () -> Unit) {
-    var errorString = remember { mutableStateOf("") }
+    var errorString = remember { mutableStateOf<String?>(null) }
     val title = remember { mutableStateOf("") }
     val wordCount = remember { mutableStateOf("") }
     val blurb = remember { mutableStateOf("") }
