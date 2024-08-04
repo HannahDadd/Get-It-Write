@@ -19,9 +19,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.RequestFrenzy
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
+import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
 import hannah.bd.getitwrite.views.positivityCorner.MakePositiveCorner
 import hannah.bd.getitwrite.views.positivityCorner.PositiveFeedback
 import hannah.bd.getitwrite.views.positivityCorner.PositivityPopUp
@@ -38,6 +40,7 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val frenzy = remember { mutableStateOf<RequestFrenzy?>(null) }
     if (bottomSheet != HomeSheetContent.none) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -58,6 +61,14 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
                     MakePositiveCorner(user = user) {
                         bottomSheet = HomeSheetContent.none
                     }
+                }
+                HomeSheetContent.makeNewCritiqueFrenzy -> {
+                    MakeFrenzyView(user = user) {
+                        bottomSheet = HomeSheetContent.none
+                    }
+                }
+                HomeSheetContent.critiqueFrenzy -> {
+
                 }
             }
         }
@@ -85,7 +96,12 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
             QuickQueryCritique()
         }
         item {
-            FreeForAll()
+            FreeForAll(frenzies, navController = navController, onTap = {
+                frenzy.value = it
+                bottomSheet = HomeSheetContent.critiqueFrenzy
+            }) {
+                bottomSheet = HomeSheetContent.makeNewPositive
+            }
         }
         item {
             PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
@@ -101,7 +117,9 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
 enum class HomeSheetContent {
     none,
     positiveReview,
-    makeNewPositive
+    makeNewPositive,
+    critiqueFrenzy,
+    makeNewCritiqueFrenzy
 }
 
 @Composable
@@ -133,8 +151,8 @@ fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<Request
         composable("feed") {
             HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController)
         }
-        composable("frenzy") {
-            FrenzyFeed(user = user, proposals = , requests = ) {
+        composable("frenzyFeed") {
+            FrenzyFeed(user = user, requests = frenzies) {
                 
             }
         }

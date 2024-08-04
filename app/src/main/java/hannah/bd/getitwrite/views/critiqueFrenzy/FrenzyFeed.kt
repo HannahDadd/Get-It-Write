@@ -1,5 +1,12 @@
 package hannah.bd.getitwrite.views.critiqueFrenzy
 
+import android.text.format.DateUtils
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,6 +27,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestCritique
@@ -27,15 +37,17 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.RequestFrenzy
+import hannah.bd.getitwrite.views.components.TagCloud
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FrenzyFeed(user: User, proposals: List<Proposal>, requests: List<RequestCritique>, select: (String) -> Unit) {
+fun FrenzyFeed(user: User, requests: List<RequestFrenzy>, select: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-    val newEntries = remember { mutableStateListOf<RequestCritique>() }
+    val newEntries = remember { mutableStateListOf<RequestFrenzy>() }
     Scaffold(
         floatingActionButton = {
             ExtendedFloatingActionButton(
@@ -52,7 +64,7 @@ fun FrenzyFeed(user: User, proposals: List<Proposal>, requests: List<RequestCrit
                 },
                 sheetState = sheetState
             ) {
-                MakeFrenzyView(user, proposals) {
+                MakeFrenzyView(user) {
                     newEntries.plus(it)
                     showBottomSheet = false
                 }
@@ -60,13 +72,32 @@ fun FrenzyFeed(user: User, proposals: List<Proposal>, requests: List<RequestCrit
         }
         LazyColumn(Modifier.padding(innerPadding)) {
             items(newEntries) {
-                ToCritiqueView(it, select)
+                ToCritiqueFrenzyView(it, select)
                 Divider()
             }
             items(requests) { q ->
-                ToCritiqueView(q, select)
+                ToCritiqueFrenzyView(q, select)
                 Divider()
             }
+        }
+    }
+}
+
+@Composable
+fun ToCritiqueFrenzyView(requestCritique: RequestFrenzy, selectProposal: (String) -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.padding(10.dp).clickable { selectProposal(requestCritique.id) }) {
+        TagCloud(tags = requestCritique.genres, action = null)
+        Row(modifier = Modifier.fillMaxWidth().padding()) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = DateUtils.getRelativeTimeSpanString(
+                    (requestCritique.timestamp.seconds * 1000),
+                    System.currentTimeMillis(),
+                    DateUtils.DAY_IN_MILLIS
+                ).toString(),
+                fontWeight = FontWeight.Light
+            )
         }
     }
 }

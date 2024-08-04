@@ -14,26 +14,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.RequestFrenzy
 import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun FreeForAll() {
-    val navController = rememberNavController()
-    var errorString = remember { mutableStateOf<String?>(null) }
-
-
-
-    proposals.value?.let { porposals ->
+fun FreeForAll(requests: List<RequestFrenzy>, navController: NavController, onTap: (RequestFrenzy) -> Unit, onCreate: () -> Unit) {
+    if (requests.isNotEmpty()) {
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
@@ -48,7 +46,7 @@ fun FreeForAll() {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(porposals) { //.subList(0, 5)
+                items(requests) { //.subList(0, 5)
                     SquareTileButton(
                         title = it.genres.joinToString(),
                         wordCount = "",
@@ -56,7 +54,7 @@ fun FreeForAll() {
                         textColour = MaterialTheme.colorScheme.onPrimary,
                         icon = Icons.Default.Email,
                         size = 150.dp,
-                        onClick = {}
+                        onClick = { onTap(it) }
                     )
                 }
                 item {
@@ -67,7 +65,7 @@ fun FreeForAll() {
                         textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                         icon = Icons.Default.Add,
                         size = 150.dp,
-                        onClick = {}
+                        onClick = onCreate
                     )
                 }
                 item {
@@ -78,17 +76,13 @@ fun FreeForAll() {
                         textColour = MaterialTheme.colorScheme.onTertiaryContainer,
                         icon = Icons.Default.ArrowForward,
                         size = 150.dp,
-                        onClick = {}
+                        onClick = { navController.navigate("frenzyFeed") }
                     )
                 }
             }
         }
-    }?: run {
-        errorString.value?.let {
-            ErrorText(error = it)
-        }?: run {
-            Text("Loading...", modifier = Modifier.padding(16.dp))
-        }
+    } else {
+        Text("Loading...", modifier = Modifier.padding(16.dp))
     }
 }
 
