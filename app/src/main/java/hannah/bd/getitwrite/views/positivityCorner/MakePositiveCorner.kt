@@ -62,9 +62,9 @@ fun MakePositiveCorner(user: User, close: () -> Unit) {
     if (isLoading) {
         Text("Loading...", modifier = Modifier.padding(16.dp))
     } else {
-        errorString?.let {
+        errorString.value?.let {
             ErrorText(error = it)
-        } ?: ids?.let {
+        }?: run {
             Column(modifier = Modifier
                 .fillMaxHeight()
                 .padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {

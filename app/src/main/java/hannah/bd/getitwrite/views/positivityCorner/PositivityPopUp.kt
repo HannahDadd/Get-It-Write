@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +52,20 @@ fun PositivityPopUp(user: User,
     val peice by PositivityViewModel().randPiece.collectAsState(initial = null)
     val comment = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf<String?>(null) }
+
+//    LaunchedEffect(Unit) {
+//        getIds(
+//            onSuccess = { returnedIds ->
+//                ids = returnedIds
+//                isLoading = false
+//            },
+//            onError = { exception ->
+//                errorString.value = exception.message
+//                isLoading = false
+//            }
+//        )
+//    }
+
     LazyColumn(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)

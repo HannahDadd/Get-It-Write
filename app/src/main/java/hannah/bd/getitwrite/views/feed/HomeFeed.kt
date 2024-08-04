@@ -2,6 +2,7 @@ package hannah.bd.getitwrite.views.feed
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -35,7 +36,9 @@ fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
              navController: NavHostController
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
     if (bottomSheet != HomeSheetContent.none) {
         ModalBottomSheet(
             onDismissRequest = {
