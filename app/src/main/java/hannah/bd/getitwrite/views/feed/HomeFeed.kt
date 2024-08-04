@@ -80,7 +80,7 @@ fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
             JoinTheConvo(questions)
         }
         item {
-            FindPartnersByAudience()
+            FindPartnersByAudience(navController)
         }
         item {
             QuickQueryCritique()

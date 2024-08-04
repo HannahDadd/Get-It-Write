@@ -24,8 +24,6 @@ import hannah.bd.getitwrite.views.forum.QuestionsViewModel
 import hannah.bd.getitwrite.views.messages.ShowMessages
 import hannah.bd.getitwrite.views.profile.EditProfileView
 import hannah.bd.getitwrite.views.profile.ProfileView
-import hannah.bd.getitwrite.views.proposals.ProposalDetails
-import hannah.bd.getitwrite.views.proposals.ProposalsViewModel
 import hannah.bd.getitwrite.views.settings.SettingsScreen
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
@@ -42,7 +40,6 @@ import kotlinx.coroutines.tasks.await
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
     val user by MainViewModel(auth).user.collectAsState(initial = User(id = "ERROR"))
     val navController = rememberNavController()
-    val proposals by ProposalsViewModel("").proposalsFlow.collectAsState(initial = emptyList())
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
     val questions by QuestionsViewModel().questionsFlow.collectAsState(initial = emptyList())
@@ -96,7 +93,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
                 user = user,
                 user2Name = arguments.getString("otherUserName")!!,
                 user2Id = arguments.getString("otherUserId")!!,
-                proposals = proposals,
+                proposals = emptyList(),
                 backStackEntry = backStackEntry,
                 navigateUp = actions.navigateUp
             )

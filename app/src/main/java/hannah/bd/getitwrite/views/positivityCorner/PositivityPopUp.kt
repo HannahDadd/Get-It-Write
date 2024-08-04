@@ -23,9 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
@@ -41,11 +38,6 @@ import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.CheckInput
 import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.ReportAndBlockUser
-import hannah.bd.getitwrite.views.feed.Screen
-import hannah.bd.getitwrite.views.proposals.ProposalsViewModel
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 @Composable
 fun PositivityPopUp(user: User,
@@ -113,7 +105,7 @@ fun PositivityPopUp(user: User,
                                 if (CheckInput.isStringGood(comment.value, 50)) {
                                     val id = it.id
                                     val newComments =
-                                        it.comments.plus(Pair(user.displayName, comment.value))
+                                        it.comments + (user.displayName to comment.value)
                                     val critique = RequestPositivity(
                                         id = id,
                                         text = it.text,

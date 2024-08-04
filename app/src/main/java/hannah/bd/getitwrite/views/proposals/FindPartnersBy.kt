@@ -32,7 +32,7 @@ import hannah.bd.getitwrite.R
 fun FindPartnersByGenre(navController: NavHostController) {
     val genres = listOf(Triple(R.drawable.scifi, "Sci Fi", "Science Fiction"),
         Triple(R.drawable.crime, "Crime", "Mystery"),
-        Triple(R.drawable.dystopian, "Dystopian", "crime"),
+        Triple(R.drawable.dystopian, "Dystopian", "Dystopian"),
         Triple(R.drawable.fantasy, "Fantasy", "Fantasy"),
         Triple(R.drawable.histroical, "Historical", "Historical"),
         Triple(R.drawable.magicalrealism, "Magical Realism", "Magical Realism"),
@@ -67,10 +67,10 @@ fun FindPartnersByGenre(navController: NavHostController) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FindPartnersByAudience() {
+fun FindPartnersByAudience(navController: NavHostController) {
     val images = listOf(
-        Triple(R.drawable.adults, "Adult", "crime"),
-        Triple(R.drawable.ya, "YA", "crime"),
+        Triple(R.drawable.adults, "Adult", "Adult"),
+        Triple(R.drawable.ya, "YA", "Young Adult"),
         Triple(R.drawable.childrens, "Childrens", "crime"))
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -91,7 +91,7 @@ fun FindPartnersByAudience() {
                     painter = painterResource(id = it.first),
                     buttonText = it.second,
                     size = 120.dp,
-                    onClick = {}
+                    onClick = { navController.navigate("genre/${it.third}") }
                 )
             }
         }

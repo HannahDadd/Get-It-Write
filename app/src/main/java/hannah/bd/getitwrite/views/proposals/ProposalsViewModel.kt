@@ -6,28 +6,27 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.RequestPositivity
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
-class ProposalsViewModel(genre: String) : ViewModel() {
-    val proposalsFlow = flow {
-        val documents = Firebase.firestore.collection("proposals")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .get().await()
-        val items = documents.map { doc ->
-            Proposal(doc.id, doc.data)
+fun getProposalsByGenre(genre: String, onSuccess: (List<Proposal>) -> Unit,
+                        onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("proposals")
+        //.whereArrayContains("genres", genre)
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    Proposal(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
         }
-        emit(items)
-    }
-
-    val proposalsFlowByGenre = flow {
-        val documents = Firebase.firestore.collection("proposals")
-            .whereArrayContains("genres", genre)
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .get().await()
-        val items = documents.map { doc ->
-            Proposal(doc.id, doc.data)
+        .addOnFailureListener { exception ->
+            onError(exception)
         }
-        emit(items)
-    }
 }

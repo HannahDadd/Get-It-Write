@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,9 +37,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Proposal
+import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.DetailHeader
+import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.TagCloud
+import hannah.bd.getitwrite.views.positivityCorner.getRandPeice
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 
 @Composable
@@ -66,25 +70,46 @@ fun GenreFeed(navController: NavHostController, hostNavController: NavHostContro
 @Composable
 fun ProposalNavHost(tag: String, hostNavController: NavHostController, user: User) {
     val navController = rememberNavController()
-    val proposals by ProposalsViewModel(genre = tag).proposalsFlow.collectAsState(initial = emptyList())
-    NavHost(navController = navController, startDestination = "genreFeed") {
-        composable("genreFeed") {
-            GenreFeed(navController, hostNavController, proposals, tag)
+    var proposals = remember { mutableStateOf<List<Proposal>?>(null) }
+    var errorString = remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        getProposalsByGenre(genre = tag,
+            onSuccess = {
+                proposals.value = it
+            },
+            onError = { exception ->
+                errorString.value = exception.message
+            }
+        )
+    }
+
+    proposals.value?.let { porposals ->
+        NavHost(navController = navController, startDestination = "genreFeed") {
+            composable("genreFeed") {
+                GenreFeed(navController, hostNavController, porposals, tag)
+            }
+            composable(
+                "proposal/{id}",
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val arguments = requireNotNull(backStackEntry.arguments)
+                val id = arguments.getString("id")
+                ProposalDetails(proposal = porposals.filter { it.id == id }.get(0),
+                    user = user,
+                    navController = navController
+                )
+            }
         }
-        composable(
-            "proposal/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            val id = arguments.getString("id")
-            ProposalDetails(proposal = proposals.filter { it.id == id }.get(0),
-                user = user,
-                navController = navController
-            )
+    }?: run {
+        errorString.value?.let {
+            ErrorText(error = it)
+        }?: run {
+            Text("Loading...", modifier = Modifier.padding(16.dp))
         }
     }
 }
