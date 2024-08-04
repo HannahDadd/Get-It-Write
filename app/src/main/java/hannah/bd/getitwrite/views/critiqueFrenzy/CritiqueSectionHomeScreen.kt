@@ -1,4 +1,4 @@
-package hannah.bd.getitwrite.views.toCritique
+package hannah.bd.getitwrite.views.critiqueFrenzy
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,6 +23,9 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,8 +37,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.modals.Proposal
+import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.SquareTileButton
+import hannah.bd.getitwrite.views.proposals.GenreFeed
+import hannah.bd.getitwrite.views.proposals.ProposalDetails
+import hannah.bd.getitwrite.views.proposals.getProposalsByGenre
 
 @Composable
 fun QuickQueryCritique() {
@@ -87,88 +105,5 @@ fun QuickQueryCritique() {
                 )
             }
         }
-    }
-}
-
-@Composable
-fun FreeForAll() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "No partners, no swaps, just feedback.",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            item {
-                SquareTileButton(
-                    title = "To critique",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.primary,
-                    textColour = MaterialTheme.colorScheme.onPrimary,
-                    icon = Icons.Default.Email,
-                    size = 150.dp,
-                    onClick = {}
-                )
-            }
-            item {
-                SquareTileButton(
-                    title = "Add your own.",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
-                    textColour = MaterialTheme.colorScheme.onSecondaryContainer,
-                    icon = Icons.Default.Add,
-                    size = 150.dp,
-                    onClick = {}
-                )
-            }
-            item {
-                SquareTileButton(
-                    title = "View more.",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
-                    icon = Icons.Default.ArrowForward,
-                    size = 150.dp,
-                    onClick = {}
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ImageButtonWithTextCentred(
-    painter: Painter,
-    buttonText: String,
-    size: Dp,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .size(size)
-            .clickable(onClick = onClick)
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.size(size)
-                .clip(RoundedCornerShape(8.dp))
-        )
-        Text(
-            text = buttonText,
-            color = Color.Black,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .background(Color.White)
-                .align(Alignment.Center)
-        )
     }
 }

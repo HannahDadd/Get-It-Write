@@ -2,11 +2,11 @@ package hannah.bd.getitwrite.views.feed
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,25 +20,24 @@ import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
-import hannah.bd.getitwrite.views.components.ReportContent
+import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
+import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
 import hannah.bd.getitwrite.views.positivityCorner.MakePositiveCorner
 import hannah.bd.getitwrite.views.positivityCorner.PositiveFeedback
 import hannah.bd.getitwrite.views.positivityCorner.PositivityPopUp
 import hannah.bd.getitwrite.views.proposals.FindPartnersByAudience
 import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
 import hannah.bd.getitwrite.views.proposals.ProposalNavHost
-import hannah.bd.getitwrite.views.toCritique.FreeForAll
-import hannah.bd.getitwrite.views.toCritique.QuickQueryCritique
+import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
+import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqueFrenzies
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeFeed(user: User, questions: List<Question>, critiqueFrenzy: List<RequestCritique>, toCritiques: List<RequestCritique>,
-             navController: NavHostController
+fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>,
+             navController: NavHostController, frenzies: List<RequestCritique>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     if (bottomSheet != HomeSheetContent.none) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -106,8 +105,19 @@ enum class HomeSheetContent {
 }
 
 @Composable
-fun FeedNavHost(user: User, questions: List<Question>, critiqueFrenzy: List<RequestCritique>, toCritiques: List<RequestCritique>) {
+fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<RequestCritique>) {
     val navController = rememberNavController()
+    var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
+
+    LaunchedEffect(Unit) {
+        getCritiqueFrenzies(
+            onSuccess = {
+                frenzies.value = it
+            },
+            onError = { exception -> }
+        )
+    }
+
     NavHost(navController = navController, startDestination = "feed") {
         composable(
             "genre/{id}",
@@ -121,7 +131,12 @@ fun FeedNavHost(user: User, questions: List<Question>, critiqueFrenzy: List<Requ
             arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
         composable("feed") {
-            HomeFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, navController)
+            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController)
+        }
+        composable("frenzy") {
+            FrenzyFeed(user = user, proposals = , requests = ) {
+                
+            }
         }
     }
 }

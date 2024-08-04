@@ -70,14 +70,3 @@ fun FrenzyFeed(user: User, proposals: List<Proposal>, requests: List<RequestCrit
         }
     }
 }
-
-class FrenzyViewModel : ViewModel() {
-    val questionsFlow = flow {
-        val documents = Firebase.firestore.collection("frenzy")
-            .get().await()
-        val items = documents.map { doc ->
-            RequestCritique(doc.id, doc.data)
-        }
-        emit(items)
-    }
-}

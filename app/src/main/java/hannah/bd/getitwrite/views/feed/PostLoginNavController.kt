@@ -18,7 +18,6 @@ import androidx.navigation.navArgument
 import hannah.bd.getitwrite.AppActions
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.MainView
-import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyViewModel
 import hannah.bd.getitwrite.views.forum.QuestionDetailView
 import hannah.bd.getitwrite.views.forum.QuestionsViewModel
 import hannah.bd.getitwrite.views.messages.ShowMessages
@@ -43,7 +42,6 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
     val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
     val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
     val questions by QuestionsViewModel().questionsFlow.collectAsState(initial = emptyList())
-    val critiqueFrenzy by FrenzyViewModel().questionsFlow.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
@@ -55,8 +53,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         modifier = Modifier.fillMaxSize()
     ) {
         composable("feed") {
-            FeedNavHost(questions = questions, toCritiques = toCritiques,
-                critiqueFrenzy = critiqueFrenzy, user = user)
+            FeedNavHost(questions = questions, toCritiques = toCritiques, user = user)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -111,19 +108,19 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
             val toCritique = toCritiques.filter { it.id == id }.get(0)
             ToCritiqueDetailedView(user, isCritiqueFrenzy = false, toCritique, actions.navigateUp)
         }
-        composable(
-            "critiqueFrenzy/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            val id = arguments.getString("id")
-            val toCritique = critiqueFrenzy.filter { it.id == id }.get(0)
-            ToCritiqueDetailedView(user, isCritiqueFrenzy = true, toCritique, actions.navigateUp)
-        }
+//        composable(
+//            "critiqueFrenzy/{id}",
+//            arguments = listOf(
+//                navArgument("id") {
+//                    type = NavType.StringType
+//                }
+//            )
+//        ) { backStackEntry ->
+//            val arguments = requireNotNull(backStackEntry.arguments)
+//            val id = arguments.getString("id")
+//            val toCritique = critiqueFrenzy.filter { it.id == id }.get(0)
+//            ToCritiqueDetailedView(user, isCritiqueFrenzy = true, toCritique, actions.navigateUp)
+//        }
         composable(
             "questions/{id}",
             arguments = listOf(
