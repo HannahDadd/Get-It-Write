@@ -25,13 +25,13 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestCritique
-import hannah.bd.getitwrite.modals.RequestFrenzy
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun FreeForAll(requests: MutableState<List<RequestFrenzy>?>, navController: NavController, onTap: (RequestFrenzy) -> Unit, onCreate: () -> Unit) {
+fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController,
+               onTap: (RequestCritique) -> Unit, onCreate: () -> Unit) {
     if (requests.value?.isNotEmpty() == true) {
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -87,7 +87,7 @@ fun FreeForAll(requests: MutableState<List<RequestFrenzy>?>, navController: NavC
     }
 }
 
-fun getCritiqueFrenzies(onSuccess: (List<RequestFrenzy>) -> Unit,
+fun getCritiqueFrenzies(onSuccess: (List<RequestCritique>) -> Unit,
                         onError: (Exception) -> Unit) {
     Firebase.firestore.collection("frenzy")
         .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -95,7 +95,7 @@ fun getCritiqueFrenzies(onSuccess: (List<RequestFrenzy>) -> Unit,
         .addOnSuccessListener { documents ->
             if (documents != null) {
                 val items = documents.map { doc ->
-                    RequestFrenzy(doc.id, doc.data)
+                    RequestCritique(doc.id, doc.data)
                 }
                 onSuccess(items)
             } else {

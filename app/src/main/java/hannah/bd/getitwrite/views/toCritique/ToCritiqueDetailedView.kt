@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Critique
@@ -51,7 +52,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: RequestCritique, navigateUp: () -> Unit) {
+fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: RequestCritique, navController: NavController) {
 
     var errorString = remember { mutableStateOf<String?>(null) }
     val overallFeedback = remember { mutableStateOf("") }
@@ -60,7 +61,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
     var comments = remember { mutableStateOf(mutableStateMapOf<String, Long>()) }
     Column {
-        DetailHeader(title = toCritique.workTitle, navigateUp = navigateUp)
+        DetailHeader(title = toCritique.workTitle, navigateUp = { navController.navigateUp() })
         Column(
             modifier = Modifier
                 .padding(10.dp)
@@ -79,23 +80,25 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                     }
                 }
             }
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(toCritique.title, fontWeight = FontWeight.Bold)
-                Text("by ${toCritique.writerName}")
+            if(!isCritiqueFrenzy) {
+                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(toCritique.title, fontWeight = FontWeight.Bold)
+                    Text("by ${toCritique.writerName}")
+                }
+                Divider()
+                Text("Blurb", fontWeight = FontWeight.Bold)
+                ReportAndBlockUser(
+                    userToBlock = toCritique.writerId,
+                    user = user,
+                    contentToReport = toCritique,
+                    contentToReportType = ContentToReportType.REQUESTCRITIQUE,
+                    questionId = null,
+                    chatId = null
+                )
+                Text(toCritique.blurb)
+                TagCloud(tags = toCritique.triggerWarnings, action = null)
+                Divider()
             }
-            Divider()
-            Text("Blurb", fontWeight = FontWeight.Bold)
-            ReportAndBlockUser(
-                userToBlock = toCritique.writerId,
-                user = user,
-                contentToReport = toCritique,
-                contentToReportType = ContentToReportType.REQUESTCRITIQUE,
-                questionId = null,
-                chatId = null
-            )
-            Text(toCritique.blurb)
-            TagCloud(tags = toCritique.triggerWarnings, action = null)
-            Divider()
             paragraphs.forEachIndexed { index, element ->
                 if (comments.value.containsValue(index.toLong())) {
                     Text(
@@ -145,7 +148,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                                 Firebase.firestore.collection("users").document(user.id)
                                     .collection("requestCritiques").document(toCritique.id).delete()
                             }
-                            navigateUp()
+                            navController.navigateUp()
                         }
                         .addOnFailureListener {
                             errorString.value = it.message.toString()

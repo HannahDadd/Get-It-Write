@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
@@ -36,10 +37,6 @@ import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
-import hannah.bd.getitwrite.views.toCritique.ToCritiqueView
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-import hannah.bd.getitwrite.modals.RequestFrenzy
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.TagCloud
 import kotlinx.coroutines.flow.flow
@@ -47,10 +44,10 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<List<RequestFrenzy>?>, select: (String) -> Unit) {
+fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<List<RequestCritique>?>) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-    val newEntries = remember { mutableStateListOf<RequestFrenzy>() }
+    val newEntries = remember { mutableStateListOf<RequestCritique>() }
     Column {
         DetailHeader(title = "No partners, no swaps, just feedback", navigateUp = { navController.navigateUp() })
         Scaffold(
@@ -77,11 +74,11 @@ fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<
             }
             LazyColumn(Modifier.padding(innerPadding)) {
                 items(newEntries) {
-                    ToCritiqueFrenzyView(it, select)
+                    ToCritiqueFrenzyView(it, {})
                     Divider()
                 }
-                items(requests.value!!) {
-                    ToCritiqueFrenzyView(it, select)
+                itemsIndexed(requests.value!!) {index, item ->
+                    ToCritiqueFrenzyView(item, { navController.navigate("frenzy/$index") })
                     Divider()
                 }
             }
@@ -90,9 +87,9 @@ fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<
 }
 
 @Composable
-fun ToCritiqueFrenzyView(requestCritique: RequestFrenzy, selectProposal: (String) -> Unit) {
+fun ToCritiqueFrenzyView(requestCritique: RequestCritique, select: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.padding(10.dp).clickable { selectProposal(requestCritique.id) }) {
+        modifier = Modifier.padding(10.dp).clickable { select() }) {
         TagCloud(tags = requestCritique.genres, action = null)
         Row(modifier = Modifier.fillMaxWidth().padding()) {
             Spacer(modifier = Modifier.weight(1.0f))

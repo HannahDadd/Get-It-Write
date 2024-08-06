@@ -95,19 +95,19 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
                 navigateUp = actions.navigateUp
             )
         }
-        composable(
-            "critiqueRequest/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            val id = arguments.getString("id")
-            val toCritique = toCritiques.filter { it.id == id }.get(0)
-            ToCritiqueDetailedView(user, isCritiqueFrenzy = false, toCritique, actions.navigateUp)
-        }
+//        composable(
+//            "critiqueRequest/{id}",
+//            arguments = listOf(
+//                navArgument("id") {
+//                    type = NavType.StringType
+//                }
+//            )
+//        ) { backStackEntry ->
+//            val arguments = requireNotNull(backStackEntry.arguments)
+//            val id = arguments.getString("id")
+//            val toCritique = toCritiques.filter { it.id == id }.get(0)
+//            ToCritiqueDetailedView(user, isCritiqueFrenzy = false, toCritique, actions.navigateUp)
+//        }
 //        composable(
 //            "critiqueFrenzy/{id}",
 //            arguments = listOf(

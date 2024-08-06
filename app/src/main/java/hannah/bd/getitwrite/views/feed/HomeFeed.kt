@@ -20,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
-import hannah.bd.getitwrite.modals.RequestFrenzy
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
@@ -33,15 +32,16 @@ import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
 import hannah.bd.getitwrite.views.proposals.ProposalNavHost
 import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqueFrenzies
+import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>,
-             navController: NavHostController, frenzies: MutableState<List<RequestFrenzy>?>
+             navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val frenzy = remember { mutableStateOf<RequestFrenzy?>(null) }
+    val frenzy = remember { mutableStateOf<RequestCritique?>(null) }
     if (bottomSheet != HomeSheetContent.none) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -126,7 +126,7 @@ enum class HomeSheetContent {
 @Composable
 fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<RequestCritique>) {
     val navController = rememberNavController()
-    var frenzies = remember { mutableStateOf<List<RequestFrenzy>?>(null) }
+    var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiqueFrenzies(
@@ -153,8 +153,16 @@ fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<Request
             HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController, frenzies)
         }
         composable("frenzyFeed") {
-            FrenzyFeed(navController, user = user, requests = frenzies) {
-                
+            FrenzyFeed(navController, user = user, requests = frenzies)
+        }
+        composable(
+            "frenzy/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                frenzies.value?.get(index = it.toInt())?.let {
+                    ToCritiqueDetailedView(user, true, it, navController)
+                }
             }
         }
     }

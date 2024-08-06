@@ -37,14 +37,13 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.GlobalVariables
-import hannah.bd.getitwrite.modals.RequestFrenzy
 import hannah.bd.getitwrite.views.components.CheckInput
 import hannah.bd.getitwrite.views.components.SelectTagCloud
 import hannah.bd.getitwrite.views.feed.Screen
 import java.util.UUID
 
 @Composable
-fun MakeFrenzyView(user: User, onSuccess: (RequestFrenzy) -> Unit) {
+fun MakeFrenzyView(user: User, onSuccess: (RequestCritique) -> Unit) {
     var errorString = remember { mutableStateOf<String?>(null) }
     val genreTags = remember { mutableStateOf(mutableListOf<String>()) }
     val text = remember { mutableStateOf("") }
@@ -69,7 +68,8 @@ fun MakeFrenzyView(user: User, onSuccess: (RequestFrenzy) -> Unit) {
                     errorString.value = CheckInput.errorStringText
                 } else {
                     val id = UUID.randomUUID().toString()
-                    val request = RequestFrenzy(id = id, genres = genreTags.value, text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
+                    val request = RequestCritique(id = id, title = "Critique Frenzy", blurb = "", genres = genreTags.value,
+                        triggerWarnings = mutableListOf(), workTitle = "", text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
                     Firebase.firestore.collection("frenzy").document(id).set(request)
                         .addOnSuccessListener {
                             onSuccess(request)

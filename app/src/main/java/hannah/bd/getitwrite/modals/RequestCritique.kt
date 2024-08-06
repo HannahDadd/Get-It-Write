@@ -43,21 +43,3 @@ class RequestPositivity(
         comments = data["comments"] as Map<String, String>,
     )
 }
-
-class RequestFrenzy(
-    override var id: String,
-    val genres: MutableList<String>,
-    val text: String,
-    val timestamp: Timestamp,
-    val writerId: String,
-    val writerName: String
-) : UserGeneratedContent {
-    constructor(id: String, data: Map<String, Any>) : this(
-        id = id,
-        genres = data["genres"] as MutableList<String>,
-        text = data["text"] as String,
-        timestamp = data["timestamp"] as Timestamp,
-        writerId = data["writerId"] as String,
-        writerName = data["writerName"] as String,
-    )
-}
