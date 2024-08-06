@@ -26,12 +26,13 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestFrenzy
+import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun FreeForAll(requests: List<RequestFrenzy>, navController: NavController, onTap: (RequestFrenzy) -> Unit, onCreate: () -> Unit) {
-    if (requests.isNotEmpty()) {
+fun FreeForAll(requests: MutableState<List<RequestFrenzy>?>, navController: NavController, onTap: (RequestFrenzy) -> Unit, onCreate: () -> Unit) {
+    if (requests.value?.isNotEmpty() == true) {
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
@@ -46,7 +47,7 @@ fun FreeForAll(requests: List<RequestFrenzy>, navController: NavController, onTa
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(requests) { //.subList(0, 5)
+                items(requests.value!!) { //.subList(0, 5)
                     SquareTileButton(
                         title = it.genres.joinToString(),
                         wordCount = "",
@@ -86,7 +87,7 @@ fun FreeForAll(requests: List<RequestFrenzy>, navController: NavController, onTa
     }
 }
 
-fun getCritiqueFrenzies(onSuccess: (List<RequestCritique>) -> Unit,
+fun getCritiqueFrenzies(onSuccess: (List<RequestFrenzy>) -> Unit,
                         onError: (Exception) -> Unit) {
     Firebase.firestore.collection("frenzy")
         .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -94,7 +95,7 @@ fun getCritiqueFrenzies(onSuccess: (List<RequestCritique>) -> Unit,
         .addOnSuccessListener { documents ->
             if (documents != null) {
                 val items = documents.map { doc ->
-                    RequestCritique(doc.id, doc.data)
+                    RequestFrenzy(doc.id, doc.data)
                 }
                 onSuccess(items)
             } else {

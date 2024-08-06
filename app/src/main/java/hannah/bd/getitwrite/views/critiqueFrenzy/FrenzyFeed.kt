@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
@@ -38,46 +40,50 @@ import hannah.bd.getitwrite.views.toCritique.ToCritiqueView
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestFrenzy
+import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.TagCloud
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FrenzyFeed(user: User, requests: List<RequestFrenzy>, select: (String) -> Unit) {
+fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<List<RequestFrenzy>?>, select: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     val newEntries = remember { mutableStateListOf<RequestFrenzy>() }
-    Scaffold(
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text("Add") },
-                icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                onClick = { showBottomSheet = true }
-            )
-        }
-    ) { innerPadding ->
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState
-            ) {
-                MakeFrenzyView(user) {
-                    newEntries.plus(it)
-                    showBottomSheet = false
+    Column {
+        DetailHeader(title = "No partners, no swaps, just feedback", navigateUp = { navController.navigateUp() })
+        Scaffold(
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    text = { Text("Add") },
+                    icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+                    onClick = { showBottomSheet = true }
+                )
+            }
+        ) { innerPadding ->
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    sheetState = sheetState
+                ) {
+                    MakeFrenzyView(user) {
+                        newEntries.plus(it)
+                        showBottomSheet = false
+                    }
                 }
             }
-        }
-        LazyColumn(Modifier.padding(innerPadding)) {
-            items(newEntries) {
-                ToCritiqueFrenzyView(it, select)
-                Divider()
-            }
-            items(requests) { q ->
-                ToCritiqueFrenzyView(q, select)
-                Divider()
+            LazyColumn(Modifier.padding(innerPadding)) {
+                items(newEntries) {
+                    ToCritiqueFrenzyView(it, select)
+                    Divider()
+                }
+                items(requests.value!!) {
+                    ToCritiqueFrenzyView(it, select)
+                    Divider()
+                }
             }
         }
     }

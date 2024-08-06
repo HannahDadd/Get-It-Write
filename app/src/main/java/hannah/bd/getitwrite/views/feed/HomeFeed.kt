@@ -7,6 +7,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +37,7 @@ import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqueFrenzies
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>,
-             navController: NavHostController, frenzies: List<RequestCritique>
+             navController: NavHostController, frenzies: MutableState<List<RequestFrenzy>?>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -105,7 +106,7 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
         }
         item {
             PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
-                bottomSheet = HomeSheetContent.makeNewPositive
+                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
             }
         }
         item {
@@ -125,7 +126,7 @@ enum class HomeSheetContent {
 @Composable
 fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<RequestCritique>) {
     val navController = rememberNavController()
-    var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
+    var frenzies = remember { mutableStateOf<List<RequestFrenzy>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiqueFrenzies(
@@ -149,10 +150,10 @@ fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<Request
             arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
         composable("feed") {
-            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController)
+            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController, frenzies)
         }
         composable("frenzyFeed") {
-            FrenzyFeed(user = user, requests = frenzies) {
+            FrenzyFeed(navController, user = user, requests = frenzies) {
                 
             }
         }

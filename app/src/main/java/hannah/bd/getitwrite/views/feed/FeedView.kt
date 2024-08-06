@@ -95,7 +95,7 @@ fun ShowFeed(user: User, questions: List<Question>, critiqueFrenzy: List<Request
                 .padding(innerPadding)
                 .fillMaxSize()) {
             //composable(Screen.Home.route) { HomeFeed() }
-            composable(Screen.CritiqueFrenzy.route) { FrenzyFeed(user, proposals, critiqueFrenzy, selectFrenzy) }
+            //composable(Screen.CritiqueFrenzy.route) { FrenzyFeed(user, proposals, critiqueFrenzy, selectFrenzy) }
             composable(Screen.ToCritique.route) { ToCritiqueFeed(toCritiques, selectCritiqueRequest) }
             composable(Screen.Forum.route) { ForumFeed(user = user, questions, selectQuestion) }
             composable(Screen.Messages.route) { ChatsFeed(user = user, chatsViewModel = ChatsViewModel(user), selectChat = selectChat) }
