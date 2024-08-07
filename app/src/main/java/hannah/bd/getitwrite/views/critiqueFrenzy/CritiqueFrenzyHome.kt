@@ -37,15 +37,16 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
             verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
         ) {
             Text(
                 text = "No partners, no swaps, just feedback.",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(16.dp)
             )
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             ) {
                 item {
                     SquareTileButton(
