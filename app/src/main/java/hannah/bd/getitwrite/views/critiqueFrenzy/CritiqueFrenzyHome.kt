@@ -48,17 +48,6 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                itemsIndexed(requests.value!!) {index, item -> //.subList(0, 5)
-                    SquareTileButton(
-                        title = item.genres.joinToString(),
-                        wordCount = "",
-                        backgroundColour = MaterialTheme.colorScheme.primary,
-                        textColour = MaterialTheme.colorScheme.onPrimary,
-                        icon = Icons.Default.Email,
-                        size = 150.dp,
-                        onClick = { navController.navigate("frenzy/$index") }
-                    )
-                }
                 item {
                     SquareTileButton(
                         title = "Add your own.",
@@ -68,6 +57,17 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
                         icon = Icons.Default.Add,
                         size = 150.dp,
                         onClick = onCreate
+                    )
+                }
+                itemsIndexed(requests.value!!.subList(0, 3)) {index, item ->
+                    SquareTileButton(
+                        title = item.genres.joinToString(),
+                        wordCount = "",
+                        backgroundColour = MaterialTheme.colorScheme.primary,
+                        textColour = MaterialTheme.colorScheme.onPrimary,
+                        icon = Icons.Default.Email,
+                        size = 150.dp,
+                        onClick = { navController.navigate("frenzy/$index") }
                     )
                 }
                 item {
