@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForward
@@ -47,23 +48,23 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(requests.value!!) { //.subList(0, 5)
+                itemsIndexed(requests.value!!) {index, item -> //.subList(0, 5)
                     SquareTileButton(
-                        title = it.genres.joinToString(),
+                        title = item.genres.joinToString(),
                         wordCount = "",
                         backgroundColour = MaterialTheme.colorScheme.primary,
                         textColour = MaterialTheme.colorScheme.onPrimary,
                         icon = Icons.Default.Email,
                         size = 150.dp,
-                        onClick = { onTap(it) }
+                        onClick = { navController.navigate("frenzy/$index") }
                     )
                 }
                 item {
                     SquareTileButton(
                         title = "Add your own.",
                         wordCount = "",
-                        backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
-                        textColour = MaterialTheme.colorScheme.onSecondaryContainer,
+                        backgroundColour = MaterialTheme.colorScheme.secondary,
+                        textColour = MaterialTheme.colorScheme.onSecondary,
                         icon = Icons.Default.Add,
                         size = 150.dp,
                         onClick = onCreate

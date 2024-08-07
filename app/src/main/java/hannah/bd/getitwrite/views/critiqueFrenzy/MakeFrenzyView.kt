@@ -65,10 +65,8 @@ fun MakeFrenzyView(user: User, onSuccess: (RequestCritique) -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             onClick = {
                 if (CheckInput.isStringGood(text.value, 1000)) {
-                    errorString.value = CheckInput.errorStringText
-                } else {
                     val id = UUID.randomUUID().toString()
-                    val request = RequestCritique(id = id, title = "Critique Frenzy", blurb = "", genres = genreTags.value,
+                    val request = RequestCritique(id = id, title = "", blurb = "", genres = genreTags.value,
                         triggerWarnings = mutableListOf(), workTitle = "", text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
                     Firebase.firestore.collection("frenzy").document(id).set(request)
                         .addOnSuccessListener {
@@ -77,13 +75,15 @@ fun MakeFrenzyView(user: User, onSuccess: (RequestCritique) -> Unit) {
                         .addOnFailureListener {
                             errorString.value = it.message.toString()
                         }
+                } else {
+                    errorString.value = CheckInput.errorStringText
                 }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             )        ) {
-            Text("Send critique", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
+            Text("Submit", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
     }
 }

@@ -101,12 +101,12 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
                 frenzy.value = it
                 bottomSheet = HomeSheetContent.critiqueFrenzy
             }) {
-                bottomSheet = HomeSheetContent.makeNewPositive
+                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
             }
         }
         item {
             PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
-                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
+                bottomSheet = HomeSheetContent.makeNewPositive
             }
         }
         item {
