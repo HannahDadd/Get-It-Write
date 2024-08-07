@@ -45,12 +45,13 @@ import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<List<RequestCritique>?>) {
+fun FrenzyFeed(navController: NavController, dbName: String, placeholder: String, user: User, requests: MutableState<List<RequestCritique>?>) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     val newEntries = remember { mutableStateListOf<RequestCritique>() }
+    val title = if (dbName == "frenzy") "No partners, no swaps, just feedback" else "Queries"
     Column {
-        DetailHeader(title = "No partners, no swaps, just feedback", navigateUp = { navController.navigateUp() })
+        DetailHeader(title = title, navigateUp = { navController.navigateUp() })
         Scaffold(
             floatingActionButton = {
                 ExtendedFloatingActionButton(
@@ -67,7 +68,7 @@ fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<
                     },
                     sheetState = sheetState
                 ) {
-                    MakeFrenzyView(user) {
+                    MakeFrenzyView(user, dbName, placeholder) {
                         newEntries.plus(it)
                         showBottomSheet = false
                     }

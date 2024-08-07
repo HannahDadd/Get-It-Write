@@ -43,7 +43,7 @@ import hannah.bd.getitwrite.views.feed.Screen
 import java.util.UUID
 
 @Composable
-fun MakeFrenzyView(user: User, onSuccess: (RequestCritique) -> Unit) {
+fun MakeFrenzyView(user: User, dbName: String, placeHolder: String, onSuccess: (RequestCritique) -> Unit) {
     var errorString = remember { mutableStateOf<String?>(null) }
     val genreTags = remember { mutableStateOf(mutableListOf<String>()) }
     val text = remember { mutableStateOf("") }
@@ -51,24 +51,27 @@ fun MakeFrenzyView(user: User, onSuccess: (RequestCritique) -> Unit) {
         .fillMaxHeight()
         .padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text("1,000 word limit without any trigger warnings.")
-        SelectTagCloud(question = "Select genre", answers = GlobalVariables.genres) {
+        SelectTagCloud(question = "Select genres", answers = GlobalVariables.genres) {
             genreTags.value.add(it)
         }
         OutlinedTextField(value = text.value,
             maxLines = 10,
             onValueChange = { text.value = it },
             modifier = Modifier.fillMaxWidth().height(150.dp),
-            label = { Text(text = "Text") }
+            label = { Text(text = placeHolder) }
         )
         ErrorText(error = errorString)
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                if (CheckInput.isStringGood(text.value, 1000)) {
+                if (genreTags.value.isEmpty()) {
+                    errorString.value = "You must select at least one genre"
+                } else if (CheckInput.isStringGood(text.value, 1000)) {
                     val id = UUID.randomUUID().toString()
+                    val workTitle = if (dbName == "frenzy") "Critique Frenzy" else "Query"
                     val request = RequestCritique(id = id, title = "", blurb = "", genres = genreTags.value,
-                        triggerWarnings = mutableListOf(), workTitle = "", text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
-                    Firebase.firestore.collection("frenzy").document(id).set(request)
+                        triggerWarnings = mutableListOf(), workTitle = workTitle, text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
+                    Firebase.firestore.collection(dbName).document(id).set(request)
                         .addOnSuccessListener {
                             onSuccess(request)
                         }

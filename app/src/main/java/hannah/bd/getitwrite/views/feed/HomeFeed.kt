@@ -31,13 +31,14 @@ import hannah.bd.getitwrite.views.proposals.FindPartnersByAudience
 import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
 import hannah.bd.getitwrite.views.proposals.ProposalNavHost
 import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
-import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqueFrenzies
+import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>,
-             navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>
+             navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
+             queries: MutableState<List<RequestCritique>?>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -63,7 +64,12 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
                     }
                 }
                 HomeSheetContent.makeNewCritiqueFrenzy -> {
-                    MakeFrenzyView(user = user) {
+                    MakeFrenzyView(user = user, "frenzy", "Text") {
+                        bottomSheet = HomeSheetContent.none
+                    }
+                }
+                HomeSheetContent.makeNewQueryFrenzy -> {
+                    MakeFrenzyView(user = user, "queries", "Query") {
                         bottomSheet = HomeSheetContent.none
                     }
                 }
@@ -90,7 +96,9 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
             FindPartnersByAudience(navController)
         }
         item {
-            QuickQueryCritique()
+            QuickQueryCritique(queries, navController) {
+                bottomSheet = HomeSheetContent.makeNewQueryFrenzy
+            }
         }
         item {
             FreeForAll(frenzies, navController = navController) {
@@ -112,18 +120,26 @@ enum class HomeSheetContent {
     none,
     positiveReview,
     makeNewPositive,
-    makeNewCritiqueFrenzy
+    makeNewCritiqueFrenzy,
+    makeNewQueryFrenzy,
 }
 
 @Composable
 fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<RequestCritique>) {
     val navController = rememberNavController()
     var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
+    var queries = remember { mutableStateOf<List<RequestCritique>?>(null) }
 
     LaunchedEffect(Unit) {
-        getCritiqueFrenzies(
+        getCritiques("frenzy",
             onSuccess = {
                 frenzies.value = it
+            },
+            onError = { exception -> }
+        )
+        getCritiques("queries",
+            onSuccess = {
+                queries.value = it
             },
             onError = { exception -> }
         )
@@ -142,13 +158,26 @@ fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<Request
             arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
         composable("feed") {
-            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController, frenzies)
+            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController, frenzies, queries)
         }
         composable("frenzyFeed") {
-            FrenzyFeed(navController, user = user, requests = frenzies)
+            FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)
         }
         composable(
             "frenzy/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                frenzies.value?.get(index = it.toInt())?.let {
+                    ToCritiqueDetailedView(user, true, it, navController)
+                }
+            }
+        }
+        composable("queryFeed") {
+            FrenzyFeed(navController, "queries", "Query", user = user, requests = queries)
+        }
+        composable(
+            "queries/{index}",
             arguments = listOf(navArgument("index") { type = NavType.StringType })
         ) { backStackEntry ->
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
