@@ -34,22 +34,21 @@ import hannah.bd.getitwrite.views.components.SquareTileButton
 fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController, onCreate: () -> Unit) {
     if (requests.value?.isNotEmpty() == true) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier
-                .fillMaxWidth()
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(vertical = 16.dp).fillMaxWidth()
         ) {
             Text(
                 text = "No partners, no swaps, just feedback.",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
                     SquareTileButton(
+                        modifier = Modifier.padding(start = 8.dp),
                         title = "Add your own.",
                         wordCount = "",
                         backgroundColour = MaterialTheme.colorScheme.secondary,
@@ -72,6 +71,7 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
                 }
                 item {
                     SquareTileButton(
+                        modifier = Modifier.padding(end = 8.dp),
                         title = "View more.",
                         wordCount = "",
                         backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,

@@ -29,19 +29,20 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.secondary)
+                .padding(vertical = 16.dp)
         ) {
             Text(
                 text = "Quick query critique",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondary,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp)
             )
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
                     SquareTileButton(
+                        modifier = Modifier.padding(start = 8.dp),
                         title = "Add your own.",
                         wordCount = "",
                         backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
@@ -64,6 +65,7 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
                 }
                 item {
                     SquareTileButton(
+                        modifier = Modifier.padding(end = 8.dp),
                         title = "View more.",
                         wordCount = "",
                         backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,

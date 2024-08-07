@@ -75,6 +75,7 @@ fun ErrorText(error: MutableState<String?>) {
 
 @Composable
 fun SquareTileButton(
+    modifier: Modifier = Modifier,
     title: String,
     wordCount: String,
     backgroundColour: Color,
@@ -84,7 +85,7 @@ fun SquareTileButton(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .size(size)
             .clip(RoundedCornerShape(8.dp))
             .background(color = backgroundColour)
