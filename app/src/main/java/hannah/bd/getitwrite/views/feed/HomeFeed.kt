@@ -41,7 +41,6 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val frenzy = remember { mutableStateOf<RequestCritique?>(null) }
     if (bottomSheet != HomeSheetContent.none) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -67,9 +66,6 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
                     MakeFrenzyView(user = user) {
                         bottomSheet = HomeSheetContent.none
                     }
-                }
-                HomeSheetContent.critiqueFrenzy -> {
-
                 }
             }
         }
@@ -97,10 +93,7 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
             QuickQueryCritique()
         }
         item {
-            FreeForAll(frenzies, navController = navController, onTap = {
-                frenzy.value = it
-                bottomSheet = HomeSheetContent.critiqueFrenzy
-            }) {
+            FreeForAll(frenzies, navController = navController) {
                 bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
             }
         }
@@ -119,7 +112,6 @@ enum class HomeSheetContent {
     none,
     positiveReview,
     makeNewPositive,
-    critiqueFrenzy,
     makeNewCritiqueFrenzy
 }
 

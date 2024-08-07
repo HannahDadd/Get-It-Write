@@ -31,8 +31,7 @@ import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController,
-               onTap: (RequestCritique) -> Unit, onCreate: () -> Unit) {
+fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController, onCreate: () -> Unit) {
     if (requests.value?.isNotEmpty() == true) {
         Column(
             verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -59,7 +58,7 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
                         onClick = onCreate
                     )
                 }
-                itemsIndexed(requests.value!!.subList(0, 3)) {index, item ->
+                itemsIndexed(requests.value!!.subList(0, 5)) {index, item ->
                     SquareTileButton(
                         title = item.genres.joinToString(),
                         wordCount = "",

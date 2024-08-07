@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
+import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.TagCloud
 import kotlinx.coroutines.flow.flow
@@ -89,9 +90,14 @@ fun FrenzyFeed(navController: NavController, user: User, requests: MutableState<
 @Composable
 fun ToCritiqueFrenzyView(requestCritique: RequestCritique, select: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.padding(10.dp).clickable { select() }) {
-        TagCloud(tags = requestCritique.genres, action = null)
-        Row(modifier = Modifier.fillMaxWidth().padding()) {
+        modifier = Modifier
+            .padding(10.dp)
+            .clickable { select() }) {
+        Text(text = requestCritique.genres.joinToString(),
+            style = AppTypography.titleMedium)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding()) {
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = DateUtils.getRelativeTimeSpanString(
