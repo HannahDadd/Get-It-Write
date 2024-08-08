@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Divider
@@ -21,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.User
@@ -40,12 +43,13 @@ import hannah.bd.getitwrite.views.components.ReportAndBlockUser
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.RequestCritique
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit) {
+fun ForumFeed(navController: NavController, user: User, questionList: MutableState<List<Question>?>) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var addedQuestions = remember { mutableStateListOf<Question>() }
@@ -71,18 +75,12 @@ fun ForumFeed(user: User, questionList: List<Question>, select: (String) -> Unit
                 }
             }
         }
-        if (questionList.isEmpty()) {
-            Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
-                Text(text = "Loading...")
+        LazyColumn(Modifier.padding(innerPadding)) {
+            items(addedQuestions) {
+                ForumView(user, it, true, { })
             }
-        } else {
-            LazyColumn(Modifier.padding(innerPadding)) {
-                items(addedQuestions) {
-                    ForumView(user, it, true, select)
-                }
-                items(questionList) { q ->
-                    ForumView(user, q, true, select)
-                }
+            itemsIndexed(questionList.value!!) { index, q ->
+                ForumView(user, q, true, { navController.navigate("question/$index") })
             }
         }
     }

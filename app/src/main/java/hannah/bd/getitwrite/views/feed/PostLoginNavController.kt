@@ -53,7 +53,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         modifier = Modifier.fillMaxSize()
     ) {
         composable("feed") {
-            FeedNavHost(questions = questions, toCritiques = toCritiques, user = user)
+            FeedNavHost(toCritiques = toCritiques, user = user)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -121,19 +121,6 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
 //            val toCritique = critiqueFrenzy.filter { it.id == id }.get(0)
 //            ToCritiqueDetailedView(user, isCritiqueFrenzy = true, toCritique, actions.navigateUp)
 //        }
-        composable(
-            "questions/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            val id = arguments.getString("id")
-            val question = questions.filter { it.id == id }.get(0)
-            QuestionDetailView(question, user, backStackEntry, actions.navigateUp)
-        }
         composable(
             "critiqued/{id}",
             arguments = listOf(

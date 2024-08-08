@@ -32,11 +32,15 @@ import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
 import hannah.bd.getitwrite.views.proposals.ProposalNavHost
 import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
+import hannah.bd.getitwrite.views.critiqueFrenzy.getQuestions
+import hannah.bd.getitwrite.views.forum.ForumFeed
+import hannah.bd.getitwrite.views.forum.ForumView
+import hannah.bd.getitwrite.views.forum.QuestionDetailView
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCritique>,
+fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: List<RequestCritique>,
              navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
              queries: MutableState<List<RequestCritique>?>
 ) {
@@ -90,7 +94,7 @@ fun HomeFeed(user: User, questions: List<Question>, toCritiques: List<RequestCri
             AIPromo()
         }
         item {
-            JoinTheConvo(questions)
+            JoinTheConvo(navController, questions)
         }
         item {
             FindPartnersByAudience(navController)
@@ -125,10 +129,11 @@ enum class HomeSheetContent {
 }
 
 @Composable
-fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<RequestCritique>) {
+fun FeedNavHost(user: User, toCritiques: List<RequestCritique>) {
     val navController = rememberNavController()
     var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
     var queries = remember { mutableStateOf<List<RequestCritique>?>(null) }
+    var questions = remember { mutableStateOf<List<Question>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiques("frenzy",
@@ -140,6 +145,12 @@ fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<Request
         getCritiques("queries",
             onSuccess = {
                 queries.value = it
+            },
+            onError = { exception -> }
+        )
+        getQuestions(
+            onSuccess = {
+                questions.value = it
             },
             onError = { exception -> }
         )
@@ -183,6 +194,19 @@ fun FeedNavHost(user: User, questions: List<Question>, toCritiques: List<Request
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 frenzies.value?.get(index = it.toInt())?.let {
                     ToCritiqueDetailedView(user, true, it, navController)
+                }
+            }
+        }
+        composable("questionFeed") {
+            ForumFeed(navController, user = user, questions)
+        }
+        composable(
+            "question/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                questions.value?.get(index = it.toInt())?.let {
+                    QuestionDetailView(it, user, navController = navController, backStackEntry)
                 }
             }
         }

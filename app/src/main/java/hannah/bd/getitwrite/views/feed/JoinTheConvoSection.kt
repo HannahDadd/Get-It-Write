@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -22,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,8 +32,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.google.firebase.Timestamp
 import hannah.bd.getitwrite.modals.Question
+import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
@@ -112,45 +117,41 @@ fun RectangleTileButtonNoDate(
 }
 
 @Composable
-fun JoinTheConvo(questions: List<Question>) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.secondary)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = "Join the conversation",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSecondary,
-        )
-        if(questions.isEmpty()) {
+fun JoinTheConvo(navController: NavController, questions: MutableState<List<Question>?>) {
+    if (questions.value?.isNotEmpty() == true) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.secondary)
+                .padding(16.dp)
+        ) {
             Text(
-                text = "Loading...",
-                style = MaterialTheme.typography.bodyMedium,
+                text = "Join the conversation",
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSecondary,
             )
-        } else {
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                questions.subList(0, 3).forEach {
+                questions.value!!.subList(0, 3).forEachIndexed { index, it ->
                     RectangleTileButton(
                         title = it.question,
                         seconds = it.timestamp,
                         backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
                         textColour = MaterialTheme.colorScheme.onSecondaryContainer,
-                        onClick = {}
+                        onClick = { navController.navigate("question/$index") }
                     )
                 }
                 RectangleTileButtonNoDate(
                     title = "View more",
                     backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
                     textColour = MaterialTheme.colorScheme.onTertiaryContainer,
-                    onClick = {}
+                    onClick = { navController.navigate("questionFeed") }
                 )
             }
         }
+    } else {
+        Text("Loading...", modifier = Modifier.padding(16.dp))
     }
 }

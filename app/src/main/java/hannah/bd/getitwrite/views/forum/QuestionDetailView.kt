@@ -33,6 +33,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.Reply
@@ -49,8 +50,7 @@ import com.google.firebase.firestore.firestore
 import java.util.UUID
 
 @Composable
-fun QuestionDetailView(question: Question, user: User,
-                       backStackEntry: NavBackStackEntry, navigateUp: () -> Unit) {
+fun QuestionDetailView(question: Question, user: User, navController: NavController, backStackEntry: NavBackStackEntry) {
     var errorString = remember { mutableStateOf<String?>(null) }
     var replies = remember { mutableStateListOf<Reply>() }
     RepliesViewModel().getReplies(question.id).observe(backStackEntry) {
@@ -63,7 +63,7 @@ fun QuestionDetailView(question: Question, user: User,
     }
     val reply = remember { mutableStateOf("") }
     Column {
-        DetailHeader(title = "", navigateUp = navigateUp)
+        DetailHeader(title = "", navigateUp = { navController.navigateUp() })
         Column(modifier = Modifier.fillMaxWidth().padding(10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Column(

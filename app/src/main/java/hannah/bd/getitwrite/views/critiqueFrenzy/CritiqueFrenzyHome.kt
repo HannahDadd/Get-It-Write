@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
@@ -98,6 +99,27 @@ fun getCritiques(dbName: String,
             if (documents != null) {
                 val items = documents.map { doc ->
                     RequestCritique(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
+}
+
+fun getQuestions(
+                 onSuccess: (List<Question>) -> Unit,
+                 onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("questions")
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    Question(doc.id, doc.data)
                 }
                 onSuccess(items)
             } else {
