@@ -44,6 +44,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.views.components.DetailHeader
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
@@ -53,34 +54,37 @@ fun ForumFeed(navController: NavController, user: User, questionList: MutableSta
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var addedQuestions = remember { mutableStateListOf<Question>() }
-    Scaffold(
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                text = { Text("Ask question") },
-                icon = { Icon(Icons.Filled.Add, contentDescription = "") },
-                onClick = { showBottomSheet = true }
-            )
-        }
-    ) { innerPadding ->
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState
-            ) {
-                MakeQuestionView(user) {
-                    addedQuestions.plus(it)
-                    showBottomSheet = false
+    Column {
+        DetailHeader(title = "Questions", navigateUp = { navController.navigateUp() })
+        Scaffold(
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    text = { Text("Ask question") },
+                    icon = { Icon(Icons.Filled.Add, contentDescription = "") },
+                    onClick = { showBottomSheet = true }
+                )
+            }
+        ) { innerPadding ->
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    sheetState = sheetState
+                ) {
+                    MakeQuestionView(user) {
+                        addedQuestions.plus(it)
+                        showBottomSheet = false
+                    }
                 }
             }
-        }
-        LazyColumn(Modifier.padding(innerPadding)) {
-            items(addedQuestions) {
-                ForumView(user, it, true, { })
-            }
-            itemsIndexed(questionList.value!!) { index, q ->
-                ForumView(user, q, true, { navController.navigate("question/$index") })
+            LazyColumn(Modifier.padding(innerPadding)) {
+                items(addedQuestions) {
+                    ForumView(user, it, true, { })
+                }
+                itemsIndexed(questionList.value!!) { index, q ->
+                    ForumView(user, q, true, { navController.navigate("question/$index") })
+                }
             }
         }
     }
@@ -92,14 +96,6 @@ fun ForumView(user: User, question: Question, isFeed: Boolean, select: (String) 
         modifier = Modifier
             .padding(10.dp)
             .clickable { select(question.id) }) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ProfileImage(username = question.questionerName, profileColour = question.questionerColour)
-            Text(question.questionerName, fontSize = 20.sp)
-        }
         Text(question.question, fontWeight = FontWeight.Bold)
         if (isFeed) {
             ReportAndBlockUser(userToBlock = question.questionerId,

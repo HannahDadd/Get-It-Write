@@ -42,7 +42,6 @@ import hannah.bd.getitwrite.views.components.SquareTileButton
 @Composable
 fun RectangleTileButton(
     title: String,
-    seconds: Timestamp,
     backgroundColour: Color,
     textColour: Color,
     onClick: () -> Unit
@@ -61,23 +60,23 @@ fun RectangleTileButton(
             text = title,
             color = textColour
         )
-        Spacer(modifier = Modifier.weight(1.0f))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding()
-        ) {
-            Text(
-                text = DateUtils.getRelativeTimeSpanString(
-                    (seconds.seconds * 1000),
-                    System.currentTimeMillis(),
-                    DateUtils.DAY_IN_MILLIS
-                ).toString(),
-                style = AppTypography.labelSmall,
-                fontWeight = FontWeight.Light
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
-        }
+//        Spacer(modifier = Modifier.weight(1.0f))
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding()
+//        ) {
+//            Text(
+//                text = DateUtils.getRelativeTimeSpanString(
+//                    (seconds.seconds * 1000),
+//                    System.currentTimeMillis(),
+//                    DateUtils.DAY_IN_MILLIS
+//                ).toString(),
+//                style = AppTypography.labelSmall,
+//                fontWeight = FontWeight.Light
+//            )
+//            Spacer(modifier = Modifier.weight(1.0f))
+//        }
     }
 }
 
@@ -137,7 +136,6 @@ fun JoinTheConvo(navController: NavController, questions: MutableState<List<Ques
                 questions.value!!.subList(0, 3).forEachIndexed { index, it ->
                     RectangleTileButton(
                         title = it.question,
-                        seconds = it.timestamp,
                         backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
                         textColour = MaterialTheme.colorScheme.onSecondaryContainer,
                         onClick = { navController.navigate("question/$index") }
