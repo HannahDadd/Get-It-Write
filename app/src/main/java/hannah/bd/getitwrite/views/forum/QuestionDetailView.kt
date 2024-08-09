@@ -47,6 +47,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.views.components.CheckInput
 import java.util.UUID
 
 @Composable
@@ -97,7 +98,7 @@ fun QuestionDetailView(question: Question, user: User, navController: NavControl
                 )
                 Button(
                     onClick = {
-                        if (reply.value != "") {
+                        if(CheckInput.isStringGood(reply.value, 200)) {
                             val id = UUID.randomUUID().toString()
                             val r = Reply(id = id, reply = reply.value, replierId = user.id, replierName = user.displayName, replierColour = user.colour, timestamp = Timestamp.now())
                             Firebase.firestore.collection("questions").document(question.id)
@@ -109,7 +110,7 @@ fun QuestionDetailView(question: Question, user: User, navController: NavControl
                                     errorString.value = it.message.toString()
                                 }
                         } else {
-                            errorString.value = "Reply cannot be empty"
+                            errorString.value = CheckInput.errorStringText
                         }
                     },
                     shape = CircleShape,

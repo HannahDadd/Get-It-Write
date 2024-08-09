@@ -25,6 +25,7 @@ import hannah.bd.getitwrite.views.components.ErrorText
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.views.components.CheckInput
 import java.util.UUID
 
 @Composable
@@ -45,17 +46,21 @@ fun MakeQuestionView(user: User, onSuccess: (Question) -> Unit) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                val id = UUID.randomUUID().toString()
-                val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, timestamp = Timestamp.now())
-                Firebase.firestore.collection("questions")
-                    .document(id)
-                    .set(q)
-                    .addOnSuccessListener {
-                        onSuccess(q)
-                    }
-                    .addOnFailureListener { e ->
-                        errorString.value = e.toString()
-                    }
+                if(CheckInput.isStringGood(question.value, 200)) {
+                    val id = UUID.randomUUID().toString()
+                    val q = Question(id = id, question = question.value, questionerId = user.id, questionerColour = user.colour, questionerName = user.displayName, timestamp = Timestamp.now())
+                    Firebase.firestore.collection("questions")
+                        .document(id)
+                        .set(q)
+                        .addOnSuccessListener {
+                            onSuccess(q)
+                        }
+                        .addOnFailureListener { e ->
+                            errorString.value = e.toString()
+                        }
+                } else {
+                    errorString.value = CheckInput.errorStringText
+                }
             },
             colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
         ) {

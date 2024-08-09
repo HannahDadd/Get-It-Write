@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -31,6 +32,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.views.components.SquareTileButton
@@ -77,7 +80,7 @@ fun AIPromo() {
 }
 
 @Composable
-fun CritiquedWord() {
+fun CritiquedWord(navController: NavController, critiqued: MutableState<List<RequestCritique>?>) {
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -98,26 +101,28 @@ fun CritiquedWord() {
                     textColour = MaterialTheme.colorScheme.onTertiaryContainer,
                     icon = Icons.Default.Send,
                     size = 150.dp,
-                    onClick = {}
+                    onClick = {navController.navigate("messages")}
                 )
             }
-            item {
-                SquareTileButton(
-                    title = "Title",
-                    wordCount = "100 words",
-                    backgroundColour = MaterialTheme.colorScheme.tertiary,
-                    textColour = MaterialTheme.colorScheme.onTertiary,
-                    icon = Icons.Default.Edit,
-                    size = 150.dp,
-                    onClick = {}
-                )
+            if (critiqued.value?.isNotEmpty() == true) {
+                itemsIndexed(critiqued.value!!) {index, it ->
+                    SquareTileButton(
+                        title = "Title",
+                        wordCount = "100 words",
+                        backgroundColour = MaterialTheme.colorScheme.tertiary,
+                        textColour = MaterialTheme.colorScheme.onTertiary,
+                        icon = Icons.Default.Edit,
+                        size = 150.dp,
+                        onClick = {navController.navigate("critiqued/$index")}
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun WorkToCritique(username: String, toCritiques: List<RequestCritique>) {
+fun WorkToCritique(username: String, navController: NavController, toCritiques: MutableState<List<RequestCritique>?>) {
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -127,11 +132,11 @@ fun WorkToCritique(username: String, toCritiques: List<RequestCritique>) {
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
-        if (!toCritiques.isEmpty()) {
+        if (toCritiques.value?.isNotEmpty() == true) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(toCritiques) {
+                itemsIndexed(toCritiques.value!!) { index, it ->
                     SquareTileButton(
                         title = it.title,
                         wordCount = it.text.trim().split("\\s+".toRegex()).size.toString() + " words",
@@ -139,7 +144,7 @@ fun WorkToCritique(username: String, toCritiques: List<RequestCritique>) {
                         textColour = MaterialTheme.colorScheme.onPrimary,
                         icon = Icons.Default.Notifications,
                         size = 150.dp,
-                        onClick = {}
+                        onClick = {navController.navigate("toCritique/$index")}
                     )
                 }
             }

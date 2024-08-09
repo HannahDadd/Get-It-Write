@@ -39,9 +39,6 @@ import kotlinx.coroutines.tasks.await
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
     val user by MainViewModel(auth).user.collectAsState(initial = User(id = "ERROR"))
     val navController = rememberNavController()
-    val toCritiques by ToCritiqueViewModel(user).toCritiques.collectAsState(initial = emptyList())
-    val critiqued by CritiquedViewModel(user).critiqued.collectAsState(initial = emptyList())
-    val questions by QuestionsViewModel().questionsFlow.collectAsState(initial = emptyList())
     val actions = remember(navController) { AppActions(navController) }
     NavHost(
         navController = navController,
@@ -53,7 +50,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         modifier = Modifier.fillMaxSize()
     ) {
         composable("feed") {
-            FeedNavHost(toCritiques = toCritiques, user = user)
+            FeedNavHost(user = user)
         }
         composable("profile") {
             ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
@@ -63,9 +60,6 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         }
         composable("settings") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
-        }
-        composable("yourWork") {
-            CritiquedFeed(user = user, critiqued, actions.selectCritiqued, navigateUp = actions.navigateUp)
         }
         composable("resetEmail") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
@@ -94,45 +88,6 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
                 backStackEntry = backStackEntry,
                 navigateUp = actions.navigateUp
             )
-        }
-//        composable(
-//            "critiqueRequest/{id}",
-//            arguments = listOf(
-//                navArgument("id") {
-//                    type = NavType.StringType
-//                }
-//            )
-//        ) { backStackEntry ->
-//            val arguments = requireNotNull(backStackEntry.arguments)
-//            val id = arguments.getString("id")
-//            val toCritique = toCritiques.filter { it.id == id }.get(0)
-//            ToCritiqueDetailedView(user, isCritiqueFrenzy = false, toCritique, actions.navigateUp)
-//        }
-//        composable(
-//            "critiqueFrenzy/{id}",
-//            arguments = listOf(
-//                navArgument("id") {
-//                    type = NavType.StringType
-//                }
-//            )
-//        ) { backStackEntry ->
-//            val arguments = requireNotNull(backStackEntry.arguments)
-//            val id = arguments.getString("id")
-//            val toCritique = critiqueFrenzy.filter { it.id == id }.get(0)
-//            ToCritiqueDetailedView(user, isCritiqueFrenzy = true, toCritique, actions.navigateUp)
-//        }
-        composable(
-            "critiqued/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            val id = arguments.getString("id")
-            val critiqued = critiqued.filter { it.id == id }.get(0)
-            CritiquedDetailedView(critiqued, actions.navigateUp)
         }
     }
 }

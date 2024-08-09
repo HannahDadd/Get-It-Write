@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +52,7 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.Question
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +62,6 @@ fun ShowMessages(
     user: User,
     user2Name: String,
     user2Id: String,
-    proposals: List<Proposal>,
     backStackEntry: NavBackStackEntry,
     navigateUp: () -> Unit
 ) {
@@ -84,7 +85,7 @@ fun ShowMessages(
                 onDismissRequest = { showBottomSheet = false },
                 sheetState = sheetState
             ) {
-                SendWorkView(user2Id, user = user, proposals = proposals, chatID = chatId) {
+                SendWorkView(user2Id, user = user, chatID = chatId) {
                     showBottomSheet = false
                 }
             }

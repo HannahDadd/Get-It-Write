@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestPositivity
+import hannah.bd.getitwrite.modals.User
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
@@ -14,6 +15,27 @@ fun getProposalsByGenre(genre: String, onSuccess: (List<Proposal>) -> Unit,
                         onError: (Exception) -> Unit) {
     Firebase.firestore.collection("proposals")
         //.whereArrayContains("genres", genre)
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    Proposal(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
+}
+
+fun getProposalsByUser(user: User, onSuccess: (List<Proposal>) -> Unit,
+                        onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("proposals")
+        .whereEqualTo("writerId", user.id)
         .orderBy("timestamp", Query.Direction.DESCENDING)
         .get()
         .addOnSuccessListener { documents ->

@@ -18,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,11 +39,13 @@ import hannah.bd.getitwrite.views.proposals.ProposalView
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.Question
+import hannah.bd.getitwrite.views.proposals.getProposalsByUser
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID: String, closeAction: () -> Unit) {
+fun SendWorkView(user2Id: String, user: User, chatID: String, closeAction: () -> Unit) {
 
     var errorString = remember { mutableStateOf<String?>(null) }
     val title = remember { mutableStateOf("") }
@@ -59,7 +63,7 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID:
                 },
                 sheetState = sheetState
             ) {
-                SelectProposalView(proposals = proposals, user) {
+                SelectProposalView(user) {
                     proposal.value = it
                     showBottomSheet = false
                 }
@@ -84,7 +88,9 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID:
         OutlinedTextField(value = text.value,
             maxLines = 10,
             onValueChange = { text.value = it },
-            modifier = Modifier.fillMaxWidth().height(150.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
             label = { Text(text = "Text") }
         )
         ErrorText(error = errorString)
@@ -126,30 +132,46 @@ fun SendWorkView(user2Id: String, user: User, proposals: List<Proposal>, chatID:
 }
 
 @Composable
-fun SelectProposalView(proposals: List<Proposal>, user: User, selectProposal: (Proposal) -> Unit) {
-    val usersProposals = proposals.filter { it.writerId == user.id }
+fun SelectProposalView(user: User, selectProposal: (Proposal) -> Unit) {
+    var proposals = remember { mutableStateOf<List<Proposal>?>(null) }
+    var errorString = remember { mutableStateOf<String?>(null) }
 
-    if (usersProposals.isEmpty()) {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Text(text = "You have no book proposals. Create one on the 'search' screen to swap work with other users.")
-        }
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(usersProposals) { proposal ->
-                ProposalView(proposal) {
-                    selectProposal(it)
+    LaunchedEffect(Unit) {
+        getProposalsByUser(user = user,
+            onSuccess = {
+                proposals.value = it
+            },
+            onError = { exception ->
+                errorString.value = exception.message
+            }
+        )
+    }
+
+    proposals.value?.let {
+        if (it.isEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(text = "You have no book proposals. Create one on the 'search' screen to swap work with other users.")
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(it) { proposal ->
+                    ProposalView(proposal) {
+                        selectProposal(it)
+                    }
                 }
             }
         }
+    } ?: run {
+        Text(text = "Loading...")
     }
 }

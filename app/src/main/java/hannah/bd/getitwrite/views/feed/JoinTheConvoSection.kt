@@ -60,23 +60,6 @@ fun RectangleTileButton(
             text = title,
             color = textColour
         )
-//        Spacer(modifier = Modifier.weight(1.0f))
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding()
-//        ) {
-//            Text(
-//                text = DateUtils.getRelativeTimeSpanString(
-//                    (seconds.seconds * 1000),
-//                    System.currentTimeMillis(),
-//                    DateUtils.DAY_IN_MILLIS
-//                ).toString(),
-//                style = AppTypography.labelSmall,
-//                fontWeight = FontWeight.Light
-//            )
-//            Spacer(modifier = Modifier.weight(1.0f))
-//        }
     }
 }
 

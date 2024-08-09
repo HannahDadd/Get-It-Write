@@ -25,11 +25,14 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.SquareTileButton
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController, onCreate: () -> Unit) {
@@ -120,6 +123,48 @@ fun getQuestions(
             if (documents != null) {
                 val items = documents.map { doc ->
                     Question(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
+}
+
+fun getToCritiques(user: User,
+    onSuccess: (List<RequestCritique>) -> Unit,
+    onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("users/${user.id}/requestCritiques")
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    RequestCritique(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
+}
+
+fun getCritiqued(user: User,
+                 onSuccess: (List<Critique>) -> Unit,
+                 onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("users/${user.id}/critiques")
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    Critique(doc.id, doc.data)
                 }
                 onSuccess(items)
             } else {

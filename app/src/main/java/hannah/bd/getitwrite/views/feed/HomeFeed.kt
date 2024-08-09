@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
@@ -31,18 +32,21 @@ import hannah.bd.getitwrite.views.proposals.FindPartnersByAudience
 import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
 import hannah.bd.getitwrite.views.proposals.ProposalNavHost
 import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
+import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqued
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
 import hannah.bd.getitwrite.views.critiqueFrenzy.getQuestions
+import hannah.bd.getitwrite.views.critiqueFrenzy.getToCritiques
 import hannah.bd.getitwrite.views.forum.ForumFeed
 import hannah.bd.getitwrite.views.forum.ForumView
 import hannah.bd.getitwrite.views.forum.QuestionDetailView
+import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: List<RequestCritique>,
+fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
              navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
-             queries: MutableState<List<RequestCritique>?>
+             queries: MutableState<List<RequestCritique>?>, critiqued: MutableState<List<RequestCritique>?>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -82,10 +86,10 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
     }
     LazyColumn {
         item {
-            WorkToCritique(user.displayName, toCritiques)
+            WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            CritiquedWord()
+            CritiquedWord(critiqued)
         }
         item {
             RecomendedCritiquers()
@@ -129,11 +133,13 @@ enum class HomeSheetContent {
 }
 
 @Composable
-fun FeedNavHost(user: User, toCritiques: List<RequestCritique>) {
+fun FeedNavHost(user: User) {
     val navController = rememberNavController()
     var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
     var queries = remember { mutableStateOf<List<RequestCritique>?>(null) }
     var questions = remember { mutableStateOf<List<Question>?>(null) }
+    var toCritiques = remember { mutableStateOf<List<RequestCritique>?>(null) }
+    var critiqued = remember { mutableStateOf<List<Critique>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiques("frenzy",
@@ -151,6 +157,18 @@ fun FeedNavHost(user: User, toCritiques: List<RequestCritique>) {
         getQuestions(
             onSuccess = {
                 questions.value = it
+            },
+            onError = { exception -> }
+        )
+        getToCritiques(user,
+            onSuccess = {
+                toCritiques.value = it
+            },
+            onError = { exception -> }
+        )
+        getCritiqued(user,
+            onSuccess = {
+                critiqued.value = it
             },
             onError = { exception -> }
         )
@@ -207,6 +225,26 @@ fun FeedNavHost(user: User, toCritiques: List<RequestCritique>) {
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 questions.value?.get(index = it.toInt())?.let {
                     QuestionDetailView(it, user, navController = navController, backStackEntry)
+                }
+            }
+        }
+        composable(
+            "toCritique/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                toCritiques.value?.get(index = it.toInt())?.let {
+                    ToCritiqueDetailedView(user, false, it, navController)
+                }
+            }
+        }
+        composable(
+            "critiqued/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                critiqued.value?.get(index = it.toInt())?.let {
+                    CritiquedDetailedView(it, { navController.navigateUp() })
                 }
             }
         }
