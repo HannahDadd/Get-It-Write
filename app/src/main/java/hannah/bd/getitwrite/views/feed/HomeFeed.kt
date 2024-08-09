@@ -39,6 +39,8 @@ import hannah.bd.getitwrite.views.critiqueFrenzy.getToCritiques
 import hannah.bd.getitwrite.views.forum.ForumFeed
 import hannah.bd.getitwrite.views.forum.ForumView
 import hannah.bd.getitwrite.views.forum.QuestionDetailView
+import hannah.bd.getitwrite.views.messages.ChatsFeed
+import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
@@ -46,7 +48,7 @@ import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 @Composable
 fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
              navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
-             queries: MutableState<List<RequestCritique>?>, critiqued: MutableState<List<RequestCritique>?>
+             queries: MutableState<List<RequestCritique>?>, critiqued: MutableState<List<Critique>?>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -89,7 +91,7 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            CritiquedWord(critiqued)
+            CritiquedWord(navController, critiqued)
         }
         item {
             RecomendedCritiquers()
@@ -143,33 +145,23 @@ fun FeedNavHost(user: User) {
 
     LaunchedEffect(Unit) {
         getCritiques("frenzy",
-            onSuccess = {
-                frenzies.value = it
-            },
+            onSuccess = { frenzies.value = it },
             onError = { exception -> }
         )
         getCritiques("queries",
-            onSuccess = {
-                queries.value = it
-            },
+            onSuccess = { queries.value = it },
             onError = { exception -> }
         )
         getQuestions(
-            onSuccess = {
-                questions.value = it
-            },
+            onSuccess = { questions.value = it },
             onError = { exception -> }
         )
         getToCritiques(user,
-            onSuccess = {
-                toCritiques.value = it
-            },
+            onSuccess = { toCritiques.value = it },
             onError = { exception -> }
         )
         getCritiqued(user,
-            onSuccess = {
-                critiqued.value = it
-            },
+            onSuccess = { critiqued.value = it },
             onError = { exception -> }
         )
     }
@@ -187,7 +179,8 @@ fun FeedNavHost(user: User) {
             arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
         composable("feed") {
-            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController, frenzies, queries)
+            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController,
+                frenzies, queries, critiqued)
         }
         composable("frenzyFeed") {
             FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)
@@ -247,6 +240,9 @@ fun FeedNavHost(user: User) {
                     CritiquedDetailedView(it, { navController.navigateUp() })
                 }
             }
+        }
+        composable("messages") {
+            MessagesNavHost(navController, user)
         }
     }
 }

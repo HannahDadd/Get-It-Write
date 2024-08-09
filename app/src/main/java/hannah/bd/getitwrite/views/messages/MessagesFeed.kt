@@ -116,7 +116,7 @@ fun MessagesNavHost(hostNavController: NavHostController, user: User) {
     }
 
     chats.value?.let {
-        NavHost(navController = navController, startDestination = "genreFeed") {
+        NavHost(navController = navController, startDestination = "messagesFeed") {
             composable("messagesFeed") {
                 ChatsFeed(navController = navController, user, hostNavController, chats.value!!)
             }

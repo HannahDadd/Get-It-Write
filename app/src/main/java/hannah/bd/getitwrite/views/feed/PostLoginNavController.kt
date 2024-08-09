@@ -64,31 +64,6 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         composable("resetEmail") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
-        composable(
-            "chatDetails/{chat_id}/{otherUserName}/{otherUserId}",
-            arguments = listOf(
-                navArgument("chat_id") {
-                    type = NavType.StringType
-                },
-                navArgument("otherUserName") {
-                    type = NavType.StringType
-                },
-                navArgument("otherUserId") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            ShowMessages(
-                chatId = arguments.getString("chat_id")!!,
-                user = user,
-                user2Name = arguments.getString("otherUserName")!!,
-                user2Id = arguments.getString("otherUserId")!!,
-                proposals = emptyList(),
-                backStackEntry = backStackEntry,
-                navigateUp = actions.navigateUp
-            )
-        }
     }
 }
 

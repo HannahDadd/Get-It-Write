@@ -39,7 +39,6 @@ import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.GlobalVariables
 import hannah.bd.getitwrite.views.components.CheckInput
 import hannah.bd.getitwrite.views.components.SelectTagCloud
-import hannah.bd.getitwrite.views.feed.Screen
 import java.util.UUID
 
 @Composable

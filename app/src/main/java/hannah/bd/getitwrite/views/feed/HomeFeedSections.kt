@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
@@ -80,7 +81,7 @@ fun AIPromo() {
 }
 
 @Composable
-fun CritiquedWord(navController: NavController, critiqued: MutableState<List<RequestCritique>?>) {
+fun CritiquedWord(navController: NavController, critiqued: MutableState<List<Critique>?>) {
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -104,11 +105,11 @@ fun CritiquedWord(navController: NavController, critiqued: MutableState<List<Req
                     onClick = {navController.navigate("messages")}
                 )
             }
-            if (critiqued.value?.isNotEmpty() == true) {
+            critiqued.value?.let {
                 itemsIndexed(critiqued.value!!) {index, it ->
                     SquareTileButton(
-                        title = "Title",
-                        wordCount = "100 words",
+                        title = it.title,
+                        wordCount = "${it.text.length} words",
                         backgroundColour = MaterialTheme.colorScheme.tertiary,
                         textColour = MaterialTheme.colorScheme.onTertiary,
                         icon = Icons.Default.Edit,
