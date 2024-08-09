@@ -62,58 +62,65 @@ fun QuestionDetailView(question: Question, user: User, navController: NavControl
         }
     }
     val reply = remember { mutableStateOf("") }
-    Column {
-        DetailHeader(title = "", navigateUp = { navController.navigateUp() })
-        Column(modifier = Modifier.fillMaxWidth().padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState(0)),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                ForumView(user, question, false, {})
-                replies.forEach {
-                    ReplyView(it, user, question.id)
-                }
-                ErrorText(error = errorString)
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    OutlinedTextField(
-                        value = reply.value,
-                        maxLines = 1,
-                        onValueChange = { reply.value = it },
-                        label = {
-                            Box {
-                                Text(text = "Text Message")
-                            }
-                        }
-                    )
-                    Button(
-                        onClick = {
-                            if (reply.value != "") {
-                                val id = UUID.randomUUID().toString()
-                                val r = Reply(id = id, reply = reply.value, replierId = user.id, replierName = user.displayName, replierColour = user.colour, timestamp = Timestamp.now())
-                                Firebase.firestore.collection("questions").document(question.id)
-                                    .collection("replies").document(id).set(r)
-                                    .addOnSuccessListener {
-                                        reply.value = ""
-                                    }
-                                    .addOnFailureListener {
-                                        errorString.value = it.message.toString()
-                                    }
-                            } else {
-                                errorString.value = "Reply cannot be empty"
-                            }
-                        },
-                        shape = CircleShape,
-                        modifier = Modifier.size(40.dp),
-                        contentPadding = PaddingValues(1.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.Send,
-                            contentDescription = "Send",
-                            modifier = Modifier.size(20.dp)
-                        )
+    Box {
+        Column {
+            DetailHeader(title = "", navigateUp = { navController.navigateUp() })
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState(0)),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    ForumView(user, question, false, {})
+                    replies.forEach {
+                        ReplyView(it, user, question.id)
                     }
+                }
+            }
+        }
+        Column(modifier = Modifier.padding(10.dp)) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            ErrorText(error = errorString)
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                OutlinedTextField(
+                    value = reply.value,
+                    maxLines = 1,
+                    onValueChange = { reply.value = it },
+                    label = {
+                        Box {
+                            Text(text = "Text Message")
+                        }
+                    }
+                )
+                Button(
+                    onClick = {
+                        if (reply.value != "") {
+                            val id = UUID.randomUUID().toString()
+                            val r = Reply(id = id, reply = reply.value, replierId = user.id, replierName = user.displayName, replierColour = user.colour, timestamp = Timestamp.now())
+                            Firebase.firestore.collection("questions").document(question.id)
+                                .collection("replies").document(id).set(r)
+                                .addOnSuccessListener {
+                                    reply.value = ""
+                                }
+                                .addOnFailureListener {
+                                    errorString.value = it.message.toString()
+                                }
+                        } else {
+                            errorString.value = "Reply cannot be empty"
+                        }
+                    },
+                    shape = CircleShape,
+                    modifier = Modifier.size(40.dp),
+                    contentPadding = PaddingValues(1.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Send,
+                        contentDescription = "Send",
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             }
         }
@@ -132,17 +139,17 @@ fun ReplyView(reply: Reply, user: User, questionId: String) {
             Text(reply.replierName, fontSize = 20.sp)
         }
         Text(reply.reply)
-        ReportAndBlockUser(userToBlock = reply.replierId,
-            user = user,
-            contentToReport = reply,
-            contentToReportType = ContentToReportType.OTHER,
-            questionId = questionId,
-            chatId = null)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding()
         ) {
+            ReportAndBlockUser(userToBlock = reply.replierId,
+                user = user,
+                contentToReport = reply,
+                contentToReportType = ContentToReportType.OTHER,
+                questionId = questionId,
+                chatId = null)
             Spacer(modifier = Modifier.weight(1.0f))
             Text(
                 text = DateUtils.getRelativeTimeSpanString(

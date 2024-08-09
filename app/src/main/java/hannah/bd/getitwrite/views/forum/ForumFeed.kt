@@ -44,6 +44,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.DetailHeader
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -96,29 +97,31 @@ fun ForumView(user: User, question: Question, isFeed: Boolean, select: (String) 
         modifier = Modifier
             .padding(10.dp)
             .clickable { select(question.id) }) {
-        Text(question.question, fontWeight = FontWeight.Bold)
-        if (isFeed) {
-            ReportAndBlockUser(userToBlock = question.questionerId,
-                user = user,
-                contentToReport = question,
-                contentToReportType = ContentToReportType.questions,
-                questionId = null,
-                chatId = null)
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding()
-        ) {
-            Text(
-                text = DateUtils.getRelativeTimeSpanString(
-                    (question.timestamp.seconds * 1000),
-                    System.currentTimeMillis(),
-                    DateUtils.DAY_IN_MILLIS
-                ).toString(),
-                fontWeight = FontWeight.Light
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
+        Text(question.question, style = AppTypography.titleLarge)
+        if(!isFeed) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding()
+            ) {
+                Text(
+                    text = DateUtils.getRelativeTimeSpanString(
+                        (question.timestamp.seconds * 1000),
+                        System.currentTimeMillis(),
+                        DateUtils.DAY_IN_MILLIS
+                    ).toString(),
+                    fontWeight = FontWeight.Light
+                )
+                Spacer(modifier = Modifier.weight(1.0f))
+                if (!isFeed) {
+                    ReportAndBlockUser(userToBlock = question.questionerId,
+                        user = user,
+                        contentToReport = question,
+                        contentToReportType = ContentToReportType.questions,
+                        questionId = null,
+                        chatId = null)
+                }
+            }
         }
         Divider()
     }
