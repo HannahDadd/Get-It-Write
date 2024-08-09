@@ -42,15 +42,13 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
 import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.views.feed.FeedNavHost
 import hannah.bd.getitwrite.views.feed.HomeFeed
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(logoutNavController: NavHostController, questions: List<Question>, toCritiques: List<RequestCritique>,
-             critiqueFrenzy: List<RequestCritique>, navController: NavController, proposals: List<Proposal>, selectProposal: (Proposal) -> Unit,
-             selectChat: (String, String, String) -> Unit, user: User, selectCritiqueRequest: (String) -> Unit,
-             selectQuestion: (String) -> Unit, selectFrenzy: (String) -> Unit) {
+fun MainView(user: User, logoutNavController: NavHostController, navController: NavController) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -125,9 +123,7 @@ fun MainView(logoutNavController: NavHostController, questions: List<Question>, 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-//                HomeFeed(user = user, questions = questions, critiqueFrenzy = critiqueFrenzy, toCritiques = toCritiques, proposals = proposals,
-//                    selectProposal = selectProposal, selectChat = selectChat, selectCritiqueRequest = selectCritiqueRequest,
-//                    selectQuestion = selectQuestion, selectFrenzy = selectFrenzy)
+                FeedNavHost(user = user)
             }
         }
     }

@@ -4,8 +4,10 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModel
@@ -32,14 +34,23 @@ import hannah.bd.getitwrite.views.toCritique.ToCritiqueViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
+import hannah.bd.getitwrite.views.messages.getUser
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 @Composable
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
-    val user by MainViewModel(auth).user.collectAsState(initial = User(id = "ERROR"))
+    var user = remember { mutableStateOf<User?>(null) }
     val navController = rememberNavController()
     val actions = remember(navController) { AppActions(navController) }
+
+    LaunchedEffect(Unit) {
+        getUser(auth.uid.toString(),
+            onSuccess = { user.value = it },
+            onError = { exception -> }
+        )
+    }
     NavHost(
         navController = navController,
         startDestination = "feed",
@@ -50,32 +61,26 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         modifier = Modifier.fillMaxSize()
     ) {
         composable("feed") {
-            FeedNavHost(user = user)
+            user.value?.let {
+                MainView(user = it, logoutNavController, navController)
+            }
         }
         composable("profile") {
-            ProfileView(navController = navController, ownProfile = true, user = user, navigateUp = actions.navigateUp)
+            user.value?.let {
+                ProfileView(navController = navController, ownProfile = true,
+                    user = it, navigateUp = actions.navigateUp)
+            }
         }
         composable("editProfile") {
-            EditProfileView(user = user, navigateUp = actions.navigateUp)
+            user.value?.let {
+                EditProfileView(user = it, navigateUp = actions.navigateUp)
+            }
         }
         composable("settings") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }
         composable("resetEmail") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
-        }
-    }
-}
-
-class MainViewModel(auth: FirebaseAuth) : ViewModel() {
-    val user = flow {
-        val doc = Firebase.firestore.collection("users")
-            .document(auth.uid.toString())
-            .get().await()
-        doc.data?.let {
-            emit(User(id = doc.id, data = it))
-        } ?: run {
-            emit(User(id = "ERROR"))
         }
     }
 }
