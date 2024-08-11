@@ -69,12 +69,6 @@ fun MainView(user: User, logoutNavController: NavHostController, navController: 
                             Text("Settings", fontSize = 18.sp)
                         }
                     }
-                    TextButton(onClick = { navController.navigate("yourWork") }) {
-                        Row {
-                            Icon(Icons.Filled.CheckCircle, contentDescription = "", Modifier.padding(end = 10.dp))
-                            Text("Your Work", fontSize = 18.sp)
-                        }
-                    }
                     TextButton(onClick = {
                         FirebaseAuth.getInstance().signOut()
                         logoutNavController.navigate("login")

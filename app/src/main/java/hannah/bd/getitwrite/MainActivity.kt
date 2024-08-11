@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 ShowOpeningPage(navController, auth)
             }
             composable("login") {
-                ShowLogin(navController, auth)
+                ShowOpeningPage(navController, auth)
             }
             composable("feed") {
                 PostLoginNavController(navController, auth)

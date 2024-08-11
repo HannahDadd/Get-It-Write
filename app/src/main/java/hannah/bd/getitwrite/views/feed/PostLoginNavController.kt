@@ -2,14 +2,22 @@ package hannah.bd.getitwrite.views.feed
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -34,6 +42,7 @@ import hannah.bd.getitwrite.views.toCritique.ToCritiqueViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
 import hannah.bd.getitwrite.views.messages.getUser
 import kotlinx.coroutines.flow.flow
@@ -63,6 +72,17 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         composable("feed") {
             user.value?.let {
                 MainView(user = it, logoutNavController, navController)
+            } ?: run {
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center)
+                ) {
+                    Text(
+                        "You'll get there,\n one word at a time.",
+                        textAlign = TextAlign.Center,
+                        style = AppTypography.titleLarge
+                    )
+                }
             }
         }
         composable("profile") {

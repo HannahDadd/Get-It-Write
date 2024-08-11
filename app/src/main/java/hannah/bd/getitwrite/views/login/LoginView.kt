@@ -108,7 +108,7 @@ fun ShowOpeningPage(navController: NavController, auth: FirebaseAuth) {
             fillMaxSize()
                 .paint(
                     painterResource(id = R.drawable.loginbg),
-                    contentScale = ContentScale.FillBounds)
+                    contentScale = ContentScale.FillHeight)
 
         })
     {
@@ -143,7 +143,6 @@ fun ShowOpeningPage(navController: NavController, auth: FirebaseAuth) {
                 Text("Get it Write", fontSize = 40.sp, fontWeight = FontWeight.Bold, color = Color.White)
                 Text("The start of your writing journey", style = MaterialTheme.typography.bodyMedium, color = Color.White)
             }
-
         }
     }
 }
