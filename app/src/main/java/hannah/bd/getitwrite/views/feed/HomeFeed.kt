@@ -44,96 +44,6 @@ import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
-             navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
-             queries: MutableState<List<RequestCritique>?>, critiqued: MutableState<List<Critique>?>
-) {
-    var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    if (bottomSheet != HomeSheetContent.none) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                bottomSheet = HomeSheetContent.none
-            },
-            sheetState = sheetState
-        ) {
-            when (bottomSheet) {
-                HomeSheetContent.none -> {
-                    Column{}
-                }
-                HomeSheetContent.positiveReview -> {
-                    PositivityPopUp(user = user) {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
-                HomeSheetContent.makeNewPositive -> {
-                    MakePositiveCorner(user = user) {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
-                HomeSheetContent.makeNewCritiqueFrenzy -> {
-                    MakeFrenzyView(user = user, "frenzy", "Text") {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
-                HomeSheetContent.makeNewQueryFrenzy -> {
-                    MakeFrenzyView(user = user, "queries", "Query") {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
-            }
-        }
-    }
-    LazyColumn {
-        item {
-            WorkToCritique(user.displayName, navController, toCritiques)
-        }
-        item {
-            CritiquedWord(navController, critiqued)
-        }
-        item {
-            RecomendedCritiquers()
-        }
-        item {
-            AIPromo()
-        }
-        item {
-            JoinTheConvo(navController, questions)
-        }
-        item {
-            FindPartnersByAudience(navController)
-        }
-        item {
-            QuickQueryCritique(queries, navController) {
-                bottomSheet = HomeSheetContent.makeNewQueryFrenzy
-            }
-        }
-        item {
-            FreeForAll(frenzies, navController = navController) {
-                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
-            }
-        }
-        item {
-            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
-                bottomSheet = HomeSheetContent.makeNewPositive
-            }
-        }
-        item {
-            FindPartnersByGenre(navController)
-        }
-    }
-}
-
-enum class HomeSheetContent {
-    none,
-    positiveReview,
-    makeNewPositive,
-    makeNewCritiqueFrenzy,
-    makeNewQueryFrenzy,
-}
-
 @Composable
 fun FeedNavHost(user: User) {
     val navController = rememberNavController()
@@ -167,17 +77,6 @@ fun FeedNavHost(user: User) {
     }
 
     NavHost(navController = navController, startDestination = "feed") {
-        composable(
-            "genre/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
-        }
         composable("feed") {
             HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController,
                 frenzies, queries, critiqued)
@@ -245,4 +144,88 @@ fun FeedNavHost(user: User) {
             MessagesNavHost(navController, user)
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
+             navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
+             queries: MutableState<List<RequestCritique>?>, critiqued: MutableState<List<Critique>?>
+) {
+    var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    if (bottomSheet != HomeSheetContent.none) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                bottomSheet = HomeSheetContent.none
+            },
+            sheetState = sheetState
+        ) {
+            when (bottomSheet) {
+                HomeSheetContent.none -> {
+                    Column{}
+                }
+                HomeSheetContent.positiveReview -> {
+                    PositivityPopUp(user = user) {
+                        bottomSheet = HomeSheetContent.none
+                    }
+                }
+                HomeSheetContent.makeNewPositive -> {
+                    MakePositiveCorner(user = user) {
+                        bottomSheet = HomeSheetContent.none
+                    }
+                }
+                HomeSheetContent.makeNewCritiqueFrenzy -> {
+                    MakeFrenzyView(user = user, "frenzy", "Text") {
+                        bottomSheet = HomeSheetContent.none
+                    }
+                }
+                HomeSheetContent.makeNewQueryFrenzy -> {
+                    MakeFrenzyView(user = user, "queries", "Query") {
+                        bottomSheet = HomeSheetContent.none
+                    }
+                }
+            }
+        }
+    }
+    LazyColumn {
+        item {
+            WorkToCritique(user.displayName, navController, toCritiques)
+        }
+        item {
+            CritiquedWord(navController, critiqued)
+        }
+        item {
+            RecomendedCritiquers()
+        }
+        item {
+            AIPromo()
+        }
+        item {
+            JoinTheConvo(navController, questions)
+        }
+        item {
+            QuickQueryCritique(queries, navController) {
+                bottomSheet = HomeSheetContent.makeNewQueryFrenzy
+            }
+        }
+        item {
+            FreeForAll(frenzies, navController = navController) {
+                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
+            }
+        }
+        item {
+            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
+                bottomSheet = HomeSheetContent.makeNewPositive
+            }
+        }
+    }
+}
+
+enum class HomeSheetContent {
+    none,
+    positiveReview,
+    makeNewPositive,
+    makeNewCritiqueFrenzy,
+    makeNewQueryFrenzy,
 }

@@ -44,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.views.feed.FeedNavHost
 import hannah.bd.getitwrite.views.feed.HomeFeed
+import hannah.bd.getitwrite.views.feed.ShowBottomNav
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -117,7 +118,7 @@ fun MainView(user: User, logoutNavController: NavHostController, navController: 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                FeedNavHost(user = user)
+                ShowBottomNav(user = user)
             }
         }
     }
