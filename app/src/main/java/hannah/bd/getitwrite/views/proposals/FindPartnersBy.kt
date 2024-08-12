@@ -85,26 +85,28 @@ fun ImageButtonWithText(
     size: Dp,
     onClick: () -> Unit
 ) {
-    Box(
-        modifier = Modifier
-            .size(size)
-            .clickable(onClick = onClick)
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.size(size)
-        )
-        Text(
-            text = buttonText,
-            color = Color.Black,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
+    Card {
+        Box(
             modifier = Modifier
-                .background(Color.White)
-                .align(Alignment.BottomCenter)
-        )
+                .size(size)
+                .clickable(onClick = onClick)
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(size)
+            )
+            Text(
+                text = buttonText,
+                color = Color.Black,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(Color.White)
+                    .align(Alignment.BottomCenter)
+            )
+        }
     }
 }

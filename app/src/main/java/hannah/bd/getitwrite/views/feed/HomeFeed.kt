@@ -51,7 +51,6 @@ fun FeedNavHost(user: User) {
     var queries = remember { mutableStateOf<List<RequestCritique>?>(null) }
     var questions = remember { mutableStateOf<List<Question>?>(null) }
     var toCritiques = remember { mutableStateOf<List<RequestCritique>?>(null) }
-    var critiqued = remember { mutableStateOf<List<Critique>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiques("frenzy",
@@ -70,16 +69,12 @@ fun FeedNavHost(user: User) {
             onSuccess = { toCritiques.value = it },
             onError = { exception -> }
         )
-        getCritiqued(user,
-            onSuccess = { critiqued.value = it },
-            onError = { exception -> }
-        )
     }
 
     NavHost(navController = navController, startDestination = "feed") {
         composable("feed") {
             HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController,
-                frenzies, queries, critiqued)
+                frenzies, queries)
         }
         composable("frenzyFeed") {
             FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)
@@ -130,19 +125,6 @@ fun FeedNavHost(user: User) {
                 }
             }
         }
-        composable(
-            "critiqued/{index}",
-            arguments = listOf(navArgument("index") { type = NavType.StringType })
-        ) { backStackEntry ->
-            requireNotNull(backStackEntry.arguments).getString("index")?.let {
-                critiqued.value?.get(index = it.toInt())?.let {
-                    CritiquedDetailedView(it, { navController.navigateUp() })
-                }
-            }
-        }
-        composable("messages") {
-            MessagesNavHost(navController, user)
-        }
     }
 }
 
@@ -150,7 +132,7 @@ fun FeedNavHost(user: User) {
 @Composable
 fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
              navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
-             queries: MutableState<List<RequestCritique>?>, critiqued: MutableState<List<Critique>?>
+             queries: MutableState<List<RequestCritique>?>
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -193,16 +175,7 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            CritiquedWord(navController, critiqued)
-        }
-        item {
             RecomendedCritiquers()
-        }
-        item {
-            AIPromo()
-        }
-        item {
-            JoinTheConvo(navController, questions)
         }
         item {
             QuickQueryCritique(queries, navController) {
@@ -210,14 +183,20 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             }
         }
         item {
+            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
+                bottomSheet = HomeSheetContent.makeNewPositive
+            }
+        }
+        item {
+            JoinTheConvo(navController, questions)
+        }
+        item {
             FreeForAll(frenzies, navController = navController) {
                 bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
             }
         }
         item {
-            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
-                bottomSheet = HomeSheetContent.makeNewPositive
-            }
+            AIPromo()
         }
     }
 }

@@ -1,11 +1,14 @@
 package hannah.bd.getitwrite.views.proposals
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,14 +63,14 @@ fun FindPartnersByGenre(navController: NavHostController) {
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             genres.forEach {
                 ElevatedCardRect(
                     painter = painterResource(id = it.first),
                     buttonText = it.second,
-                    width = 160.dp,
-                    height = 90.dp,
+                    width = 180.dp,
+                    height = 80.dp,
                     onClick = { navController.navigate("genre/${it.third}") }
                 )
             }
@@ -92,17 +95,19 @@ fun ElevatedCardRect(
             .size(width = width, height = height)
             .clickable(onClick = onClick)
     ) {
-        Image(
-            painter = painter,
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.size(height)
-        )
-        Text(
-            text = buttonText,
-            modifier = Modifier
-                .padding(16.dp),
-            textAlign = TextAlign.Center,
-        )
+        Row(modifier = Modifier.fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)) {
+            Image(
+                painter = painter,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(height)
+            )
+            Text(
+                text = buttonText,
+                modifier = Modifier
+                    .padding(16.dp),
+            )
+        }
     }
 }

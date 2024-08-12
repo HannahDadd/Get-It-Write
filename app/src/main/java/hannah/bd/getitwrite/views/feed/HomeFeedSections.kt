@@ -153,54 +153,6 @@ fun WorkToCritique(username: String, navController: NavController, toCritiques: 
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun RecomendedCritiquers() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "Recommended critique partners",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
-        )
-        FlowRow(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            SquareTileButton(
-                title = "Hannah",
-                wordCount = "Critiques weekly.",
-                backgroundColour = MaterialTheme.colorScheme.tertiary,
-                textColour = MaterialTheme.colorScheme.onTertiary,
-                icon = Icons.Default.AccountCircle,
-                size = 120.dp,
-                onClick = {}
-            )
-            SquareTileButton(
-                title = "Hannah",
-                wordCount = "Critques Sci Fi.",
-                backgroundColour = MaterialTheme.colorScheme.tertiary,
-                textColour = MaterialTheme.colorScheme.onTertiary,
-                icon = Icons.Default.AccountCircle,
-                size = 120.dp,
-                onClick = {}
-            )
-            SquareTileButton(
-                title = "Hannah",
-                wordCount = "Writes Sci Fi.",
-                backgroundColour = MaterialTheme.colorScheme.tertiary,
-                textColour = MaterialTheme.colorScheme.onTertiary,
-                icon = Icons.Default.AccountCircle,
-                size = 120.dp,
-                onClick = {}
-            )
-        }
-    }
-}
-
 @Composable
 fun CheckYourMessages() {
     Column {

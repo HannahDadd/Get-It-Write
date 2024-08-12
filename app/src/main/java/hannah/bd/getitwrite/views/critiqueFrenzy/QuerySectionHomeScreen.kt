@@ -40,18 +40,18 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item {
-                    SquareTileButton(
-                        modifier = Modifier.padding(start = 8.dp),
-                        title = "Add your own.",
-                        wordCount = "",
-                        backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
-                        textColour = MaterialTheme.colorScheme.onSecondaryContainer,
-                        icon = Icons.Default.Add,
-                        size = 150.dp,
-                        onClick = onCreate
-                    )
-                }
+//                item {
+//                    SquareTileButton(
+//                        modifier = Modifier.padding(start = 8.dp),
+//                        title = "Add your own.",
+//                        wordCount = "",
+//                        backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
+//                        textColour = MaterialTheme.colorScheme.onSecondaryContainer,
+//                        icon = Icons.Default.Add,
+//                        size = 150.dp,
+//                        onClick = onCreate
+//                    )
+//                }
                 itemsIndexed(requests.value!!) { index, item ->
                     SquareTileButton(
                         title = item.genres.joinToString(),

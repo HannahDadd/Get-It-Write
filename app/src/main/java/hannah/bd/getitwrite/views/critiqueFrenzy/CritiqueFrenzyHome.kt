@@ -50,18 +50,18 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item {
-                    SquareTileButton(
-                        modifier = Modifier.padding(start = 8.dp),
-                        title = "Add your own.",
-                        wordCount = "",
-                        backgroundColour = MaterialTheme.colorScheme.secondary,
-                        textColour = MaterialTheme.colorScheme.onSecondary,
-                        icon = Icons.Default.Add,
-                        size = 150.dp,
-                        onClick = onCreate
-                    )
-                }
+//                item {
+//                    SquareTileButton(
+//                        modifier = Modifier.padding(start = 8.dp),
+//                        title = "Add your own.",
+//                        wordCount = "",
+//                        backgroundColour = MaterialTheme.colorScheme.secondary,
+//                        textColour = MaterialTheme.colorScheme.onSecondary,
+//                        icon = Icons.Default.Add,
+//                        size = 150.dp,
+//                        onClick = onCreate
+//                    )
+//                }
                 itemsIndexed(requests.value!!.subList(0, 5)) {index, item ->
                     SquareTileButton(
                         title = item.genres.joinToString(),

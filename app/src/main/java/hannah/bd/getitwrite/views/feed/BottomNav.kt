@@ -31,6 +31,7 @@ import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
+import hannah.bd.getitwrite.views.account.AccountNavHost
 import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.proposals.SearchNavHost
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueFeed
@@ -86,13 +87,13 @@ fun ShowBottomNav(user: User) {
                 .fillMaxSize()) {
             composable(Screen.Home.route) { FeedNavHost(user) }
             composable(Screen.FindPartners.route) { SearchNavHost(user) }
-            composable(Screen.Messages.route) { FeedNavHost(user) }
+            composable(Screen.Messages.route) { AccountNavHost(user) }
         }
     }
 }
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
     object Home : Screen("homeFeed", "", Icons.Default.Home)
-    object Messages : Screen("ShowMessages", "Messages", Icons.Default.Email)
+    object Messages : Screen("ShowMessages", "Messages", Icons.Default.Edit)
     object FindPartners : Screen("findPartners", "Find Partners", Icons.Default.Search)
 }
