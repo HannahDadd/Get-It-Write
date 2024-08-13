@@ -1,25 +1,40 @@
 package hannah.bd.getitwrite.views.critiqueFrenzy
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.theme.AppTypography
+import hannah.bd.getitwrite.views.components.HomePageTileButton
 import hannah.bd.getitwrite.views.components.SquareTileButton
+import hannah.bd.getitwrite.views.components.TitleAndSubText
 
 @Composable
 fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navController: NavController, onCreate: () -> Unit) {
@@ -28,14 +43,12 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
             verticalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.secondary)
                 .padding(vertical = 16.dp)
         ) {
-            Text(
-                text = "Quick query critique",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondary,
-                modifier = Modifier.padding(horizontal = 16.dp)
+            TitleAndSubText(
+                "Query Critique",
+                "Query letters critiques.",
+                colorScheme.onSurface
             )
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -53,14 +66,12 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
 //                    )
 //                }
                 itemsIndexed(requests.value!!) { index, item ->
-                    SquareTileButton(
+                    HomePageTileButton(
                         title = item.genres.joinToString(),
-                        wordCount = "Query",
-                        backgroundColour = MaterialTheme.colorScheme.primaryContainer,
-                        textColour = MaterialTheme.colorScheme.onPrimaryContainer,
+                        bubbleText = "Query",
                         icon = Icons.Default.Email,
-                        size = 150.dp,
-                        onClick = { navController.navigate("frenzy/$index") }
+                        isFirstItemInCarousel = index == 0,
+                        onClick = { navController.navigate("query/$index") }
                     )
                 }
                 item {
@@ -68,8 +79,8 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
                         modifier = Modifier.padding(end = 8.dp),
                         title = "View more.",
                         wordCount = "",
-                        backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                        textColour = MaterialTheme.colorScheme.onTertiaryContainer,
+                        backgroundColour = colorScheme.background,
+                        textColour = colorScheme.onBackground,
                         icon = Icons.Default.ArrowForward,
                         size = 150.dp,
                         onClick = { navController.navigate("queryFeed") }

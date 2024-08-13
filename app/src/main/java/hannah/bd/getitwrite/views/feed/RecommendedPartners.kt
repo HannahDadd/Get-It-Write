@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.SquareTileButton
+import hannah.bd.getitwrite.views.components.TitleAndSubText
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -37,11 +38,10 @@ fun RecomendedCritiquers() {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(
-            text = "Recommended critique partners",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+        TitleAndSubText(
+            "Recommended critique partners",
+            "Specially picked out for you.",
+            MaterialTheme.colorScheme.onSurface
         )
         FlowRow(
             modifier = Modifier

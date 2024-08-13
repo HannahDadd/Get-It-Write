@@ -41,9 +41,6 @@ fun ShowBottomNav(user: User) {
     val items = listOf(
         Screen.Home,
         Screen.FindPartners,
-//        Screen.CritiqueFrenzy,
-//        Screen.ToCritique,
-//        Screen.Forum,
         Screen.Messages,
     )
     val navController = rememberNavController()
@@ -56,9 +53,7 @@ fun ShowBottomNav(user: User) {
                     BottomNavigationItem(
                         icon = { Icon(
                             imageVector = screen.resourceId,
-                            contentDescription = screen.label,
-                            modifier = Modifier.size(20.dp),
-                            tint = MaterialTheme.colorScheme.onBackground
+                            contentDescription = null
                         ) },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {

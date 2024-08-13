@@ -38,6 +38,7 @@ import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.SquareTileButton
+import hannah.bd.getitwrite.views.components.TitleAndSubText
 
 @Composable
 fun RectangleTileButton(
@@ -85,7 +86,7 @@ fun RectangleTileButtonNoDate(
         ) {
             Text(
                 text = title,
-                style = AppTypography.titleSmall,
+                style = AppTypography.titleMedium,
                 color = textColour
             )
             Spacer(modifier = Modifier.weight(1.0f))
@@ -119,15 +120,15 @@ fun JoinTheConvo(navController: NavController, questions: MutableState<List<Ques
                 questions.value!!.subList(0, 3).forEachIndexed { index, it ->
                     RectangleTileButton(
                         title = it.question,
-                        backgroundColour = MaterialTheme.colorScheme.secondaryContainer,
-                        textColour = MaterialTheme.colorScheme.onSecondaryContainer,
+                        backgroundColour = MaterialTheme.colorScheme.background,
+                        textColour = MaterialTheme.colorScheme.onBackground,
                         onClick = { navController.navigate("question/$index") }
                     )
                 }
                 RectangleTileButtonNoDate(
                     title = "View more",
-                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
+                    backgroundColour = MaterialTheme.colorScheme.background,
+                    textColour = MaterialTheme.colorScheme.onBackground,
                     onClick = { navController.navigate("questionFeed") }
                 )
             }

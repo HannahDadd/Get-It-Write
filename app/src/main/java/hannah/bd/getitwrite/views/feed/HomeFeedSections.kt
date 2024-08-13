@@ -53,8 +53,7 @@ fun AIPromo() {
     Box(
         modifier = Modifier
             .height(250.dp)
-            .fillMaxWidth()
-            .clickable(onClick = { }),
+            .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Image(
@@ -66,17 +65,28 @@ fun AIPromo() {
                 .padding(10.dp)
                 .clip(RoundedCornerShape(10.dp))
         )
-        Text(
-            text = "Tap here to get instant AI feedback on your writing.",
-            color = Color.Black,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .background(Color.White)
-                .align(Alignment.Center)
-                .width(200.dp)
-        )
+        Column(Modifier.padding(16.dp)) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = "Get instant AI feedback on your writing.",
+                color = Color.Black,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ).padding(4.dp),
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            RectangleTileButtonNoDate(
+                title = "Give it a go",
+                backgroundColour = MaterialTheme.colorScheme.background,
+                textColour = MaterialTheme.colorScheme.onBackground,
+                onClick = {}
+            )
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -39,6 +41,7 @@ import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -106,6 +109,75 @@ fun SquareTileButton(
         Text(
             text = wordCount,
             style = AppTypography.labelSmall,
+            color = textColour
+        )
+    }
+}
+
+@Composable
+fun HomePageTileButton(
+    title: String,
+    bubbleText: String,
+    icon: ImageVector,
+    isFirstItemInCarousel: Boolean,
+    onClick: () -> Unit
+) {
+    val primary = MaterialTheme.colorScheme.primary
+    Column(
+        modifier = Modifier
+            .padding(start = if (isFirstItemInCarousel) 8.dp else 0.dp)
+            .size(150.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(color = MaterialTheme.colorScheme.background)
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Icon(
+            icon,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = title, maxLines = 2, overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Spacer(modifier = Modifier.weight(1.0f))
+        Row {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                modifier = Modifier
+                    .background(
+                        color = primary,
+                        shape = RoundedCornerShape(8.dp)
+                    ).padding(4.dp),
+                text = bubbleText,
+                style = AppTypography.labelSmall,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    }
+}
+
+@Composable
+fun TitleAndSubText(
+    title: String,
+    subText: String,
+    textColour: Color
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = textColour
+        )
+        Text(
+            text = subText,
+            style = MaterialTheme.typography.labelLarge,
             color = textColour
         )
     }

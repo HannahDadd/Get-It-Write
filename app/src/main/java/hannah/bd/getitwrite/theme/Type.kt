@@ -26,7 +26,8 @@ val bodyFontFamily = FontFamily(
 
 val displayFontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Edu VIC WA NT Beginner"),
+        //googleFont = GoogleFont("Edu VIC WA NT Beginner"),
+        googleFont = GoogleFont("Gupter"),
         fontProvider = provider,
     )
 )

@@ -178,8 +178,8 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             RecomendedCritiquers()
         }
         item {
-            QuickQueryCritique(queries, navController) {
-                bottomSheet = HomeSheetContent.makeNewQueryFrenzy
+            FreeForAll(frenzies, navController = navController) {
+                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
             }
         }
         item {
@@ -191,8 +191,8 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             JoinTheConvo(navController, questions)
         }
         item {
-            FreeForAll(frenzies, navController = navController) {
-                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
+            QuickQueryCritique(queries, navController) {
+                bottomSheet = HomeSheetContent.makeNewQueryFrenzy
             }
         }
         item {

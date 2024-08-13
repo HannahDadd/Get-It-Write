@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.views.components.TitleAndSubText
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -44,21 +45,11 @@ fun FindPartnersByAudience(navController: NavHostController) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
-        ) {
-            Text(
-                text = "Search by target audience",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Find critique partners writing for the same target audience as you.",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
+        TitleAndSubText(
+            "Search by target audience",
+            "Find critique partners writing for the same target audience as you.",
+            MaterialTheme.colorScheme.onSurface
+        )
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
