@@ -30,9 +30,16 @@ import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
 @Composable
 fun PositiveFeedback(onTap: () -> Unit, onCreate: () -> Unit) {
     Column(
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(Modifier.padding(16.dp)) {
+        Text(
+            text = "Positivity Corner",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Row {
             Image(
                 painter = painterResource(id = R.drawable.positivebg),
                 contentDescription = "",
@@ -40,26 +47,17 @@ fun PositiveFeedback(onTap: () -> Unit, onCreate: () -> Unit) {
                 modifier = Modifier.size(150.dp)
             )
             Column(modifier = Modifier.height(150.dp).padding(start = 8.dp)) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "Positivity Corner",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = "Leave positive feedback on this work and build someone's confidence.",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                Text(
+                    text = "Leave positive feedback on this work and build someone's confidence.",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 Spacer(modifier = Modifier.weight(1.0f))
                 RectangleTileButtonNoDate(
                     title = "Critique",
                     backgroundColour = MaterialTheme.colorScheme.background,
                     textColour = MaterialTheme.colorScheme.onBackground,
+                    padding = 16.dp,
                     onClick = onTap
                 )
             }

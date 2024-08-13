@@ -167,7 +167,7 @@ fun TitleAndSubText(
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+        modifier = Modifier.padding(top = 16.dp, start = 8.dp, end = 8.dp)
     ) {
         Text(
             text = title,

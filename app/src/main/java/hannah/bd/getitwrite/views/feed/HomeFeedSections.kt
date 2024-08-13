@@ -84,6 +84,7 @@ fun AIPromo() {
                 title = "Give it a go",
                 backgroundColour = MaterialTheme.colorScheme.background,
                 textColour = MaterialTheme.colorScheme.onBackground,
+                padding = 8.dp,
                 onClick = {}
             )
         }

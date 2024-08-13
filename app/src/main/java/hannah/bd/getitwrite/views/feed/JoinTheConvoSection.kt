@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -69,6 +70,7 @@ fun RectangleTileButtonNoDate(
     title: String,
     backgroundColour: Color,
     textColour: Color,
+    padding: Dp,
     onClick: () -> Unit
 ) {
     Column(
@@ -77,7 +79,7 @@ fun RectangleTileButtonNoDate(
             .clip(RoundedCornerShape(8.dp))
             .background(color = backgroundColour)
             .clickable(onClick = onClick)
-            .padding(16.dp),
+            .padding(padding),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Row(
@@ -129,6 +131,7 @@ fun JoinTheConvo(navController: NavController, questions: MutableState<List<Ques
                     title = "View more",
                     backgroundColour = MaterialTheme.colorScheme.background,
                     textColour = MaterialTheme.colorScheme.onBackground,
+                    padding = 16.dp,
                     onClick = { navController.navigate("questionFeed") }
                 )
             }
