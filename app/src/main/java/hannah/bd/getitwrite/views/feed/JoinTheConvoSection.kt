@@ -71,6 +71,7 @@ fun RectangleTileButtonNoDate(
     backgroundColour: Color,
     textColour: Color,
     padding: Dp,
+    icon: ImageVector = Icons.Default.ArrowForward,
     onClick: () -> Unit
 ) {
     Column(
@@ -93,7 +94,7 @@ fun RectangleTileButtonNoDate(
             )
             Spacer(modifier = Modifier.weight(1.0f))
             Icon(
-                Icons.Default.ArrowForward,
+                icon,
                 contentDescription = "",
                 tint = textColour
             )

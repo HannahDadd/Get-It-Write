@@ -15,16 +15,9 @@ import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqued
-import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
-import hannah.bd.getitwrite.views.critiqueFrenzy.getQuestions
-import hannah.bd.getitwrite.views.critiqueFrenzy.getToCritiques
-import hannah.bd.getitwrite.views.feed.CritiquedWord
-import hannah.bd.getitwrite.views.feed.HomeFeed
 import hannah.bd.getitwrite.views.messages.MessagesNavHost
-import hannah.bd.getitwrite.views.proposals.FindPartnersByAudience
-import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
-import hannah.bd.getitwrite.views.proposals.ProposalNavHost
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
+import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
 
 @Composable
 fun AccountNavHost(user: User) {
@@ -44,6 +37,9 @@ fun AccountNavHost(user: User) {
         }
         composable("messages") {
             MessagesNavHost(navController, user)
+        }
+        composable("critiquedFeed") {
+            CritiquedFeed(user, critiqued, navController)
         }
         composable(
             "critiqued/{index}",

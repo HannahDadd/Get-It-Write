@@ -126,15 +126,3 @@ fun ForumView(user: User, question: Question, isFeed: Boolean, select: (String) 
         Divider()
     }
 }
-
-class QuestionsViewModel() : ViewModel() {
-    val questionsFlow = flow {
-        val documents = Firebase.firestore.collection("questions")
-            .orderBy("timestamp", Query.Direction.DESCENDING)
-            .get().await()
-        val items = documents.map { doc ->
-            Question(doc.id, doc.data)
-        }
-        emit(items)
-    }
-}

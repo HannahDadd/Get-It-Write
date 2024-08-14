@@ -27,26 +27,13 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hannah.bd.getitwrite.AppActions
 import hannah.bd.getitwrite.modals.User
-import hannah.bd.getitwrite.views.MainView
-import hannah.bd.getitwrite.views.forum.QuestionDetailView
-import hannah.bd.getitwrite.views.forum.QuestionsViewModel
-import hannah.bd.getitwrite.views.messages.ShowMessages
 import hannah.bd.getitwrite.views.profile.EditProfileView
 import hannah.bd.getitwrite.views.profile.ProfileView
 import hannah.bd.getitwrite.views.settings.SettingsScreen
-import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
-import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
-import hannah.bd.getitwrite.views.toCritique.CritiquedViewModel
-import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
-import hannah.bd.getitwrite.views.toCritique.ToCritiqueViewModel
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
 import hannah.bd.getitwrite.views.messages.getUser
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.tasks.await
 
 @Composable
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {

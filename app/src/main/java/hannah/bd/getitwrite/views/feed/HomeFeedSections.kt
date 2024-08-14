@@ -92,48 +92,6 @@ fun AIPromo() {
 }
 
 @Composable
-fun CritiquedWord(navController: NavController, critiqued: MutableState<List<Critique>?>) {
-    Column(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Text(
-            text = "Your work, critiqued by your writing friends",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            item {
-                SquareTileButton(
-                    title = "Send work to your critique partners.",
-                    wordCount = "",
-                    backgroundColour = MaterialTheme.colorScheme.tertiaryContainer,
-                    textColour = MaterialTheme.colorScheme.onTertiaryContainer,
-                    icon = Icons.Default.Send,
-                    size = 150.dp,
-                    onClick = {navController.navigate("messages")}
-                )
-            }
-            critiqued.value?.let {
-                itemsIndexed(critiqued.value!!) {index, it ->
-                    SquareTileButton(
-                        title = it.title,
-                        wordCount = "${it.text.length} words",
-                        backgroundColour = MaterialTheme.colorScheme.tertiary,
-                        textColour = MaterialTheme.colorScheme.onTertiary,
-                        icon = Icons.Default.Edit,
-                        size = 150.dp,
-                        onClick = {navController.navigate("critiqued/$index")}
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun WorkToCritique(username: String, navController: NavController, toCritiques: MutableState<List<RequestCritique>?>) {
     Column(
         modifier = Modifier.padding(16.dp),
