@@ -71,7 +71,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
     ) {
         composable("feed") {
             user.value?.let {
-                MainView(user = it, logoutNavController, navController)
+                FeedNavHost(user = it, logoutNavController, navController)
             } ?: run {
                 Column(modifier = Modifier
                     .fillMaxSize()

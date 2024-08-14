@@ -26,6 +26,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -49,7 +50,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(user: User, logoutNavController: NavHostController, navController: NavController) {
+fun MainView(user: User, logoutNavController: NavHostController, navController: NavController,
+             questions: MutableState<List<Question>?>,
+             toCritiques: MutableState<List<RequestCritique>?>, hostNavController: NavHostController,
+             frenzies: MutableState<List<RequestCritique>?>, queries: MutableState<List<RequestCritique>?>
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -118,7 +123,8 @@ fun MainView(user: User, logoutNavController: NavHostController, navController: 
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowBottomNav(user = user)
+                ShowBottomNav(user = user, questions = questions, toCritiques = toCritiques,
+                    hostNavController, frenzies, queries)
             }
         }
     }

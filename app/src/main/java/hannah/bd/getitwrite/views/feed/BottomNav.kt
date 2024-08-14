@@ -18,11 +18,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -37,7 +40,10 @@ import hannah.bd.getitwrite.views.proposals.SearchNavHost
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueFeed
 
 @Composable
-fun ShowBottomNav(user: User) {
+fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
+                  toCritiques: MutableState<List<RequestCritique>?>, hostNavController: NavHostController,
+                  frenzies: MutableState<List<RequestCritique>?>, queries: MutableState<List<RequestCritique>?>
+) {
     val items = listOf(
         Screen.Home,
         Screen.FindPartners,
@@ -80,7 +86,10 @@ fun ShowBottomNav(user: User) {
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()) {
-            composable(Screen.Home.route) { FeedNavHost(user) }
+            composable(Screen.Home.route) {
+                HomeFeed(user = user, questions = questions, toCritiques = toCritiques, hostNavController,
+                    frenzies, queries)
+            }
             composable(Screen.FindPartners.route) { SearchNavHost(user) }
             composable(Screen.Messages.route) { AccountNavHost(user) }
         }

@@ -71,7 +71,7 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
                         bubbleText = "Query",
                         icon = Icons.Default.Email,
                         isFirstItemInCarousel = index == 0,
-                        onClick = { navController.navigate("query/$index") }
+                        onClick = { navController.navigate("queries/$index") }
                     )
                 }
                 item {

@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,6 +23,7 @@ import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
+import hannah.bd.getitwrite.views.MainView
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
 import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
@@ -45,7 +47,7 @@ import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 @Composable
-fun FeedNavHost(user: User) {
+fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavController: NavController) {
     val navController = rememberNavController()
     var frenzies = remember { mutableStateOf<List<RequestCritique>?>(null) }
     var queries = remember { mutableStateOf<List<RequestCritique>?>(null) }
@@ -71,10 +73,10 @@ fun FeedNavHost(user: User) {
         )
     }
 
-    NavHost(navController = navController, startDestination = "feed") {
-        composable("feed") {
-            HomeFeed(user = user, questions = questions, toCritiques = toCritiques, navController,
-                frenzies, queries)
+    NavHost(navController = navController, startDestination = "bottomNav") {
+        composable("bottomNav") {
+            MainView(user = user, logoutNavController, hostnavController, questions = questions, toCritiques = toCritiques,
+                navController, frenzies, queries)
         }
         composable("frenzyFeed") {
             FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)
