@@ -31,6 +31,7 @@ import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
@@ -156,6 +157,27 @@ fun getToCritiques(user: User,
             if (documents != null) {
                 val items = documents.map { doc ->
                     RequestCritique(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
+}
+
+fun getPositivities(user: User, dbName: String,
+                 onSuccess: (List<RequestPositivity>) -> Unit,
+                 onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("users/${user.id}/$dbName")
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    RequestPositivity(doc.id, doc.data)
                 }
                 onSuccess(items)
             } else {

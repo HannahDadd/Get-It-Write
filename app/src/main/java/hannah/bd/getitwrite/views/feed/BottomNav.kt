@@ -4,14 +4,11 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -21,8 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -30,19 +25,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import hannah.bd.getitwrite.modals.Proposal
+import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
-import hannah.bd.getitwrite.views.account.AccountNavHost
-import hannah.bd.getitwrite.views.messages.ChatsFeed
+import hannah.bd.getitwrite.views.account.AccountView
 import hannah.bd.getitwrite.views.proposals.SearchNavHost
-import hannah.bd.getitwrite.views.toCritique.ToCritiqueFeed
 
 @Composable
 fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
-                  toCritiques: MutableState<List<RequestCritique>?>, hostNavController: NavHostController,
-                  frenzies: MutableState<List<RequestCritique>?>, queries: MutableState<List<RequestCritique>?>
+                  toCritiques: MutableState<List<RequestCritique>?>,
+                  hostNavController: NavHostController,
+                  frenzies: MutableState<List<RequestCritique>?>,
+                  queries: MutableState<List<RequestCritique>?>,
+                  critiqued: MutableState<List<Critique>?>,
+                  queryCritiques: MutableState<List<Critique>?>,
+                  positiveCritiques: MutableState<List<RequestPositivity>?>,
+                  frenzy: MutableState<List<Critique>?>
 ) {
     val items = listOf(
         Screen.Home,
@@ -91,7 +91,10 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
                     frenzies, queries)
             }
             composable(Screen.FindPartners.route) { SearchNavHost(user) }
-            composable(Screen.Messages.route) { AccountNavHost(user) }
+            composable(Screen.Messages.route) {
+                AccountView(user = user, hostNavController, critiqued = critiqued,
+                    queryCritiques = queryCritiques, positiveCritiques = positiveCritiques, frenzy = frenzy)
+            }
         }
     }
 }

@@ -106,6 +106,7 @@ fun PositivityPopUp(user: User,
                                     val id = it.id
                                     val newComments =
                                         it.comments + (user.displayName to comment.value)
+
                                     val critique = RequestPositivity(
                                         id = id,
                                         text = it.text,

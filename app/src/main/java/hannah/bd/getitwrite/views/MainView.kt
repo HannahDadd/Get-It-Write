@@ -43,6 +43,8 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
 import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.modals.Critique
+import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.views.feed.FeedNavHost
 import hannah.bd.getitwrite.views.feed.HomeFeed
 import hannah.bd.getitwrite.views.feed.ShowBottomNav
@@ -50,10 +52,17 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainView(user: User, logoutNavController: NavHostController, navController: NavController,
+fun MainView(user: User, logoutNavController: NavHostController,
+             navController: NavController,
              questions: MutableState<List<Question>?>,
-             toCritiques: MutableState<List<RequestCritique>?>, hostNavController: NavHostController,
-             frenzies: MutableState<List<RequestCritique>?>, queries: MutableState<List<RequestCritique>?>
+             toCritiques: MutableState<List<RequestCritique>?>,
+             hostNavController: NavHostController,
+             frenzies: MutableState<List<RequestCritique>?>,
+             queries: MutableState<List<RequestCritique>?>,
+             critiqued: MutableState<List<Critique>?>,
+             queryCritiques: MutableState<List<Critique>?>,
+             positiveCritiques: MutableState<List<RequestPositivity>?>,
+             frenzy: MutableState<List<Critique>?>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -124,7 +133,9 @@ fun MainView(user: User, logoutNavController: NavHostController, navController: 
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
                 ShowBottomNav(user = user, questions = questions, toCritiques = toCritiques,
-                    hostNavController, frenzies, queries)
+                    hostNavController, frenzies, queries,
+                    critiqued = critiqued, queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,
+                    frenzy = frenzy)
             }
         }
     }

@@ -18,12 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import hannah.bd.getitwrite.modals.Critique
+import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.views.components.HomePageTileButton
 import hannah.bd.getitwrite.views.components.SquareTileButton
 import hannah.bd.getitwrite.views.components.TitleAndSubText
 
 @Composable
-fun PositiveCritiqued(critiques: MutableState<List<Critique>?>, title: String, subTitle: String,
+fun CritiquedSection(critiques: MutableState<List<Critique>?>, title: String, subTitle: String,
                       dbName: String, navController: NavController, onCreate: () -> Unit) {
     critiques.value?.let {
         Column(
@@ -77,6 +78,74 @@ fun PositiveCritiqued(critiques: MutableState<List<Critique>?>, title: String, s
                     itemsIndexed(it) {index, item ->
                         HomePageTileButton(
                             title = item.title,
+                            bubbleText = "${item.comments.size} comments",
+                            icon = Icons.Default.Edit,
+                            isFirstItemInCarousel = false,
+                            onClick = {navController.navigate("$dbName/$index")})
+                    }
+                }
+            }
+        }
+    } ?: run {
+        Text("Loading...", modifier = Modifier.padding(16.dp))
+    }
+}
+
+@Composable
+fun PosistivitySection(critiques: MutableState<List<RequestPositivity>?>, title: String, subTitle: String,
+                     dbName: String, navController: NavController, onCreate: () -> Unit) {
+    critiques.value?.let {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth()
+        ) {
+            TitleAndSubText(
+                title = title,
+                subTitle,
+                MaterialTheme.colorScheme.onSurface
+            )
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    SquareTileButton(
+                        modifier = Modifier.padding(start = 8.dp),
+                        title = "Add.",
+                        wordCount = "",
+                        backgroundColour = MaterialTheme.colorScheme.background,
+                        textColour = MaterialTheme.colorScheme.onBackground,
+                        icon = Icons.Default.Add,
+                        size = 150.dp,
+                        onClick = onCreate
+                    )
+                }
+                if (it.size > 3) {
+                    itemsIndexed(it.subList(0, 3)) {index, item ->
+                        HomePageTileButton(
+                            title = "Positivity Piece",
+                            bubbleText = "${item.comments.size} comments",
+                            icon = Icons.Default.Edit,
+                            isFirstItemInCarousel = false,
+                            onClick = { navController.navigate("$dbName/$index") })
+                    }
+                    item {
+                        SquareTileButton(
+                            modifier = Modifier.padding(end = 8.dp),
+                            title = "View more.",
+                            wordCount = "",
+                            backgroundColour = MaterialTheme.colorScheme.background,
+                            textColour = MaterialTheme.colorScheme.onBackground,
+                            icon = Icons.Default.ArrowForward,
+                            size = 150.dp,
+                            onClick = { navController.navigate("$dbName-Feed") }
+                        )
+                    }
+                } else {
+                    itemsIndexed(it) {index, item ->
+                        HomePageTileButton(
+                            title = "Positivity Piece",
                             bubbleText = "${item.comments.size} comments",
                             icon = Icons.Default.Edit,
                             isFirstItemInCarousel = false,

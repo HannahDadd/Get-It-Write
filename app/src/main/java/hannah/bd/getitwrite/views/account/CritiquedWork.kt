@@ -28,16 +28,6 @@ fun CritiquedWord(navController: NavController, critiqued: MutableState<List<Cri
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            RectangleTileButtonNoDate(
-                title = "Send work to your critique partners.",
-                backgroundColour = MaterialTheme.colorScheme.background,
-                textColour = MaterialTheme.colorScheme.onBackground,
-                padding = 16.dp,
-                icon = Icons.Default.Send,
-                onClick = { navController.navigate("messages") }
-            )
-        }
         critiqued.value?.let {
             if (it.isNotEmpty() == true) {
                 Column(

@@ -22,6 +22,7 @@ import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.MainView
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
@@ -36,6 +37,7 @@ import hannah.bd.getitwrite.views.proposals.ProposalNavHost
 import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqued
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
+import hannah.bd.getitwrite.views.critiqueFrenzy.getPositivities
 import hannah.bd.getitwrite.views.critiqueFrenzy.getQuestions
 import hannah.bd.getitwrite.views.critiqueFrenzy.getToCritiques
 import hannah.bd.getitwrite.views.forum.ForumFeed
@@ -43,7 +45,9 @@ import hannah.bd.getitwrite.views.forum.ForumView
 import hannah.bd.getitwrite.views.forum.QuestionDetailView
 import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.messages.MessagesNavHost
+import hannah.bd.getitwrite.views.positivityCorner.PositivityCritique
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
+import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 @Composable
@@ -53,6 +57,10 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
     var queries = remember { mutableStateOf<List<RequestCritique>?>(null) }
     var questions = remember { mutableStateOf<List<Question>?>(null) }
     var toCritiques = remember { mutableStateOf<List<RequestCritique>?>(null) }
+    var critiqued = remember { mutableStateOf<List<Critique>?>(null) }
+    var frenzy = remember { mutableStateOf<List<Critique>?>(null) }
+    var positives = remember { mutableStateOf<List<RequestPositivity>?>(null) }
+    var queriesToCritique = remember { mutableStateOf<List<Critique>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiques("frenzy",
@@ -71,12 +79,29 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             onSuccess = { toCritiques.value = it },
             onError = { exception -> }
         )
+        getCritiqued(user, "critiques",
+            onSuccess = { critiqued.value = it },
+            onError = { exception -> }
+        )
+        getPositivities(user, "positivityPeices",
+            onSuccess = { positives.value = it },
+            onError = { exception -> }
+        )
+        getCritiqued(user, "queries",
+            onSuccess = { queriesToCritique.value = it },
+            onError = { exception -> }
+        )
+        getCritiqued(user, "frenzies",
+            onSuccess = { frenzy.value = it },
+            onError = { exception -> }
+        )
     }
 
     NavHost(navController = navController, startDestination = "bottomNav") {
         composable("bottomNav") {
             MainView(user = user, logoutNavController, hostnavController, questions = questions, toCritiques = toCritiques,
-                navController, frenzies, queries)
+                navController, frenzies, queries, critiqued = critiqued,
+                queryCritiques = queriesToCritique, positiveCritiques = positives, frenzy = frenzy)
         }
         composable("frenzyFeed") {
             FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)
@@ -124,6 +149,58 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 toCritiques.value?.get(index = it.toInt())?.let {
                     ToCritiqueDetailedView(user, false, it, navController)
+                }
+            }
+        }
+        composable("messages") {
+            MessagesNavHost(navController, user)
+        }
+        composable("critiquedFeed") {
+            CritiquedFeed(user, critiqued, navController)
+        }
+        composable("criquedFrenzy-Feed") {
+            CritiquedFeed(user, frenzy, navController)
+        }
+        composable("criquedQueries-Feed") {
+            CritiquedFeed(user, queriesToCritique, navController)
+        }
+        composable(
+            "critiqued/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                critiqued.value?.get(index = it.toInt())?.let {
+                    CritiquedDetailedView(it, { navController.navigateUp() })
+                }
+            }
+        }
+        composable(
+            "criquedFrenzy/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                frenzy.value?.get(index = it.toInt())?.let {
+                    CritiquedDetailedView(it, { navController.navigateUp() })
+                }
+            }
+        }
+        composable(
+            "criquedPositives/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                positives.value?.get(index = it.toInt())?.let {
+                    PositivityCritique(it, { navController.navigateUp() })
+                }
+            }
+        }
+        composable(
+            "criquedQueries/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                queriesToCritique.value?.get(index = it.toInt())?.let {
+                    CritiquedDetailedView(it, { navController.navigateUp() })
                 }
             }
         }
