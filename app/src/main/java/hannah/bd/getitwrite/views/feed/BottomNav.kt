@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import hannah.bd.getitwrite.modals.Critique
+import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestPositivity
@@ -42,6 +43,7 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
                   critiqued: MutableState<List<Critique>?>,
                   queryCritiques: MutableState<List<Critique>?>,
                   positiveCritiques: MutableState<List<RequestPositivity>?>,
+                  proposals: MutableState<List<Proposal>?>,
                   frenzy: MutableState<List<Critique>?>
 ) {
     val items = listOf(
@@ -93,7 +95,8 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
             composable(Screen.FindPartners.route) { SearchNavHost(user) }
             composable(Screen.Messages.route) {
                 AccountView(user = user, hostNavController, critiqued = critiqued,
-                    queryCritiques = queryCritiques, positiveCritiques = positiveCritiques, frenzy = frenzy)
+                    queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,
+                    proposals= proposals, frenzy = frenzy)
             }
         }
     }

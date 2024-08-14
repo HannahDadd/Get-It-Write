@@ -20,11 +20,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Critique
+import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.MainView
+import hannah.bd.getitwrite.views.account.getProposals
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
 import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
@@ -61,6 +63,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
     var frenzy = remember { mutableStateOf<List<Critique>?>(null) }
     var positives = remember { mutableStateOf<List<RequestPositivity>?>(null) }
     var queriesToCritique = remember { mutableStateOf<List<Critique>?>(null) }
+    var proposals = remember { mutableStateOf<List<Proposal>?>(null) }
 
     LaunchedEffect(Unit) {
         getCritiques("frenzy",
@@ -95,13 +98,18 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             onSuccess = { frenzy.value = it },
             onError = { exception -> }
         )
+        getProposals(user,
+            onSuccess = { proposals.value = it },
+            onError = { exception -> }
+        )
     }
 
     NavHost(navController = navController, startDestination = "bottomNav") {
         composable("bottomNav") {
             MainView(user = user, logoutNavController, hostnavController, questions = questions, toCritiques = toCritiques,
                 navController, frenzies, queries, critiqued = critiqued,
-                queryCritiques = queriesToCritique, positiveCritiques = positives, frenzy = frenzy)
+                queryCritiques = queriesToCritique, positiveCritiques = positives,
+                proposals = proposals, frenzy = frenzy)
         }
         composable("frenzyFeed") {
             FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)

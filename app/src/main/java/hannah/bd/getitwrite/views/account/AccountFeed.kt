@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import hannah.bd.getitwrite.modals.Critique
+import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
 import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
 import hannah.bd.getitwrite.views.positivityCorner.MakePositiveCorner
+import hannah.bd.getitwrite.views.proposals.MakeProposalView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +33,7 @@ fun AccountView(user: User, navController: NavHostController,
                 critiqued: MutableState<List<Critique>?>,
                 queryCritiques: MutableState<List<Critique>?>,
                 positiveCritiques: MutableState<List<RequestPositivity>?>,
+                proposals: MutableState<List<Proposal>?>,
                 frenzy: MutableState<List<Critique>?>) {
     var bottomSheet by remember { mutableStateOf(AccountSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -60,6 +63,11 @@ fun AccountView(user: User, navController: NavHostController,
                         bottomSheet = AccountSheetContent.none
                     }
                 }
+                AccountSheetContent.makeNewProposals -> {
+                    MakeProposalView(user = user) {
+                        bottomSheet = AccountSheetContent.none
+                    }
+                }
             }
         }
     }
@@ -74,6 +82,11 @@ fun AccountView(user: User, navController: NavHostController,
                     icon = Icons.Default.Send,
                     onClick = { navController.navigate("messages") }
                 )
+            }
+        }
+        item {
+            ProposalsSection(navController, proposals) {
+                bottomSheet = AccountSheetContent.makeNewProposals
             }
         }
         item {
@@ -108,4 +121,5 @@ enum class AccountSheetContent {
     makeNewPositive,
     makeNewCritiqueFrenzy,
     makeNewQueryFrenzy,
+    makeNewProposals,
 }

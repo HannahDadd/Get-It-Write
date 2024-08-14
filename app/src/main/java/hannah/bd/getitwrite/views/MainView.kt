@@ -62,6 +62,7 @@ fun MainView(user: User, logoutNavController: NavHostController,
              critiqued: MutableState<List<Critique>?>,
              queryCritiques: MutableState<List<Critique>?>,
              positiveCritiques: MutableState<List<RequestPositivity>?>,
+             proposals: MutableState<List<Proposal>?>,
              frenzy: MutableState<List<Critique>?>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -135,7 +136,7 @@ fun MainView(user: User, logoutNavController: NavHostController,
                 ShowBottomNav(user = user, questions = questions, toCritiques = toCritiques,
                     hostNavController, frenzies, queries,
                     critiqued = critiqued, queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,
-                    frenzy = frenzy)
+                    proposals= proposals, frenzy = frenzy)
             }
         }
     }

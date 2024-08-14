@@ -172,7 +172,6 @@ fun getPositivities(user: User, dbName: String,
                  onSuccess: (List<RequestPositivity>) -> Unit,
                  onError: (Exception) -> Unit) {
     Firebase.firestore.collection("users/${user.id}/$dbName")
-        .orderBy("timestamp", Query.Direction.DESCENDING)
         .get()
         .addOnSuccessListener { documents ->
             if (documents != null) {
