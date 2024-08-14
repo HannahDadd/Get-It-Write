@@ -40,7 +40,7 @@ import hannah.bd.getitwrite.views.components.TitleAndSubText
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController, onCreate: () -> Unit) {
+fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: NavController) {
     if (requests.value?.isNotEmpty() == true) {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -167,10 +167,10 @@ fun getToCritiques(user: User,
         }
 }
 
-fun getCritiqued(user: User,
+fun getCritiqued(user: User, dbName: String,
                  onSuccess: (List<Critique>) -> Unit,
                  onError: (Exception) -> Unit) {
-    Firebase.firestore.collection("users/${user.id}/critiques")
+    Firebase.firestore.collection("users/${user.id}/$dbName")
         .orderBy("timestamp", Query.Direction.DESCENDING)
         .get()
         .addOnSuccessListener { documents ->

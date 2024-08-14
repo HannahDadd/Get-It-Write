@@ -28,7 +28,7 @@ import hannah.bd.getitwrite.views.components.TitleAndSubText
 import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
 
 @Composable
-fun PositiveFeedback(onTap: () -> Unit, onCreate: () -> Unit) {
+fun PositiveFeedback(onTap: () -> Unit) {
     Column(
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 20.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)

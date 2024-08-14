@@ -37,7 +37,7 @@ import hannah.bd.getitwrite.views.components.SquareTileButton
 import hannah.bd.getitwrite.views.components.TitleAndSubText
 
 @Composable
-fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navController: NavController, onCreate: () -> Unit) {
+fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navController: NavController) {
     if (requests.value?.isNotEmpty() == true) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),

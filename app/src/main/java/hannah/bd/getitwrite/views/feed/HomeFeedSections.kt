@@ -121,28 +121,3 @@ fun WorkToCritique(username: String, navController: NavController, toCritiques: 
         }
     }
 }
-
-@Composable
-fun CheckYourMessages() {
-    Column {
-        Divider()
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "Messages",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
-            Icon(
-                Icons.Default.KeyboardArrowRight,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.onSecondary
-            )
-        }
-        Divider()
-    }
-}

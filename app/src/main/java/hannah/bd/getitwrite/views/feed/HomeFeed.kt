@@ -154,21 +154,6 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
                         bottomSheet = HomeSheetContent.none
                     }
                 }
-                HomeSheetContent.makeNewPositive -> {
-                    MakePositiveCorner(user = user) {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
-                HomeSheetContent.makeNewCritiqueFrenzy -> {
-                    MakeFrenzyView(user = user, "frenzy", "Text") {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
-                HomeSheetContent.makeNewQueryFrenzy -> {
-                    MakeFrenzyView(user = user, "queries", "Query") {
-                        bottomSheet = HomeSheetContent.none
-                    }
-                }
             }
         }
     }
@@ -180,22 +165,16 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             RecomendedCritiquers()
         }
         item {
-            FreeForAll(frenzies, navController = navController) {
-                bottomSheet = HomeSheetContent.makeNewCritiqueFrenzy
-            }
+            FreeForAll(frenzies, navController = navController)
         }
         item {
-            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview }) {
-                bottomSheet = HomeSheetContent.makeNewPositive
-            }
+            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview })
         }
         item {
             JoinTheConvo(navController, questions)
         }
         item {
-            QuickQueryCritique(queries, navController) {
-                bottomSheet = HomeSheetContent.makeNewQueryFrenzy
-            }
+            QuickQueryCritique(queries, navController)
         }
         item {
             AIPromo()
@@ -205,8 +184,5 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
 
 enum class HomeSheetContent {
     none,
-    positiveReview,
-    makeNewPositive,
-    makeNewCritiqueFrenzy,
-    makeNewQueryFrenzy,
+    positiveReview
 }
