@@ -48,6 +48,7 @@ import hannah.bd.getitwrite.views.forum.QuestionDetailView
 import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.positivityCorner.PositivityCritique
+import hannah.bd.getitwrite.views.proposals.SearchView
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
@@ -211,6 +212,20 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
                     CritiquedDetailedView(it, { navController.navigateUp() })
                 }
             }
+        }
+        composable("search") {
+            SearchView(user = user, navController = navController)
+        }
+        composable(
+            "genre/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
     }
 }

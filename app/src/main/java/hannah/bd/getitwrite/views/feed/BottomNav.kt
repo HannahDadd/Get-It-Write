@@ -32,7 +32,7 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.account.AccountView
-import hannah.bd.getitwrite.views.proposals.SearchNavHost
+import hannah.bd.getitwrite.views.proposals.SearchView
 
 @Composable
 fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
@@ -92,7 +92,7 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
                 HomeFeed(user = user, questions = questions, toCritiques = toCritiques, hostNavController,
                     frenzies, queries)
             }
-            composable(Screen.FindPartners.route) { SearchNavHost(user) }
+            composable(Screen.FindPartners.route) { SearchView(user, hostNavController) }
             composable(Screen.Messages.route) {
                 AccountView(user = user, hostNavController, critiqued = critiqued,
                     queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,

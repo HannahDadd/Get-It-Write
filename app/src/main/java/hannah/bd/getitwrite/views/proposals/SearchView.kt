@@ -12,28 +12,6 @@ import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.User
 
 @Composable
-fun SearchNavHost(user: User) {
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "search") {
-        composable("search") {
-            SearchView(user = user, navController = navController)
-        }
-        composable(
-            "genre/{id}",
-            arguments = listOf(
-                navArgument("id") {
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
-        }
-    }
-}
-
-@Composable
 fun SearchView(user: User, navController: NavHostController) {
     LazyColumn {
         item {
