@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,43 +63,6 @@ fun RectangleTileButton(
             text = title,
             color = textColour
         )
-    }
-}
-
-@Composable
-fun RectangleTileButtonNoDate(
-    title: String,
-    backgroundColour: Color,
-    textColour: Color,
-    padding: Dp,
-    icon: ImageVector = Icons.Default.ArrowForward,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(color = backgroundColour)
-            .clickable(onClick = onClick)
-            .padding(padding),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = title,
-                style = AppTypography.titleMedium,
-                color = textColour
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
-            Icon(
-                icon,
-                contentDescription = "",
-                tint = textColour
-            )
-        }
     }
 }
 
@@ -139,5 +103,42 @@ fun JoinTheConvo(navController: NavController, questions: MutableState<List<Ques
         }
     } else {
         Text("Loading...", modifier = Modifier.padding(16.dp))
+    }
+}
+
+@Composable
+fun RectangleTileButtonNoDate(
+    title: String,
+    backgroundColour: Color,
+    textColour: Color,
+    padding: Dp,
+    icon: ImageVector = Icons.Default.ArrowForward,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .background(color = backgroundColour)
+            .clickable(onClick = onClick)
+            .padding(padding),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = title,
+                style = AppTypography.titleMedium,
+                color = textColour
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            Icon(
+                icon,
+                contentDescription = "",
+                tint = textColour
+            )
+        }
     }
 }
