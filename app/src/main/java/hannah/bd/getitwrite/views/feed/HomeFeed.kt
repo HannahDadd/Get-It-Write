@@ -95,7 +95,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             onSuccess = { queriesToCritique.value = it },
             onError = { exception -> }
         )
-        getCritiqued(user, "frenzies",
+        getCritiqued(user, "critiquedFrenzy",
             onSuccess = { frenzy.value = it },
             onError = { exception -> }
         )
@@ -133,7 +133,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             arguments = listOf(navArgument("index") { type = NavType.StringType })
         ) { backStackEntry ->
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
-                frenzies.value?.get(index = it.toInt())?.let {
+                queries.value?.get(index = it.toInt())?.let {
                     ToCritiqueDetailedView(user, true, it, navController)
                 }
             }
@@ -167,7 +167,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
         composable("critiquedFeed") {
             CritiquedFeed(user, critiqued, navController)
         }
-        composable("criquedFrenzy-Feed") {
+        composable("critiquedFrenzy-Feed") {
             CritiquedFeed(user, frenzy, navController)
         }
         composable("criquedQueries-Feed") {
@@ -184,7 +184,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             }
         }
         composable(
-            "criquedFrenzy/{index}",
+            "critiquedFrenzy/{index}",
             arguments = listOf(navArgument("index") { type = NavType.StringType })
         ) { backStackEntry ->
             requireNotNull(backStackEntry.arguments).getString("index")?.let {

@@ -69,7 +69,7 @@ fun CritiquedSection(critiques: MutableState<List<Critique>?>, title: String, su
                 if (it.size > 3) {
                     itemsIndexed(it.subList(0, 3)) {index, item ->
                         HomePageTileButton(
-                            title = item.title,
+                            title = item.projectTitle,
                             bubbleText = "${item.comments.size} comments",
                             icon = Icons.Default.Edit,
                             isFirstItemInCarousel = false,
@@ -90,7 +90,7 @@ fun CritiquedSection(critiques: MutableState<List<Critique>?>, title: String, su
                 } else {
                     itemsIndexed(it) {index, item ->
                         HomePageTileButton(
-                            title = item.title,
+                            title = item.projectTitle,
                             bubbleText = "${item.comments.size} comments",
                             icon = Icons.Default.Edit,
                             isFirstItemInCarousel = false,

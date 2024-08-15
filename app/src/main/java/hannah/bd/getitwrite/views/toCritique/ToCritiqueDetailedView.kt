@@ -140,7 +140,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     val id = UUID.randomUUID().toString()
-                    val collectionName = if(toCritique.title == "Critique Frenzy") "criquedFrenzy" else "critiques"
+                    val collectionName = if(toCritique.title == "Critique Frenzy") "critiquedFrenzy" else "critiques"
                     val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
                     Firebase.firestore.collection("users").document(toCritique.writerId)
                         .collection(collectionName).document(id).set(critique)

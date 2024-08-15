@@ -94,7 +94,7 @@ fun AccountView(user: User, navController: NavHostController,
         }
         item {
             CritiquedSection(frenzy, "Critique Frenzy",
-                "No partners, no swaps, just feedback on your work.", "criquedFrenzy",
+                "No partners, no swaps, just feedback on your work.", "critiquedFrenzy",
                 navController, {
                 bottomSheet = AccountSheetContent.makeNewCritiqueFrenzy
             })

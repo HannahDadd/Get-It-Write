@@ -61,7 +61,8 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
                     BottomNavigationItem(
                         icon = { Icon(
                             imageVector = screen.resourceId,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = if(currentDestination?.hierarchy?.any { it.route == screen.route } == true) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                         ) },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {
