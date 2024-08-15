@@ -107,10 +107,10 @@ fun AccountView(user: User, navController: NavHostController,
                 })
         }
         item {
-            CritiquedSection(queryCritiques, "Query Critique",
-                "Critiques on your query, posted on the main page.", "criquedQueries",
+            CritiquedSection(queryCritiques, "Quick Query Critique",
+                "Critiques on your query, posted to every users home page.", "criquedQueries",
                 navController, {
-                    bottomSheet = AccountSheetContent.makeNewPositive
+                    bottomSheet = AccountSheetContent.makeNewQueryFrenzy
                 })
         }
     }

@@ -46,7 +46,7 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
                 .padding(vertical = 16.dp)
         ) {
             TitleAndSubText(
-                "Query Critique",
+                "Quick Query Critique",
                 "Query letters critiques.",
                 colorScheme.onSurface
             )

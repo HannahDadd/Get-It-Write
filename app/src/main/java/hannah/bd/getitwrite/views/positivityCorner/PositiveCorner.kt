@@ -62,34 +62,5 @@ fun PositiveFeedback(onTap: () -> Unit) {
                 )
             }
         }
-        //RectangleTileButtonPositive(onClick = onTap)
-//        TextButton(onClick = onCreate) {
-//            Text(
-//                text = "Need some positive vibes? Add your work to the mix.",
-//                style = MaterialTheme.typography.labelMedium,
-//                fontWeight = FontWeight.Bold,
-//                color = MaterialTheme.colorScheme.tertiary,
-//            )
-//        }
-    }
-}
-
-@Composable
-fun RectangleTileButtonPositive(
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(color = Color(0xFFFDFD96))
-            .clickable(onClick = onClick)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Text(
-            text = "Make another writer's day!",
-            color = Color.Black
-        )
     }
 }

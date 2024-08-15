@@ -50,7 +50,7 @@ fun ProposalsSection(navController: NavController, proposals: MutableState<List<
                 item {
                     SquareTileButton(
                         modifier = Modifier.padding(start = 8.dp),
-                        title = "Add.",
+                        title = "Add",
                         wordCount = "",
                         backgroundColour = MaterialTheme.colorScheme.background,
                         textColour = MaterialTheme.colorScheme.onBackground,

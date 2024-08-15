@@ -68,7 +68,7 @@ fun MakeFrenzyView(user: User, dbName: String, placeHolder: String, onSuccess: (
                 } else if (CheckInput.isStringGood(text.value, 1000)) {
                     val id = UUID.randomUUID().toString()
                     val workTitle = if (dbName == "frenzy") "Critique Frenzy" else "Query"
-                    val request = RequestCritique(id = id, title = "", blurb = "", genres = genreTags.value,
+                    val request = RequestCritique(id = id, title = "Critique Frenzy", blurb = "", genres = genreTags.value,
                         triggerWarnings = mutableListOf(), workTitle = workTitle, text = text.value, timestamp = Timestamp.now(), writerId = user.id, writerName = user.displayName)
                     Firebase.firestore.collection(dbName).document(id).set(request)
                         .addOnSuccessListener {

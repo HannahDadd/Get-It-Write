@@ -120,12 +120,14 @@ fun HomePageTileButton(
     bubbleText: String,
     icon: ImageVector,
     isFirstItemInCarousel: Boolean,
+    isLastItemInCarousel: Boolean = false,
     onClick: () -> Unit
 ) {
     val primary = MaterialTheme.colorScheme.primary
     Column(
         modifier = Modifier
             .padding(start = if (isFirstItemInCarousel) 8.dp else 0.dp)
+            .padding(end = if (isLastItemInCarousel) 8.dp else 0.dp)
             .size(150.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(color = MaterialTheme.colorScheme.background)
