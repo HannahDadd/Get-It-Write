@@ -38,38 +38,41 @@ import java.util.UUID
 fun ProposalDetails(
     proposal: Proposal,
     user: User,
+    isOwn: Boolean = false,
     navController: NavController
 ) {
     Scaffold(
         bottomBar = {
-            Button(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                onClick = {
-                    Firebase.firestore.collection("chats")
-                        .whereArrayContains("users", arrayOf(user.id, proposal.writerId))
-                        .get().addOnSuccessListener {
-                            if (it.isEmpty) {
-                                val id = UUID.randomUUID().toString()
-                                Firebase.firestore.collection("chats").document(id)
-                                    .set(mapOf("users" to listOf(user.id, proposal.writerId)))
-                                    .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
-                                    .addOnFailureListener { }
-                            } else {
-                                val doc = it.documents.get(0)
-                                navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
+            if (!isOwn) {
+                Button(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    onClick = {
+                        Firebase.firestore.collection("chats")
+                            .whereArrayContains("users", arrayOf(user.id, proposal.writerId))
+                            .get().addOnSuccessListener {
+                                if (it.isEmpty) {
+                                    val id = UUID.randomUUID().toString()
+                                    Firebase.firestore.collection("chats").document(id)
+                                        .set(mapOf("users" to listOf(user.id, proposal.writerId)))
+                                        .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
+                                        .addOnFailureListener { }
+                                } else {
+                                    val doc = it.documents.get(0)
+                                    navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
+                                }
                             }
-                        }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                Text(
-                    "Send Author Message",
-                    Modifier.padding(10.dp),
-                    fontWeight = FontWeight.Bold
-                )
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text(
+                        "Send Author Message",
+                        Modifier.padding(10.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -104,14 +107,16 @@ fun ProposalDetails(
                 } else {
                     TagCloud(tags = proposal.triggerWarnings, action = null)
                 }
-                ReportAndBlockUser(
-                    userToBlock = proposal.writerId,
-                    user = user,
-                    contentToReport = proposal,
-                    contentToReportType = ContentToReportType.proposals,
-                    questionId = null,
-                    chatId = null
-                )
+                if (!isOwn) {
+                    ReportAndBlockUser(
+                        userToBlock = proposal.writerId,
+                        user = user,
+                        contentToReport = proposal,
+                        contentToReportType = ContentToReportType.proposals,
+                        questionId = null,
+                        chatId = null
+                    )
+                }
             }
         }
     }

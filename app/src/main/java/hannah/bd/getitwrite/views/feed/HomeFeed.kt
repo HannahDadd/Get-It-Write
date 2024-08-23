@@ -51,6 +51,8 @@ import hannah.bd.getitwrite.views.forum.QuestionDetailView
 import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.positivityCorner.PositivityCritique
+import hannah.bd.getitwrite.views.proposals.ProposalDetails
+import hannah.bd.getitwrite.views.proposals.ProposalView
 import hannah.bd.getitwrite.views.proposals.SearchView
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
@@ -161,6 +163,21 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 toCritiques.value?.get(index = it.toInt())?.let {
                     ToCritiqueDetailedView(user, false, it, navController)
+                }
+            }
+        }
+        composable(
+            "proposal/{index}",
+            arguments = listOf(navArgument("index") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("index")?.let {
+                proposals.value?.get(index = it.toInt())?.let {
+                    ProposalDetails(
+                        proposal = it,
+                        user = user,
+                        isOwn = true,
+                    navController = navController
+                    )
                 }
             }
         }

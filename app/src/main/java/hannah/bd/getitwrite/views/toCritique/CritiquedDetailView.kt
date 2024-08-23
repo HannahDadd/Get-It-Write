@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -55,7 +56,9 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
             }
             paragraphs.forEachIndexed { index, element ->
                 if (critique.comments.containsValue(index.toLong())) {
-                    Text(element, style = TextStyle(background = MaterialTheme.colorScheme.primary,
+                    Text(element,
+                        style = TextStyle(background = MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.onPrimary,
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.Normal,
                         fontSize = 16.sp,
@@ -86,6 +89,7 @@ fun CritiquedSheet(pair: Triple<String, Int, String>) {
     Column(
         modifier = Modifier
             .padding(10.dp)
+            .fillMaxSize()
             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(text = "Paragraph:", fontWeight = FontWeight.Bold)

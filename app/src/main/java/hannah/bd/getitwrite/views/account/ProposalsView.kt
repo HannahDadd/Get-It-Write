@@ -54,7 +54,9 @@ fun ProposalsSection(navController: NavController, proposals: MutableState<List<
                         icon = Icons.Default.Edit,
                         isFirstItemInCarousel = (index == 0),
                         isLastItemInCarousel = (index == ( it.size - 1)),
-                        onClick = {})
+                        onClick = {
+                            navController.navigate("proposal/$index")
+                        })
                 }
             }
         }
