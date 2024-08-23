@@ -199,7 +199,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
         ) { backStackEntry ->
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 critiqued.value?.get(index = it.toInt())?.let {
-                    CritiquedDetailedView(it, { navController.navigateUp() })
+                    CritiquedDetailedView(it, user, { navController.navigateUp() })
                 }
             }
         }
@@ -209,7 +209,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
         ) { backStackEntry ->
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 frenzy.value?.get(index = it.toInt())?.let {
-                    CritiquedDetailedView(it, { navController.navigateUp() })
+                    CritiquedDetailedView(it, user, { navController.navigateUp() })
                 }
             }
         }
@@ -229,7 +229,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
         ) { backStackEntry ->
             requireNotNull(backStackEntry.arguments).getString("index")?.let {
                 queriesToCritique.value?.get(index = it.toInt())?.let {
-                    CritiquedDetailedView(it, { navController.navigateUp() })
+                    CritiquedDetailedView(it, user, { navController.navigateUp() })
                 }
             }
         }

@@ -64,14 +64,6 @@ fun CritiqueView(user: User, critique: Critique, select: (String) -> Unit) {
             ProfileImage(username = critique.critiquerName, profileColour = critique.critiquerProfileColour)
             Text(critique.critiquerName, fontSize = 20.sp)
         }
-        ReportAndBlockUser(
-            userToBlock = critique.critiquerId,
-            user = user,
-            contentToReport = critique,
-            contentToReportType = ContentToReportType.CRITIQUE,
-            questionId = null,
-            chatId = null
-        )
         Text(text = critique.overallFeedback,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold)

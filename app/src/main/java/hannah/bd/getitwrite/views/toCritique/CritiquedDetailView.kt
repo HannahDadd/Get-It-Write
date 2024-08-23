@@ -27,12 +27,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Critique
+import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.DetailHeader
+import hannah.bd.getitwrite.views.components.ReportAndBlockUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
+fun CritiquedDetailedView(critique: Critique, user: User, navigateUp: () -> Unit) {
     val paragraphs = critique.text.split("\n")
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
@@ -78,6 +81,14 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
                     fontWeight = FontWeight.Light
                 )
             }
+            ReportAndBlockUser(
+                userToBlock = critique.critiquerId,
+                user = user,
+                contentToReport = critique,
+                contentToReportType = ContentToReportType.CRITIQUE,
+                questionId = null,
+                chatId = null
+            )
             Text(text = "Overall feedback:", fontWeight = FontWeight.Bold)
             Text(text = critique.overallFeedback)
         }
