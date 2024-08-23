@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -40,7 +41,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.Message
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.User
@@ -113,7 +113,9 @@ fun ShowMessages(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { showBottomSheet = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary)
                 ) {
                     Text("Send work to $user2Name", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
                 }

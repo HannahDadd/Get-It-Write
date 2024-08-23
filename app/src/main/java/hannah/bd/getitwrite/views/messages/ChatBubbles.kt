@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Message
 import hannah.bd.getitwrite.modals.User
@@ -55,7 +55,7 @@ fun SingleOwnMessage(text: String, timestamp: Timestamp) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = Colours.paleBlue,
+                        color = MaterialTheme.colorScheme.primary,
                         shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
                     )
                     .padding(10.dp)
@@ -65,7 +65,7 @@ fun SingleOwnMessage(text: String, timestamp: Timestamp) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = Colours.paleBlue,
+                        color = MaterialTheme.colorScheme.primary,
                         shape = OwnTriangleEdgeShape(30)
                     )
                     .width(8.dp)
@@ -75,7 +75,6 @@ fun SingleOwnMessage(text: String, timestamp: Timestamp) {
         }
     }
 }
-
 
 @Composable
 fun SingleOtherMessage(user: User, message: Message, chatId: String) {
@@ -99,7 +98,7 @@ fun SingleOtherMessage(user: User, message: Message, chatId: String) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = Colours.bold,
+                        color = MaterialTheme.colorScheme.secondary,
                         shape = OtherTriangleEdgeShape(30)
                     )
                     .width(8.dp)
@@ -108,7 +107,7 @@ fun SingleOtherMessage(user: User, message: Message, chatId: String) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = Colours.bold,
+                        color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(0.dp, 4.dp, 4.dp, 4.dp)
                     )
                     .padding(10.dp)

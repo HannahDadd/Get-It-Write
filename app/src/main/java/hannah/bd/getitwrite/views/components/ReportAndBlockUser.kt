@@ -33,8 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.modals.UserGeneratedContent
@@ -220,7 +218,9 @@ fun ReportContent(contentToReport: UserGeneratedContent,
                         errorString.value = it.message.toString()
                     }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text("Report", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }

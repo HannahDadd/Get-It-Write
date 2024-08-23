@@ -101,7 +101,9 @@ fun MakePositiveCorner(user: User, close: () -> Unit) {
                             errorString.value = CheckInput.errorStringText
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary)
                 ) {
                     Text("Submit", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
                 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -27,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.GlobalVariables
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.ErrorText
@@ -113,14 +113,16 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
                             }
                         }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text("SIGN UP", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
         ErrorText(errorString)
         TextButton(onClick = { navController.navigate("login") }) {
             Text(modifier = Modifier.align(Alignment.Bottom),
-                text = "Back to Login", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold)
+                text = "Back to Login", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
         }
     }
 }

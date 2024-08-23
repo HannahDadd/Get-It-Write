@@ -38,7 +38,6 @@ import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.views.components.ErrorText
 import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.R
@@ -75,7 +74,7 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
                 label = { Text(text = "Password") }
             )
             TextButton(onClick = {/**/}) {
-                Text("Forgot Password?", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
+                Text("Forgot Password?", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
             }
         }
         Button(
@@ -90,13 +89,15 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
                         }
                     }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text("LOGIN", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
         TextButton(onClick = { navController.navigate("signup") }) {
             Text(modifier = Modifier.align(Alignment.Bottom),
-                text = "Don't have an account? Sign Up", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold)
+                text = "Don't have an account? Sign Up", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -120,9 +121,8 @@ fun ShowOpeningPage(navController: NavController, auth: FirebaseAuth) {
                         navController.navigate("login")
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Colours.Dark_Readable,
-                        contentColor = Color.White
-                    )
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary)
                 ) {
                     Text("Login", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
                 }
@@ -132,8 +132,7 @@ fun ShowOpeningPage(navController: NavController, auth: FirebaseAuth) {
                         navController.navigate("signup")
                     },
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.White
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurface)
                 ) {
                     Text("Sign Up", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
                 }

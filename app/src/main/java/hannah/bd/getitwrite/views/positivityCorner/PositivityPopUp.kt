@@ -28,7 +28,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.RequestCritique

@@ -26,13 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.ErrorText
-import hannah.bd.getitwrite.views.messages.SelectProposalView
-import hannah.bd.getitwrite.views.proposals.ProposalView
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore

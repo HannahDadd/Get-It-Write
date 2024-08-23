@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -19,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.Colours
 
 @Composable
 fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
@@ -69,7 +69,9 @@ fun TagCloud(tags: MutableList<String>, action: ((input: String) -> Boolean)?, p
 
 @Composable
 private fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?, isSelected: Boolean) {
-    var bgColour = remember { mutableStateOf( if(isSelected) Colours.Dark_Readable else Colours.Dark_Background) }
+    var primary = MaterialTheme.colorScheme.primary
+    var sec = MaterialTheme.colorScheme.secondary
+    var bgColour = remember { mutableStateOf( if(isSelected) primary else sec) }
     TextButton(modifier = Modifier
         .padding(4.dp)
         .background(
@@ -78,7 +80,7 @@ private fun SingleTag(tagString: String, action: ((input: String) -> Boolean)?, 
         ),
         onClick = {
             if (action != null) {
-                bgColour.value = if (action(tagString)) Colours.Dark_Readable else Colours.Dark_Background
+                bgColour.value = if (action(tagString)) primary else sec
             }
         }) {
         Text(text = tagString, color = Color.White)

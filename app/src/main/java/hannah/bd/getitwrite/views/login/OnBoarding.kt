@@ -16,11 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import hannah.bd.getitwrite.Colours
 
 @Composable
 fun ShowOpeningPage(navController: NavController) {
-    Column(modifier = Modifier.fillMaxSize().background(Colours.Dark_Background),
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Text(

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -29,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.Message
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestCritique
@@ -71,7 +71,7 @@ fun SendWorkView(user2Id: String, user: User, chatID: String, closeAction: () ->
         }
         TextButton(onClick = { showBottomSheet = true }) {
             Text(modifier = Modifier.align(Alignment.Bottom),
-                text = "Choose proposal", color = Colours.Dark_Readable, fontWeight = FontWeight.Bold)
+                text = "Choose proposal", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
         }
         proposal.value?.let {
             ProposalView(it) {
@@ -124,7 +124,9 @@ fun SendWorkView(user2Id: String, user: User, chatID: String, closeAction: () ->
                     errorString.value = "Choose proposal to request a critique for."
                 }
             },
-            colors = ButtonDefaults.buttonColors(containerColor = Colours.Dark_Readable, contentColor = Color.White)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text("Send critique", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.views.components.ErrorText
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Firebase
@@ -74,9 +74,8 @@ fun ReAuthView(logoutNavController: NavHostController, nextTask: PostReAuthTask)
                     })
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Colours.Dark_Readable,
-                contentColor = Color.White
-            )
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text("Re-authenticate", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }

@@ -36,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.RequestCritique
@@ -156,9 +155,8 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                         }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Colours.Dark_Readable,
-                    contentColor = Color.White
-                )
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary)
             ) {
                 Text("Submit Critique", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
             }
@@ -187,9 +185,8 @@ fun CritiqueSheet(pair: Triple<String, Int, String>, submit: (String, Int) -> Un
             modifier = Modifier.fillMaxWidth(),
             onClick = { submit(comment.value, pair.second) },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Colours.Dark_Readable,
-                contentColor = Color.White
-            )
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary)
         ) {
             Text("Add Comment", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }

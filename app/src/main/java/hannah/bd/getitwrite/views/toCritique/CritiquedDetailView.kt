@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -25,7 +26,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import hannah.bd.getitwrite.Colours
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.views.components.DetailHeader
 
@@ -55,7 +55,7 @@ fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
             }
             paragraphs.forEachIndexed { index, element ->
                 if (critique.comments.containsValue(index.toLong())) {
-                    Text(element, style = TextStyle(background = Colours.bold,
+                    Text(element, style = TextStyle(background = MaterialTheme.colorScheme.primary,
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.Normal,
                         fontSize = 16.sp,

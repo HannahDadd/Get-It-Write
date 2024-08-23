@@ -10,13 +10,3 @@ object GlobalVariables {
 
     val profileColours = mutableListOf(Color(0xFF02055A), Color(0xFF005900), Color(0xFF556B2F), Color(0xFF614A00), Color(0xFF767676), Color(0xFF253DA1), Color(0xFF808000), Color(0xFFB28900))
 }
-
-object Colours {
-    val Dark_Readable = Color(0xFF729B79)
-    val Killer_Critiquer = Color(0xFF638be0)
-    val Cosy_Corner = Color(0xFFcf7e5b)
-    val Dark_Background = Color(0xFF475B63)
-    val signOutGrey = Color(0xFF444444)
-    val bold = Color(0xFFBACDB0)
-    val paleBlue = Color(0xFFD7E5F0)
-}
