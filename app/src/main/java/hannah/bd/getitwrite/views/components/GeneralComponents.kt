@@ -40,13 +40,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.theme.AppTypography
+import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
 
 @Composable
 fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
@@ -111,6 +116,52 @@ fun SquareTileButton(
             style = AppTypography.labelSmall,
             color = textColour
         )
+    }
+}
+
+@Composable
+fun Promo(
+    title: String,
+    buttonText: String,
+    painter: Painter,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .height(250.dp)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painter,
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .padding(10.dp)
+                .clip(RoundedCornerShape(10.dp))
+        )
+        Column(Modifier.padding(16.dp)) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Text(
+                text = title,
+                color = Color.Black,
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ).padding(4.dp),
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            RectangleTileButtonNoDate(
+                title = buttonText,
+                backgroundColour = MaterialTheme.colorScheme.background,
+                textColour = MaterialTheme.colorScheme.onBackground,
+                padding = 8.dp,
+                onClick = onClick
+            )
+        }
     }
 }
 

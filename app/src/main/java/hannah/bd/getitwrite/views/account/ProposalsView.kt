@@ -47,24 +47,13 @@ fun ProposalsSection(navController: NavController, proposals: MutableState<List<
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item {
-                    SquareTileButton(
-                        modifier = Modifier.padding(start = 8.dp),
-                        title = "Add",
-                        wordCount = "",
-                        backgroundColour = MaterialTheme.colorScheme.background,
-                        textColour = MaterialTheme.colorScheme.onBackground,
-                        icon = Icons.Default.Add,
-                        size = 150.dp,
-                        onClick = onCreate
-                    )
-                }
                 itemsIndexed(it) {index, item ->
                     HomePageTileButton(
                         title = "${item.title}",
                         bubbleText = "${item.wordCount} words",
                         icon = Icons.Default.Edit,
-                        isFirstItemInCarousel = false,
+                        isFirstItemInCarousel = (index == 0),
+                        isLastItemInCarousel = (index == ( it.size - 1)),
                         onClick = {})
                 }
             }

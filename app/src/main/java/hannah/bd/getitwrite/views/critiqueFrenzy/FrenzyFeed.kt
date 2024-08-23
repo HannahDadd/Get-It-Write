@@ -46,7 +46,7 @@ import kotlinx.coroutines.tasks.await
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FrenzyFeed(navController: NavController, dbName: String, placeholder: String, user: User, requests: MutableState<List<RequestCritique>?>) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showBottomSheet by remember { mutableStateOf(false) }
     val newEntries = remember { mutableStateListOf<RequestCritique>() }
     val title = if (dbName == "frenzy") "No partners, no swaps, just feedback" else "Queries"

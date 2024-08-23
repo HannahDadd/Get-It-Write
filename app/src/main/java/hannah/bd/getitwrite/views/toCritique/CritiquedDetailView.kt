@@ -33,7 +33,7 @@ import hannah.bd.getitwrite.views.components.DetailHeader
 @Composable
 fun CritiquedDetailedView(critique: Critique, navigateUp: () -> Unit) {
     val paragraphs = critique.text.split("\n")
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
     val comments = critique.comments.map {(k,v)-> v to k}.toMap<Long, String>()
     Column {

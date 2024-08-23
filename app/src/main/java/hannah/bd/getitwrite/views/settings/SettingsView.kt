@@ -26,7 +26,7 @@ import hannah.bd.getitwrite.views.components.DetailHeader
 @Composable
 fun SettingsScreen(logoutNavController: NavHostController, navigateUp: () -> Unit) {
     var bottomSheetContent by remember { mutableStateOf(BottomSheetContent.none) }
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Column {
         DetailHeader(title = "Settings", navigateUp = navigateUp)
         if (bottomSheetContent != BottomSheetContent.none) {

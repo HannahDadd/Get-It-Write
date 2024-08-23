@@ -77,7 +77,7 @@ fun ShowMessages(
         }
     }
     var showBottomSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Column {
         DetailHeader(title = user2Name, navigateUp = navigateUp)
         if (showBottomSheet) {

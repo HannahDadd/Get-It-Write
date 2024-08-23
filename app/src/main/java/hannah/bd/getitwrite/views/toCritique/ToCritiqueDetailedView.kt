@@ -57,7 +57,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
     var errorString = remember { mutableStateOf<String?>(null) }
     val overallFeedback = remember { mutableStateOf("") }
     val paragraphs = toCritique.text.split("\n")
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var bottomSheetText by remember { mutableStateOf(Triple("", 1, "")) }
     var comments = remember { mutableStateOf(mutableStateMapOf<String, Long>()) }
     Column {

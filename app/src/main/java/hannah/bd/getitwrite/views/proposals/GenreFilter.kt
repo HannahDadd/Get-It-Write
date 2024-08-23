@@ -45,7 +45,7 @@ fun FindPartnersByGenre(navController: NavHostController) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TitleAndSubText(
-            "Search by genre",
+            "Filter by genre",
             "Find critique partners writing for the same genre as you.",
             MaterialTheme.colorScheme.onSurface
         )

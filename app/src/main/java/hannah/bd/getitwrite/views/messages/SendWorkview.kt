@@ -51,7 +51,7 @@ fun SendWorkView(user2Id: String, user: User, chatID: String, closeAction: () ->
     val title = remember { mutableStateOf("") }
     val text = remember { mutableStateOf("") }
     var proposal = remember { mutableStateOf<Proposal?>(null) }
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showBottomSheet by remember { mutableStateOf(false) }
     Column(modifier = Modifier
         .fillMaxHeight()

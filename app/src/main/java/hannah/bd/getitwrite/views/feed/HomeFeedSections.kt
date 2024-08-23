@@ -49,49 +49,6 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
-fun AIPromo() {
-    Box(
-        modifier = Modifier
-            .height(250.dp)
-            .fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.aibg),
-            contentDescription = "",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(10.dp)
-                .clip(RoundedCornerShape(10.dp))
-        )
-        Column(Modifier.padding(16.dp)) {
-            Spacer(modifier = Modifier.weight(1.0f))
-            Text(
-                text = "Get instant AI feedback on your writing.",
-                color = Color.Black,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(
-                        color = Color.White,
-                        shape = RoundedCornerShape(8.dp)
-                    ).padding(4.dp),
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
-            RectangleTileButtonNoDate(
-                title = "Give it a go",
-                backgroundColour = MaterialTheme.colorScheme.background,
-                textColour = MaterialTheme.colorScheme.onBackground,
-                padding = 8.dp,
-                onClick = {}
-            )
-        }
-    }
-}
-
-@Composable
 fun WorkToCritique(username: String, navController: NavController, toCritiques: MutableState<List<RequestCritique>?>) {
     Column(
         modifier = Modifier.padding(16.dp),

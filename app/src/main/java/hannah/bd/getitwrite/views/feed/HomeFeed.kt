@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -19,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.Question
@@ -27,6 +29,7 @@ import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.MainView
 import hannah.bd.getitwrite.views.account.getProposals
+import hannah.bd.getitwrite.views.components.Promo
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
 import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
@@ -277,7 +280,12 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             QuickQueryCritique(queries, navController)
         }
         item {
-            AIPromo()
+            Promo(
+                title = "Get instant AI feedback on your writing.",
+                buttonText = "Give it a go",
+                painter = painterResource(id = R.drawable.aibg),) {
+
+            }
         }
     }
 }

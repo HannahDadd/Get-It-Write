@@ -52,7 +52,7 @@ fun ReportAndBlockUser(userToBlock: String,
                        chatId: String?) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var showButtons = remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val shouldShowDialog = remember { mutableStateOf(false) }
     if (shouldShowDialog.value) {
         MyAlertDialog(shouldShowDialog = shouldShowDialog, user = user, blockUserId = userToBlock)

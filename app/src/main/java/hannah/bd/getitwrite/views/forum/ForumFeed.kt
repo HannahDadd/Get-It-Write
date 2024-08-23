@@ -52,7 +52,7 @@ import kotlinx.coroutines.tasks.await
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForumFeed(navController: NavController, user: User, questionList: MutableState<List<Question>?>) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var showBottomSheet by remember { mutableStateOf(false) }
     var addedQuestions = remember { mutableStateListOf<Question>() }
     Column {

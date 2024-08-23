@@ -16,12 +16,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
+import hannah.bd.getitwrite.views.components.Promo
 import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
 import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
 import hannah.bd.getitwrite.views.positivityCorner.MakePositiveCorner
@@ -82,6 +85,14 @@ fun AccountView(user: User, navController: NavHostController,
                     icon = Icons.Default.Send,
                     onClick = { navController.navigate("messages") }
                 )
+            }
+        }
+        item {
+            Promo(
+                title = "Summarise your project so other critique partners can find it.",
+                buttonText = "Add your novel idea to the mix",
+                painter = painterResource(id = R.drawable.bookpromo),) {
+                bottomSheet = AccountSheetContent.makeNewProposals
             }
         }
         item {

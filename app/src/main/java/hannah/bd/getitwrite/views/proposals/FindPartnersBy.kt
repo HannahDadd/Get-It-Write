@@ -46,7 +46,7 @@ fun FindPartnersByAudience(navController: NavHostController) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TitleAndSubText(
-            "Search by target audience",
+            "Filter by target audience",
             "Find critique partners writing for the same target audience as you.",
             MaterialTheme.colorScheme.onSurface
         )
