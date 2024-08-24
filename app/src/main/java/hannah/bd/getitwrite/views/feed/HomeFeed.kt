@@ -28,6 +28,7 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.MainView
+import hannah.bd.getitwrite.views.account.StatsView
 import hannah.bd.getitwrite.views.account.getProposals
 import hannah.bd.getitwrite.views.components.Promo
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
@@ -96,7 +97,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             onSuccess = { positives.value = it },
             onError = { exception -> }
         )
-        getCritiqued(user, "queries",
+        getCritiqued(user, "critiquedQuery",
             onSuccess = { queriesToCritique.value = it },
             onError = { exception -> }
         )
@@ -232,6 +233,9 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
                     CritiquedDetailedView(it, user, { navController.navigateUp() })
                 }
             }
+        }
+        composable("stats") {
+            StatsView(user = user, navController = navController)
         }
         composable("search") {
             SearchView(user = user, navController = navController)

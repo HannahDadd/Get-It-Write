@@ -28,6 +28,7 @@ import hannah.bd.getitwrite.views.components.SelectTagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.views.components.CheckInput
 import java.util.UUID
 
 @Composable
@@ -85,7 +86,14 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
                 if (parsedInt != null) {
                     if (title.value == "") {
                         errorString.value = "Your project needs a title!"
-                    } else {
+                    } else if (genreTags.value.isEmpty()) {
+                        errorString.value = "You must choose at least one genre."
+                    } else if (CheckInput.verifyCanBeEmpty(title.value) ||
+                        CheckInput.verifyCanBeEmpty(wordCount.value) ||
+                        CheckInput.verifyCanBeEmpty(blurb.value) ||
+                        CheckInput.verifyCanBeEmpty(title.value) ||
+                        CheckInput.verifyCanBeEmpty(authorNotes.value)) {
+
                         val id = UUID.randomUUID().toString()
                         val p = Proposal(id = id, title = title.value, typeOfProject = projectType.value, blurb = blurb.value, triggerWarnings = triggerWarnings.value, genres = genreTags.value, timestamp = Timestamp.now(), authorNotes = authorNotes.value, wordCount = parsedInt, writerId = user.id, writerName = user.displayName)
                         Firebase.firestore.collection("proposals")
@@ -97,6 +105,8 @@ fun MakeProposalView(user: User, onSuccess: () -> Unit) {
                             .addOnFailureListener { e ->
                                 errorString.value = e.toString()
                             }
+                    } else {
+                        errorString.value = "Some of your values contain profanities. This is not allowed."
                     }
                 } else {
                     errorString.value = "Word count needs to be a number. Characters like 'k' or ',' are not allowed."

@@ -75,6 +75,9 @@ fun AccountView(user: User, navController: NavHostController,
         }
     }
     LazyColumn {
+        item { 
+            StatsSection(user = user)
+        }
         item {
             Column(modifier = Modifier.padding(16.dp)) {
                 RectangleTileButtonNoDate(
@@ -124,6 +127,14 @@ fun AccountView(user: User, navController: NavHostController,
                     bottomSheet = AccountSheetContent.makeNewQueryFrenzy
                 })
         }
+//        item {
+//            Promo(
+//                title = "See how often you critique.",
+//                buttonText = "Your stats.",
+//                painter = painterResource(id = R.drawable.statsbg),) {
+//                navController.navigate("stats")
+//            }
+//        }
     }
 }
 

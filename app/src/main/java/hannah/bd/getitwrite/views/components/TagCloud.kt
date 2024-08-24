@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
     var text by remember { mutableStateOf("") }
     val tagsInCloud by remember { mutableStateOf(mutableListOf<String>()) }
+    var errorString = remember { mutableStateOf<String?>(null) }
     Column(modifier = Modifier.padding(vertical = 10.dp)) {
         Text(question, fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 4.dp))
         Text("Tap on tags to remove them", fontWeight = FontWeight.Light, modifier = Modifier.padding(vertical = 4.dp))
@@ -34,11 +35,16 @@ fun CreateTagCloud(question: String, addAction: (input: String) -> Boolean) {
                 onValueChange = { text = it }
             )
             RoundedButton(modifier = Modifier, onClick = {
+                if (CheckInput.isStringGood(text, 5)) {
                 tagsInCloud.add(text)
                 addAction(text)
                 text = ""
+                } else {
+                    errorString.value = CheckInput.errorStringText
+                }
             })
         }
+        ErrorText(error = errorString)
         TagCloud(tags = tagsInCloud, action = {
                 tagsInCloud.remove(it)
         })

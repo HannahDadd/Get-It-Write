@@ -26,6 +26,7 @@ import hannah.bd.getitwrite.views.components.QuestionSection
 import hannah.bd.getitwrite.views.components.SelectTagCloud
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.views.components.CheckInput
 
 @Composable
 fun EditProfileView(user: User, navigateUp: () -> Unit) {
@@ -60,24 +61,31 @@ fun EditProfileView(user: User, navigateUp: () -> Unit) {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    Firebase.firestore.collection("users").document(user.id)
-                        .set(
-                            User(
-                                id = user.id,
-                                displayName = user.displayName,
-                                bio = bio.value,
-                                writing = writing.value,
-                                critiqueStyle = critiqueStyle.value,
-                                authors = authorTags.value,
-                                writingGenres = genreTags.value,
-                                colour = user.colour,
-                                blockedUserIds = user.blockedUserIds
+                    if (CheckInput.verifyCanBeEmpty(bio.value) ||
+                        CheckInput.verifyCanBeEmpty(writing.value) ||
+                        CheckInput.verifyCanBeEmpty(critiqueStyle.value)) {
+                        Firebase.firestore.collection("users").document(user.id)
+                            .set(
+                                User(
+                                    id = user.id,
+                                    displayName = user.displayName,
+                                    bio = bio.value,
+                                    writing = writing.value,
+                                    critiqueStyle = critiqueStyle.value,
+                                    authors = authorTags.value,
+                                    writingGenres = genreTags.value,
+                                    colour = user.colour,
+                                    blockedUserIds = user.blockedUserIds
+                                )
                             )
-                        )
-                        .addOnSuccessListener {
-                            errorString.value = "Updated!"
-                        }
-                        .addOnFailureListener { errorString.value = "Network error" }
+                            .addOnSuccessListener {
+                                errorString.value = "Updated!"
+                            }
+                            .addOnFailureListener { errorString.value = "Network error" }
+
+                    } else {
+                        errorString.value = "One input contains profanities."
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,

@@ -53,6 +53,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.Question
+import hannah.bd.getitwrite.views.components.CheckInput
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,7 +133,7 @@ fun ShowMessages(
                     )
                     Button(
                         onClick = {
-                            if (message.value != "") {
+                            if (CheckInput.isStringGood(message.value, 150)) {
                                 val id = UUID.randomUUID().toString()
                                 val m = Message(content = message.value, created = Timestamp.now(), senderId = user.id, id = id)
                                 Firebase.firestore.collection("chats").document(chatId)
@@ -143,6 +144,8 @@ fun ShowMessages(
                                     .addOnFailureListener {
                                         errorString.value = it.message.toString()
                                     }
+                            } else {
+                                errorString.value = CheckInput.errorStringText
                             }
                         },
                         shape = CircleShape,

@@ -47,10 +47,13 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.views.components.CheckInput
 import java.util.UUID
+import java.util.concurrent.TimeUnit
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: RequestCritique, navController: NavController) {
+fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: RequestCritique,
+                           navController: NavController) {
 
     var errorString = remember { mutableStateOf<String?>(null) }
     val overallFeedback = remember { mutableStateOf("") }
@@ -137,21 +140,54 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    val id = UUID.randomUUID().toString()
-                    val collectionName = if(toCritique.title == "Critique Frenzy") "critiquedFrenzy" else "critiques"
-                    val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value, critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle, projectTitle = toCritique.title, critiquerName = user.displayName, critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
-                    Firebase.firestore.collection("users").document(toCritique.writerId)
-                        .collection(collectionName).document(id).set(critique)
-                        .addOnSuccessListener {
-                            if (!isCritiqueFrenzy) {
-                                Firebase.firestore.collection("users").document(user.id)
-                                    .collection("requestCritiques").document(toCritique.id).delete()
+                    if (CheckInput.verifyCanBeEmpty(overallFeedback.value)) {
+                        val id = UUID.randomUUID().toString()
+                        val collectionName = if(toCritique.title == "Critique Frenzy") "critiquedFrenzy" else if(toCritique.title == "Query Frenzy") "critiquedQuery" else "critiques"
+                        val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value,
+                            critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle,
+                            projectTitle = toCritique.title, critiquerName = user.displayName,
+                            critiquerProfileColour = user.colour, timestamp = Timestamp.now(), rated = false)
+                        Firebase.firestore.collection("users").document(toCritique.writerId)
+                            .collection(collectionName).document(id).set(critique)
+                            .addOnSuccessListener {
+                                if (!isCritiqueFrenzy) {
+                                    Firebase.firestore.collection("users").document(user.id)
+                                        .collection("requestCritiques").document(toCritique.id).delete()
+                                }
+                                user.lastCritique = Timestamp.now()
+                                var lastFive = mutableListOf(Timestamp.now())
+                                var freq = 0.0
+                                user.lastFiveCritiques?.let {
+                                    it.add(0, Timestamp.now())
+                                    if (it.size > 5) {
+                                        lastFive = it.subList(0, 5)
+                                    } else {
+                                        lastFive = it
+                                    }
+
+                                    val timesInMillis = it.map { it.toDate().time }
+                                    val differencesInSeconds = timesInMillis.zipWithNext { first, second ->
+                                        TimeUnit.MILLISECONDS.toSeconds(second - first)
+                                    }
+                                    val averageSeconds = if (differencesInSeconds.isNotEmpty()) {
+                                        differencesInSeconds.average()
+                                    } else {
+                                        0.0
+                                    }
+                                    freq = averageSeconds.absoluteValue
+                                }
+                                user.lastFiveCritiques = lastFive
+                                user.frequencey = freq.toLong()
+
+                                Firebase.firestore.collection("users").document(user.id).set(user)
+                                navController.navigateUp()
                             }
-                            navController.navigateUp()
-                        }
-                        .addOnFailureListener {
-                            errorString.value = it.message.toString()
-                        }
+                            .addOnFailureListener {
+                                errorString.value = it.message.toString()
+                            }
+                    } else {
+                        errorString.value = "Overall feedback contains profanities. This is not allowed."
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,

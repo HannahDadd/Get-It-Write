@@ -34,6 +34,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.R
+import hannah.bd.getitwrite.views.components.CheckInput
 
 @Composable
 fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
@@ -75,11 +76,22 @@ fun ShowCreateAccountView(navController: NavController, auth: FirebaseAuth) {
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value, bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value, authors = authorTags, writingGenres = genreTags, colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = ArrayList())
-                Firebase.firestore.collection("users").document(auth.currentUser?.uid ?: "ID")
-                    .set(user)
-                    .addOnSuccessListener { navController.navigate("feed") }
-                    .addOnFailureListener { errorString.value = "Network error" }
+                if (CheckInput.verifyCanBeEmpty(displayName.value) ||
+                    CheckInput.verifyCanBeEmpty(bio.value) ||
+                    CheckInput.verifyCanBeEmpty(writing.value) ||
+                    CheckInput.verifyCanBeEmpty(critiqueStyle.value)) {
+                    val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName.value,
+                        bio = bio.value, writing = writing.value, critiqueStyle = critiqueStyle.value,
+                        authors = authorTags, writingGenres = genreTags,
+                        colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = ArrayList())
+                    Firebase.firestore.collection("users").document(auth.currentUser?.uid ?: "ID")
+                        .set(user)
+                        .addOnSuccessListener { navController.navigate("feed") }
+                        .addOnFailureListener { errorString.value = "Network error" }
+
+                } else {
+                    errorString.value = "The input contains profanities."
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
