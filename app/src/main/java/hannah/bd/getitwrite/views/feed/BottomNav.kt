@@ -36,6 +36,7 @@ import hannah.bd.getitwrite.views.proposals.SearchView
 
 @Composable
 fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
+                  recs: MutableState<List<User>?>,
                   toCritiques: MutableState<List<RequestCritique>?>,
                   hostNavController: NavHostController,
                   frenzies: MutableState<List<RequestCritique>?>,
@@ -90,7 +91,7 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
                 .padding(innerPadding)
                 .fillMaxSize()) {
             composable(Screen.Home.route) {
-                HomeFeed(user = user, questions = questions, toCritiques = toCritiques, hostNavController,
+                HomeFeed(user = user, recs = recs, questions = questions, toCritiques = toCritiques, hostNavController,
                     frenzies, queries)
             }
             composable(Screen.FindPartners.route) { SearchView(user, hostNavController) }

@@ -22,49 +22,70 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.Proposal
+import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.SquareTileButton
 import hannah.bd.getitwrite.views.components.TitleAndSubText
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RecomendedCritiquers() {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        TitleAndSubText(
-            "Recommended critique partners",
-            "Specially picked out for you.",
-            MaterialTheme.colorScheme.onSurface
-        )
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+fun RecomendedCritiquers(recs: MutableState<List<User>?>) {
+    recs.value?.let {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            RecommendedPartnerCard(
-                title = "Hannah",
-                reason = "Critiques weekly.",
-                onClick = {}
+            TitleAndSubText(
+                "Recommended critique partners",
+                "Specially picked out for you.",
+                MaterialTheme.colorScheme.onSurface
             )
-            RecommendedPartnerCard(
-                title = "Hannah",
-                reason = "Critques Sci Fi.",
-                onClick = {}
-            )
-            RecommendedPartnerCard(
-                title = "Hannah",
-                reason = "Writes Sci Fi.",
-                onClick = {}
-            )
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                it.forEach {user ->
+                    user.frequencey?.let {timeInSeconds ->
+                        val days = TimeUnit.SECONDS.toDays(timeInSeconds)
+                        val hours = TimeUnit.SECONDS.toHours(timeInSeconds) % 24
+                        val minutes = TimeUnit.SECONDS.toMinutes(timeInSeconds) % 60
+                        val seconds = timeInSeconds % 60
+
+                        val humanReadableTime = buildString {
+                            if (days > 0) append("$days days ")
+                            if (hours > 0) append("$hours hours ")
+                            if (minutes > 0) append("$minutes minutes ")
+                            if (seconds > 0 || isEmpty()) append("$seconds seconds")
+                        }.trim()
+                        RecommendedPartnerCard(
+                            title = user.displayName,
+                            reason = "Critiques every $humanReadableTime",
+                            onClick = {}
+                        )
+                    } ?: run {
+                        RecommendedPartnerCard(
+                            title = user.displayName,
+                            reason = "",
+                            onClick = {}
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -102,4 +123,35 @@ fun RecommendedPartnerCard(
             )
         }
     }
+}
+
+fun getRecs(user: User,
+                 onSuccess: (List<User>) -> Unit,
+                 onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("users")
+        //.orderBy("lastCritique", Query.Direction.ASCENDING)
+        .limit(10).get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    User(doc.id, doc.data)
+                }
+                user.frequencey?.let {freq ->
+                    val recs = items.filter { it.frequencey != null }
+                        .sortedBy { kotlin.math.abs(it.frequencey!! - freq) }
+                    if (recs.size < 4) {
+                        onSuccess(items.subList(0, 3))
+                    } else {
+                        onSuccess(recs.subList(0, 3))
+                    }
+                } ?: {
+                    onSuccess(items.subList(0, 3))
+                }
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
 }

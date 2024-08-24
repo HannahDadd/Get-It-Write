@@ -71,8 +71,13 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
     var positives = remember { mutableStateOf<List<RequestPositivity>?>(null) }
     var queriesToCritique = remember { mutableStateOf<List<Critique>?>(null) }
     var proposals = remember { mutableStateOf<List<Proposal>?>(null) }
+    var recs = remember { mutableStateOf<List<User>?>(null) }
 
     LaunchedEffect(Unit) {
+        getRecs(user,
+            onSuccess = { recs.value = it },
+            onError = { exception -> }
+        )
         getCritiques("frenzy",
             onSuccess = { frenzies.value = it },
             onError = { exception -> }
@@ -113,7 +118,8 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
 
     NavHost(navController = navController, startDestination = "bottomNav") {
         composable("bottomNav") {
-            MainView(user = user, logoutNavController, hostnavController, questions = questions, toCritiques = toCritiques,
+            MainView(user = user, logoutNavController, hostnavController, recs = recs,
+                questions = questions, toCritiques = toCritiques,
                 navController, frenzies, queries, critiqued = critiqued,
                 queryCritiques = queriesToCritique, positiveCritiques = positives,
                 proposals = proposals, frenzy = frenzy)
@@ -266,7 +272,7 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
+fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableState<List<Question>?>, toCritiques: MutableState<List<RequestCritique>?>,
              navController: NavHostController, frenzies: MutableState<List<RequestCritique>?>,
              queries: MutableState<List<RequestCritique>?>
 ) {
@@ -296,7 +302,7 @@ fun HomeFeed(user: User, questions: MutableState<List<Question>?>, toCritiques: 
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            RecomendedCritiquers()
+            RecomendedCritiquers(recs)
         }
         item {
             FreeForAll(frenzies, navController = navController)

@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainView(user: User, logoutNavController: NavHostController,
              navController: NavController,
+             recs: MutableState<List<User>?>,
              questions: MutableState<List<Question>?>,
              toCritiques: MutableState<List<RequestCritique>?>,
              hostNavController: NavHostController,
@@ -134,7 +135,7 @@ fun MainView(user: User, logoutNavController: NavHostController,
             },
         ) { contentPadding ->
             Box(modifier = Modifier.padding(contentPadding)) {
-                ShowBottomNav(user = user, questions = questions, toCritiques = toCritiques,
+                ShowBottomNav(user = user, questions = questions,recs, toCritiques = toCritiques,
                     hostNavController, frenzies, queries,
                     critiqued = critiqued, queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,
                     proposals= proposals, frenzy = frenzy)

@@ -59,36 +59,42 @@ fun ProposalDetails(
     Scaffold(
         bottomBar = {
             if (!isOwn) {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    onClick = {
-                        Firebase.firestore.collection("chats")
-                            .whereArrayContains("users", arrayOf(user.id, proposal.writerId))
-                            .get().addOnSuccessListener {
-                                if (it.isEmpty) {
-                                    val id = UUID.randomUUID().toString()
-                                    Firebase.firestore.collection("chats").document(id)
-                                        .set(mapOf("users" to listOf(user.id, proposal.writerId)))
-                                        .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
-                                        .addOnFailureListener { }
-                                } else {
-                                    val doc = it.documents.get(0)
-                                    navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
+                if (proposal.writerId == user.id) {
+                    Column(Modifier.padding(20.dp)) {
+                        Text(text = "This is your WIP!", style = MaterialTheme.typography.titleMedium)
+                    }
+                } else {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        onClick = {
+                            Firebase.firestore.collection("chats")
+                                .whereArrayContainsAny("users", listOf(user.id, proposal.writerId))
+                                .get().addOnSuccessListener {
+                                    if (it.isEmpty) {
+                                        val id = UUID.randomUUID().toString()
+                                        Firebase.firestore.collection("chats").document(id)
+                                            .set(mapOf("users" to listOf(user.id, proposal.writerId)))
+                                            .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
+                                            .addOnFailureListener { }
+                                    } else {
+                                        val doc = it.documents.get(0)
+                                        navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
+                                    }
                                 }
-                            }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                ) {
-                    Text(
-                        "Send Author Message",
-                        Modifier.padding(10.dp),
-                        fontWeight = FontWeight.Bold
-                    )
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        Text(
+                            "Send Author Message",
+                            Modifier.padding(10.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
@@ -147,6 +153,10 @@ fun ProposalDetails(
             }
         }
     }
+}
+
+fun sendAuthorMessage() {
+
 }
 
 fun getCritiquedForProposal(user: User, proposalTitle: String,
