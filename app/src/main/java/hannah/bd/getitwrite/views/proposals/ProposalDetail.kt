@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,8 +32,12 @@ import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ReportAndBlockUser
 import hannah.bd.getitwrite.views.components.TagCloud
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.theme.AppTypography
+import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
+import hannah.bd.getitwrite.views.toCritique.CritiqueView
 import java.util.UUID
 
 @Composable
@@ -41,11 +47,22 @@ fun ProposalDetails(
     isOwn: Boolean = false,
     navController: NavController
 ) {
+    var critiqued = remember { mutableStateOf<List<Critique>?>(null) }
+    if(isOwn) {
+        LaunchedEffect(Unit) {
+            getCritiquedForProposal(user, proposalTitle = proposal.title,
+                onSuccess = { critiqued.value = it },
+                onError = { exception -> }
+            )
+        }
+    }
     Scaffold(
         bottomBar = {
             if (!isOwn) {
                 Button(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     onClick = {
                         Firebase.firestore.collection("chats")
                             .whereArrayContains("users", arrayOf(user.id, proposal.writerId))
@@ -116,8 +133,40 @@ fun ProposalDetails(
                         questionId = null,
                         chatId = null
                     )
+                } else {
+                    Column {
+                        critiqued.value?.let {
+                            it.forEach {
+                                CritiqueView(user = user, critique = it) {
+                                    navController.navigate("critiquedId/$it")
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+}
+
+fun getCritiquedForProposal(user: User, proposalTitle: String,
+                            onSuccess: (List<Critique>) -> Unit,
+                            onError: (Exception) -> Unit) {
+    Firebase.firestore.collection("users/${user.id}/critiques")
+        .whereEqualTo("title", proposalTitle)
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+        .get()
+        .addOnSuccessListener { documents ->
+            if (documents != null) {
+                val items = documents.map { doc ->
+                    Critique(doc.id, doc.data)
+                }
+                onSuccess(items)
+            } else {
+                onError(Exception("Data not found"))
+            }
+        }
+        .addOnFailureListener { exception ->
+            onError(exception)
+        }
 }

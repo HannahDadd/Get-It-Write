@@ -205,6 +205,16 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             }
         }
         composable(
+            "critiquedId/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.StringType })
+        ) { backStackEntry ->
+            requireNotNull(backStackEntry.arguments).getString("id")?.let {id ->
+                critiqued.value?.filter { it.id == id }?.first()?.let {
+                    CritiquedDetailedView(it, user, { navController.navigateUp() })
+                }
+            }
+        }
+        composable(
             "critiquedFrenzy/{index}",
             arguments = listOf(navArgument("index") { type = NavType.StringType })
         ) { backStackEntry ->
