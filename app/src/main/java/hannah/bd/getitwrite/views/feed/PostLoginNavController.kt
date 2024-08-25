@@ -67,7 +67,7 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
         composable("profile") {
             user.value?.let {
                 ProfileView(navController = navController, ownProfile = true,
-                    user = it, navigateUp = actions.navigateUp)
+                    loggedInUser = it, user = it, navigateUp = actions.navigateUp)
             }
         }
         composable("editProfile") {

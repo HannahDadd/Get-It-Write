@@ -142,21 +142,29 @@ fun ProposalDetails(
     }
 }
 
-fun sendAuthorMessage(user: User, secondUserid: String, secondUserName: String, navController: NavController) {
-    Firebase.firestore.collection("chats")
-        .whereArrayContainsAny("users", listOf(user.id, secondUserid))
-        .get().addOnSuccessListener {
-            if (it.isEmpty) {
-                val id = UUID.randomUUID().toString()
-                Firebase.firestore.collection("chats").document(id)
-                    .set(mapOf("users" to listOf(user.id, secondUserid)))
-                    .addOnSuccessListener { navController.navigate("chatDetails/${id}/${secondUserid}/${secondUserName}") }
-                    .addOnFailureListener { }
-            } else {
-                val doc = it.documents.get(0)
-                navController.navigate("chatDetails/${doc.id}${secondUserName}")
+fun sendAuthorMessage(user: User, secondUserid: String, secondUserName: String, navController: NavController?) {
+    if (user.id != secondUserid) {
+        Firebase.firestore.collection("chats")
+            .whereArrayContainsAny("users", listOf(user.id, secondUserid))
+            .get().addOnSuccessListener {
+                if (it.isEmpty) {
+                    val id = UUID.randomUUID().toString()
+                    Firebase.firestore.collection("chats").document(id)
+                        .set(mapOf("users" to listOf(user.id, secondUserid)))
+                        .addOnSuccessListener {
+                            navController?.let {
+                                it.navigate("chatDetails/${id}/${secondUserid}/${secondUserName}")
+                            }
+                        }
+                        .addOnFailureListener { }
+                } else {
+                    val doc = it.documents.get(0)
+                    navController?.let {
+                        it.navigate("chatDetails/${doc.id}${secondUserName}")
+                    }
+                }
             }
-        }
+    }
 }
 
 fun getCritiquedForProposal(user: User, proposalTitle: String,

@@ -30,6 +30,7 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.MainView
 import hannah.bd.getitwrite.views.account.StatsView
 import hannah.bd.getitwrite.views.account.getProposals
+import hannah.bd.getitwrite.views.components.ProfileImage
 import hannah.bd.getitwrite.views.components.Promo
 import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
@@ -53,6 +54,7 @@ import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.messages.ShowMessages
 import hannah.bd.getitwrite.views.positivityCorner.PositivityCritique
+import hannah.bd.getitwrite.views.profile.ProfileView
 import hannah.bd.getitwrite.views.proposals.ProposalDetails
 import hannah.bd.getitwrite.views.proposals.ProposalView
 import hannah.bd.getitwrite.views.proposals.SearchView
@@ -303,6 +305,7 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
 ) {
     var bottomSheet by remember { mutableStateOf(HomeSheetContent.none) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var userInPopUp: User? = null
     if (bottomSheet != HomeSheetContent.none) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -319,6 +322,14 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
                         bottomSheet = HomeSheetContent.none
                     }
                 }
+                HomeSheetContent.recommendedProfile -> {
+                    userInPopUp?.let {
+                        ProfileView(navController = navController, ownProfile = false,
+                            loggedInUser = user, user = it) {
+
+                        }
+                    }
+                }
             }
         }
     }
@@ -327,7 +338,7 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            RecomendedCritiquers(user, recs, navController)
+            RecommendedCritiquers(user, recs)
         }
         item {
             FreeForAll(frenzies, navController = navController)
@@ -354,5 +365,6 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
 
 enum class HomeSheetContent {
     none,
-    positiveReview
+    positiveReview,
+    recommendedProfile
 }

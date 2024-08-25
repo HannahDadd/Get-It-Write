@@ -143,5 +143,5 @@ enum class AccountSheetContent {
     makeNewPositive,
     makeNewCritiqueFrenzy,
     makeNewQueryFrenzy,
-    makeNewProposals,
+    makeNewProposals
 }

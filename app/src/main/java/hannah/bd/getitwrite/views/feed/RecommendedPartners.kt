@@ -18,11 +18,18 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -39,14 +46,28 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.SquareTileButton
 import hannah.bd.getitwrite.views.components.TitleAndSubText
+import hannah.bd.getitwrite.views.positivityCorner.PositivityPopUp
+import hannah.bd.getitwrite.views.profile.ProfilePopUp
+import hannah.bd.getitwrite.views.profile.ProfileView
 import hannah.bd.getitwrite.views.proposals.sendAuthorMessage
 import java.util.concurrent.TimeUnit
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RecomendedCritiquers(user: User, recs: MutableState<List<User>?>, navController: NavController) {
+fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>) {
+    var bottomSheet by remember { mutableStateOf<User?>(null) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    bottomSheet?.let {
+        ModalBottomSheet(
+            onDismissRequest = { bottomSheet = null },
+            sheetState = sheetState
+        ) {
+            ProfilePopUp(user = it, user)
+        }
+    }
     recs.value?.let {
         Column(
+            Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             TitleAndSubText(
@@ -61,7 +82,7 @@ fun RecomendedCritiquers(user: User, recs: MutableState<List<User>?>, navControl
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                it.forEach {userRec ->
+                it.forEach { userRec ->
                     userRec.frequencey?.let {timeInSeconds ->
                         val days = TimeUnit.SECONDS.toDays(timeInSeconds)
                         val hours = TimeUnit.SECONDS.toHours(timeInSeconds) % 24
@@ -77,17 +98,13 @@ fun RecomendedCritiquers(user: User, recs: MutableState<List<User>?>, navControl
                         RecommendedPartnerCard(
                             title = userRec.displayName,
                             reason = "Critiques every $humanReadableTime",
-                            onClick = {
-                                sendAuthorMessage(user, userRec.id, userRec.displayName, navController)
-                            }
+                            onClick = { bottomSheet = userRec }
                         )
                     } ?: run {
                         RecommendedPartnerCard(
                             title = userRec.displayName,
                             reason = "",
-                            onClick = {
-                                sendAuthorMessage(user, userRec.id, userRec.displayName, navController)
-                            }
+                            onClick = { bottomSheet = userRec }
                         )
                     }
                 }
@@ -109,8 +126,9 @@ fun RecommendedPartnerCard(
             .clickable(onClick = onClick)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
                 .padding(8.dp)) {
             Icon(
                 Icons.Default.Person,
