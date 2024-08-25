@@ -157,6 +157,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                                 user.lastCritique = Timestamp.now()
                                 var lastFive = mutableListOf(Timestamp.now())
                                 var freq = 0.0
+                                var stars = 0.0
                                 user.lastFiveCritiques?.let {
                                     it.add(0, Timestamp.now())
                                     if (it.size > 5) {
@@ -176,8 +177,14 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                                     }
                                     freq = averageSeconds.absoluteValue
                                 }
+                                user.stars?.let {
+                                    stars = it + 1.0
+                                } ?: {
+                                    stars = stars + 1.0
+                                }
                                 user.lastFiveCritiques = lastFive
                                 user.frequencey = freq.toLong()
+                                user.stars = stars.toLong()
 
                                 Firebase.firestore.collection("users").document(user.id).set(user)
                                 navController.navigateUp()

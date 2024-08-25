@@ -1,6 +1,9 @@
 package hannah.bd.getitwrite.views
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +15,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,9 +33,11 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -115,7 +121,7 @@ fun MainView(user: User, logoutNavController: NavHostController,
                             contentScale = ContentScale.FillWidth
                         )
                     },
-                    actions = {
+                    navigationIcon = {
                         IconButton(onClick = {
                             scope.launch {
                                 drawerState.apply {
@@ -130,11 +136,36 @@ fun MainView(user: User, logoutNavController: NavHostController,
                             )
                         }
                     },
+                    actions = {
+                        val context = LocalContext.current
+                        Row(modifier = Modifier
+                            .clickable {
+                                Toast.makeText(context,
+                                    "Collect stars by critiquing other writers' work.",
+                                    Toast.LENGTH_SHORT).show() },
+                            horizontalArrangement = Arrangement.spacedBy(5.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                            ) {
+                            user.stars?.let {
+                                Text(text = it.toString(),
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+                            } ?: run {
+                                Text(text = "0",
+                                    color = MaterialTheme.colorScheme.onPrimary)
+                            }
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                contentDescription = "Localized description"
+                            )
+                        }
+                    },
                     scrollBehavior = scrollBehavior,
                 )
             },
         ) { contentPadding ->
-            Box(modifier = Modifier.padding(contentPadding)) {
+            Column(modifier = Modifier.padding(contentPadding)) {
                 ShowBottomNav(user = user, questions = questions,recs, toCritiques = toCritiques,
                     hostNavController, frenzies, queries,
                     critiqued = critiqued, queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,
