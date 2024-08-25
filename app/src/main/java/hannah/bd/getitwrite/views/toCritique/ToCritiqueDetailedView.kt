@@ -177,14 +177,8 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                                     }
                                     freq = averageSeconds.absoluteValue
                                 }
-                                user.stars?.let {
-                                    stars = it + 1.0
-                                } ?: {
-                                    stars = stars + 1.0
-                                }
                                 user.lastFiveCritiques = lastFive
                                 user.frequencey = freq.toLong()
-                                user.stars = stars.toLong()
 
                                 Firebase.firestore.collection("users").document(user.id).set(user)
                                 navController.navigateUp()

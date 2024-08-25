@@ -136,31 +136,6 @@ fun MainView(user: User, logoutNavController: NavHostController,
                             )
                         }
                     },
-                    actions = {
-                        val context = LocalContext.current
-                        Row(modifier = Modifier
-                            .clickable {
-                                Toast.makeText(context,
-                                    "Collect stars by critiquing other writers' work.",
-                                    Toast.LENGTH_SHORT).show() },
-                            horizontalArrangement = Arrangement.spacedBy(5.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                            ) {
-                            user.stars?.let {
-                                Text(text = it.toString(),
-                                    color = MaterialTheme.colorScheme.onPrimary
-                                )
-                            } ?: run {
-                                Text(text = "0",
-                                    color = MaterialTheme.colorScheme.onPrimary)
-                            }
-                            Icon(
-                                imageVector = Icons.Filled.Star,
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                                contentDescription = "Localized description"
-                            )
-                        }
-                    },
                     scrollBehavior = scrollBehavior,
                 )
             },
