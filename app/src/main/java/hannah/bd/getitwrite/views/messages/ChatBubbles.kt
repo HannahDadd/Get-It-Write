@@ -55,17 +55,17 @@ fun SingleOwnMessage(text: String, timestamp: Timestamp) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(4.dp, 4.dp, 0.dp, 4.dp)
                     )
                     .padding(10.dp)
             ) {
-                Text(text)
+                Text(text, color = MaterialTheme.colorScheme.onSecondary)
             }
             Column(
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.secondary,
                         shape = OwnTriangleEdgeShape(30)
                     )
                     .width(8.dp)
@@ -98,7 +98,7 @@ fun SingleOtherMessage(user: User, message: Message, chatId: String) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         shape = OtherTriangleEdgeShape(30)
                     )
                     .width(8.dp)
@@ -107,12 +107,12 @@ fun SingleOtherMessage(user: User, message: Message, chatId: String) {
             Column(
                 modifier = Modifier
                     .background(
-                        color = MaterialTheme.colorScheme.secondary,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         shape = RoundedCornerShape(0.dp, 4.dp, 4.dp, 4.dp)
                     )
                     .padding(10.dp)
             ) {
-                Text(message.content)
+                Text(message.content, color = MaterialTheme.colorScheme.onPrimaryContainer)
             }
             Spacer(modifier = Modifier.weight(1.0f))
         }

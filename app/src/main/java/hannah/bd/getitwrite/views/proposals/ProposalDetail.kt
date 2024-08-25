@@ -69,20 +69,7 @@ fun ProposalDetails(
                             .fillMaxWidth()
                             .padding(16.dp),
                         onClick = {
-                            Firebase.firestore.collection("chats")
-                                .whereArrayContainsAny("users", listOf(user.id, proposal.writerId))
-                                .get().addOnSuccessListener {
-                                    if (it.isEmpty) {
-                                        val id = UUID.randomUUID().toString()
-                                        Firebase.firestore.collection("chats").document(id)
-                                            .set(mapOf("users" to listOf(user.id, proposal.writerId)))
-                                            .addOnSuccessListener { navController.navigate("chatDetails/${id}${proposal.writerName}") }
-                                            .addOnFailureListener { }
-                                    } else {
-                                        val doc = it.documents.get(0)
-                                        navController.navigate("chatDetails/${doc.id}${proposal.writerName}")
-                                    }
-                                }
+                            sendAuthorMessage(user, proposal.writerId, proposal.writerName, navController)
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
@@ -155,8 +142,21 @@ fun ProposalDetails(
     }
 }
 
-fun sendAuthorMessage() {
-
+fun sendAuthorMessage(user: User, secondUserid: String, secondUserName: String, navController: NavController) {
+    Firebase.firestore.collection("chats")
+        .whereArrayContainsAny("users", listOf(user.id, secondUserid))
+        .get().addOnSuccessListener {
+            if (it.isEmpty) {
+                val id = UUID.randomUUID().toString()
+                Firebase.firestore.collection("chats").document(id)
+                    .set(mapOf("users" to listOf(user.id, secondUserid)))
+                    .addOnSuccessListener { navController.navigate("chatDetails/${id}/${secondUserid}/${secondUserName}") }
+                    .addOnFailureListener { }
+            } else {
+                val doc = it.documents.get(0)
+                navController.navigate("chatDetails/${doc.id}${secondUserName}")
+            }
+        }
 }
 
 fun getCritiquedForProposal(user: User, proposalTitle: String,

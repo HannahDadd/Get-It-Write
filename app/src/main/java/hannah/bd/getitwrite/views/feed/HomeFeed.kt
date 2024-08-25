@@ -51,6 +51,7 @@ import hannah.bd.getitwrite.views.forum.ForumView
 import hannah.bd.getitwrite.views.forum.QuestionDetailView
 import hannah.bd.getitwrite.views.messages.ChatsFeed
 import hannah.bd.getitwrite.views.messages.MessagesNavHost
+import hannah.bd.getitwrite.views.messages.ShowMessages
 import hannah.bd.getitwrite.views.positivityCorner.PositivityCritique
 import hannah.bd.getitwrite.views.proposals.ProposalDetails
 import hannah.bd.getitwrite.views.proposals.ProposalView
@@ -267,6 +268,30 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             val arguments = requireNotNull(backStackEntry.arguments)
             arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
+        composable(
+            "chatDetails/{chat_id}/{otherUserName}/{otherUserId}",
+            arguments = listOf(
+                navArgument("chat_id") {
+                    type = NavType.StringType
+                },
+                navArgument("otherUserName") {
+                    type = NavType.StringType
+                },
+                navArgument("otherUserId") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            ShowMessages(
+                chatId = arguments.getString("chat_id")!!,
+                user = user,
+                user2Name = arguments.getString("otherUserName")!!,
+                user2Id = arguments.getString("otherUserId")!!,
+                backStackEntry = backStackEntry,
+                navigateUp = { navController.navigateUp() }
+            )
+        }
     }
 }
 
@@ -302,7 +327,7 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            RecomendedCritiquers(recs)
+            RecomendedCritiquers(user, recs, navController)
         }
         item {
             FreeForAll(frenzies, navController = navController)

@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -54,6 +55,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.views.components.CheckInput
+import hannah.bd.getitwrite.views.proposals.sendAuthorMessage
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,48 +81,16 @@ fun ShowMessages(
     }
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    Column {
-        DetailHeader(title = user2Name, navigateUp = navigateUp)
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = { showBottomSheet = false },
-                sheetState = sheetState
-            ) {
-                SendWorkView(user2Id, user = user, chatID = chatId) {
-                    showBottomSheet = false
-                }
-            }
-        }
-        val lazyListState = rememberLazyListState()
-        LaunchedEffect(key1 = messages.size) {
-            lazyListState.animateScrollToItem(messages.size + 1)
-        }
-        LazyColumn(
-            state = lazyListState,
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(messages) { it ->
-                if (it.senderId == user.id) {
-                    SingleOwnMessage(it.content, it.created)
-                } else {
-                    SingleOtherMessage(user = user, message = it, chatId = chatId)
-                }
-            }
-            item {
+    Scaffold(
+        bottomBar = {
+            Column(Modifier.padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 ErrorText(error = errorString)
-                Button(
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { showBottomSheet = true },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary)
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Send work to $user2Name", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
-                }
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
                     OutlinedTextField(
                         value = message.value,
                         maxLines = 1,
@@ -135,7 +105,12 @@ fun ShowMessages(
                         onClick = {
                             if (CheckInput.isStringGood(message.value, 150)) {
                                 val id = UUID.randomUUID().toString()
-                                val m = Message(content = message.value, created = Timestamp.now(), senderId = user.id, id = id)
+                                val m = Message(
+                                    content = message.value,
+                                    created = Timestamp.now(),
+                                    senderId = user.id,
+                                    id = id
+                                )
                                 Firebase.firestore.collection("chats").document(chatId)
                                     .collection("messages").document(id).set(m)
                                     .addOnSuccessListener {
@@ -157,6 +132,53 @@ fun ShowMessages(
                             contentDescription = "Send",
                             modifier = Modifier.size(20.dp)
                         )
+                    }
+                }
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { showBottomSheet = true },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text(
+                        "Send work to $user2Name",
+                        Modifier.padding(10.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        Column(Modifier.padding(innerPadding)) {
+            DetailHeader(title = user2Name, navigateUp = navigateUp)
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = sheetState
+                ) {
+                    SendWorkView(user2Id, user = user, chatID = chatId) {
+                        showBottomSheet = false
+                    }
+                }
+            }
+            val lazyListState = rememberLazyListState()
+            LaunchedEffect(key1 = messages.size) {
+                lazyListState.animateScrollToItem(messages.size + 1)
+            }
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(horizontal = 10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(messages) { it ->
+                    if (it.senderId == user.id) {
+                        SingleOwnMessage(it.content, it.created)
+                    } else {
+                        SingleOtherMessage(user = user, message = it, chatId = chatId)
                     }
                 }
             }

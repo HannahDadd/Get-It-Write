@@ -33,8 +33,8 @@ import java.util.concurrent.TimeUnit
 @Composable
 fun StatsSection(user: User) {
     Column(
-        modifier = Modifier.padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        modifier = Modifier.padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         user.lastCritique?.let {
             Text(

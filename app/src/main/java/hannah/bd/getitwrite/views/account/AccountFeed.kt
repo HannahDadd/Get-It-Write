@@ -79,7 +79,7 @@ fun AccountView(user: User, navController: NavHostController,
             StatsSection(user = user)
         }
         item {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(8.dp)) {
                 RectangleTileButtonNoDate(
                     title = "Send work to your critique partners.",
                     backgroundColour = MaterialTheme.colorScheme.background,
@@ -92,9 +92,9 @@ fun AccountView(user: User, navController: NavHostController,
         }
         item {
             Promo(
-                title = "Summarise your project so other critique partners can find it.",
-                buttonText = "Add your novel idea to the mix",
-                painter = painterResource(id = R.drawable.bookpromo),) {
+                title = "Take your writing to the next level.",
+                buttonText = "Find critique partners for your WIP",
+                painter = painterResource(id = R.drawable.statsbg),) {
                 bottomSheet = AccountSheetContent.makeNewProposals
             }
         }

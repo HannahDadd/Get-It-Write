@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -38,11 +39,12 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.components.SquareTileButton
 import hannah.bd.getitwrite.views.components.TitleAndSubText
+import hannah.bd.getitwrite.views.proposals.sendAuthorMessage
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RecomendedCritiquers(recs: MutableState<List<User>?>) {
+fun RecomendedCritiquers(user: User, recs: MutableState<List<User>?>, navController: NavController) {
     recs.value?.let {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -59,8 +61,8 @@ fun RecomendedCritiquers(recs: MutableState<List<User>?>) {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                it.forEach {user ->
-                    user.frequencey?.let {timeInSeconds ->
+                it.forEach {userRec ->
+                    userRec.frequencey?.let {timeInSeconds ->
                         val days = TimeUnit.SECONDS.toDays(timeInSeconds)
                         val hours = TimeUnit.SECONDS.toHours(timeInSeconds) % 24
                         val minutes = TimeUnit.SECONDS.toMinutes(timeInSeconds) % 60
@@ -73,15 +75,19 @@ fun RecomendedCritiquers(recs: MutableState<List<User>?>) {
                             if (seconds > 0 || isEmpty()) append("$seconds seconds")
                         }.trim()
                         RecommendedPartnerCard(
-                            title = user.displayName,
+                            title = userRec.displayName,
                             reason = "Critiques every $humanReadableTime",
-                            onClick = {}
+                            onClick = {
+                                sendAuthorMessage(user, userRec.id, userRec.displayName, navController)
+                            }
                         )
                     } ?: run {
                         RecommendedPartnerCard(
-                            title = user.displayName,
+                            title = userRec.displayName,
                             reason = "",
-                            onClick = {}
+                            onClick = {
+                                sendAuthorMessage(user, userRec.id, userRec.displayName, navController)
+                            }
                         )
                     }
                 }
