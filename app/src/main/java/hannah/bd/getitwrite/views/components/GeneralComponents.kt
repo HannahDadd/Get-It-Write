@@ -138,6 +138,7 @@ fun Promo(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(10.dp)
+                .fillMaxSize()
                 .clip(RoundedCornerShape(10.dp))
         )
         Column(Modifier.padding(16.dp)) {

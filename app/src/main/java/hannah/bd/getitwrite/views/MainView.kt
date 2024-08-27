@@ -110,8 +110,8 @@ fun MainView(user: User, logoutNavController: NavHostController,
             topBar = {
                 CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        titleContentColor = MaterialTheme.colorScheme.onSecondary,
                     ),
                     title = {
                         Image(
