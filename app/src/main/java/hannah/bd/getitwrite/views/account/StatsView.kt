@@ -60,7 +60,7 @@ fun StatsSection(user: User) {
                 if (seconds > 0 || isEmpty()) append("$seconds seconds")
             }.trim()
 
-            Text(text = "On average, you critique every ${humanReadableTime}")
+            Text(text = "Critique average is ${humanReadableTime}")
         }
     }
 }

@@ -17,6 +17,7 @@ class User(
     var lastCritique: Timestamp? = null,
     var lastFiveCritiques: MutableList<Timestamp>? = null,
     var frequencey: Long? = null,
+    var critiquerExpected: String? = null,
 ) : UserGeneratedContent {
     constructor(id: String, data: Map<String, Any>) : this (
         id = id,
@@ -33,5 +34,6 @@ class User(
         lastCritique = data["lastCritique"] as Timestamp?,
         lastFiveCritiques = data["lastFiveCritiques"] as MutableList<Timestamp>?,
         frequencey = data.get("frequencey") as Long?,
+        critiquerExpected = data.get("critiquerExpected") as String?,
     )
 }

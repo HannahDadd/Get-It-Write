@@ -46,14 +46,16 @@ import hannah.bd.getitwrite.views.positivityCorner.getRandPeice
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 
 @Composable
-fun GenreFeed(navController: NavHostController, hostNavController: NavHostController, proposals: List<Proposal>, genre: String) {
+fun GenreFeed(navController: NavHostController, hostNavController: NavHostController,
+              proposals: List<Proposal>, genre: String, isUserId: Boolean) {
+    val title = if (isUserId) "" else genre
     Column {
-        DetailHeader(title = genre, navigateUp = { hostNavController.navigateUp() })
+        DetailHeader(title = title, navigateUp = { hostNavController.navigateUp() })
         if (proposals.isEmpty()) {
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)) {
-                Text(text = "Loading...")
+                Text(text = "No WIPs yet.")
             }
         } else {
             LazyColumn() {
@@ -68,26 +70,38 @@ fun GenreFeed(navController: NavHostController, hostNavController: NavHostContro
 }
 
 @Composable
-fun ProposalNavHost(tag: String, hostNavController: NavHostController, user: User) {
+fun ProposalNavHost(tag: String, hostNavController: NavHostController, user: User,
+                    isUserId: Boolean = false) {
     val navController = rememberNavController()
     var proposals = remember { mutableStateOf<List<Proposal>?>(null) }
     var errorString = remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
-        getProposalsByGenre(genre = tag,
-            onSuccess = {
-                proposals.value = it
-            },
-            onError = { exception ->
-                errorString.value = exception.message
-            }
-        )
+        if (isUserId) {
+            getProposalsByUserId(id = tag,
+                onSuccess = {
+                    proposals.value = it
+                },
+                onError = { exception ->
+                    errorString.value = exception.message
+                }
+            )
+        } else {
+            getProposalsByGenre(genre = tag,
+                onSuccess = {
+                    proposals.value = it
+                },
+                onError = { exception ->
+                    errorString.value = exception.message
+                }
+            )
+        }
     }
 
     proposals.value?.let { porposals ->
         NavHost(navController = navController, startDestination = "genreFeed") {
             composable("genreFeed") {
-                GenreFeed(navController, hostNavController, porposals, tag)
+                GenreFeed(navController, hostNavController, porposals, tag, isUserId)
             }
             composable(
                 "proposal/{id}",

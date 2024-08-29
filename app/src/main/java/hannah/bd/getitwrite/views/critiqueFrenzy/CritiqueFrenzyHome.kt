@@ -57,18 +57,6 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-//                item {
-//                    SquareTileButton(
-//                        modifier = Modifier.padding(start = 8.dp),
-//                        title = "Add your own.",
-//                        wordCount = "",
-//                        backgroundColour = MaterialTheme.colorScheme.secondary,
-//                        textColour = MaterialTheme.colorScheme.onSecondary,
-//                        icon = Icons.Default.Add,
-//                        size = 150.dp,
-//                        onClick = onCreate
-//                    )
-//                }
                 itemsIndexed(requests.value!!.subList(0, 5)) {index, item ->
                     HomePageTileButton(
                         title = item.genres.joinToString(),
@@ -76,15 +64,6 @@ fun FreeForAll(requests: MutableState<List<RequestCritique>?>, navController: Na
                         icon = Icons.Default.Edit,
                         isFirstItemInCarousel = index == 0,
                         onClick = {navController.navigate("frenzy/$index")})
-//                    SquareTileButton(
-//                        title = item.genres.joinToString(),
-//                        wordCount = "",
-//                        icon = Icons.Default.Edit,
-//                        backgroundColour = MaterialTheme.colorScheme.background,
-//                        textColour = MaterialTheme.colorScheme.onBackground,
-//                        size = 150.dp,
-//                        onClick = { navController.navigate("frenzy/$index") }
-//                    )
                 }
                 item {
                     SquareTileButton(

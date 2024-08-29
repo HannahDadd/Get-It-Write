@@ -32,6 +32,7 @@ import hannah.bd.getitwrite.modals.ContentToReportType
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.theme.AppTypography
+import hannah.bd.getitwrite.views.account.StatsSection
 import hannah.bd.getitwrite.views.components.CheckInput
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
@@ -41,12 +42,13 @@ import hannah.bd.getitwrite.views.positivityCorner.getRandPeice
 import hannah.bd.getitwrite.views.proposals.sendAuthorMessage
 
 @Composable
-fun ProfilePopUp(user: User, loggedInUser: User) {
+fun ProfilePopUp(user: User, navController: NavController, closeAction: () -> Unit) {
     Column(
         modifier = Modifier
             .padding(10.dp)
             .verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
+        StatsSection(user)
         Text("Bio", fontWeight = FontWeight.Bold)
         Text(user.bio)
         Text("Favourite authors", fontWeight = FontWeight.Bold)
@@ -62,7 +64,8 @@ fun ProfilePopUp(user: User, loggedInUser: User) {
                 .fillMaxWidth()
                 .padding(16.dp),
             onClick = {
-                sendAuthorMessage(loggedInUser, user.id, user.displayName, null)
+                closeAction()
+                navController.navigate("usersProposals/${user.id}")
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
@@ -70,7 +73,7 @@ fun ProfilePopUp(user: User, loggedInUser: User) {
             )
         ) {
             Text(
-                "Send Author Message",
+                "View Proposals by this Writer",
                 Modifier.padding(10.dp),
                 fontWeight = FontWeight.Bold
             )

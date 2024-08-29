@@ -12,6 +12,7 @@ material3Android = "1.2.1"
 googleServices = "4.4.1"
 firebaseAuth = "22.3.1"
 uiTextGoogleFonts = "1.6.8"
+adaptiveAndroid = "1.1.0-alpha01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +32,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-adaptive-android = { group = "androidx.compose.material3.adaptive", name = "adaptive-android", version.ref = "adaptiveAndroid" }
 #androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 
 [plugins]

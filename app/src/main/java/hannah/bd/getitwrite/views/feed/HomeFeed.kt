@@ -271,6 +271,17 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             arguments.getString("id")?.let { ProposalNavHost(it, navController, user) }
         }
         composable(
+            "usersProposals/{id}",
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            arguments.getString("id")?.let { ProposalNavHost(it, navController, user, true) }
+        }
+        composable(
             "chatDetails/{chat_id}/{otherUserName}/{otherUserId}",
             arguments = listOf(
                 navArgument("chat_id") {
@@ -338,7 +349,7 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            RecommendedCritiquers(user, recs)
+            RecommendedCritiquers(user, recs, navController)
         }
         item {
             FreeForAll(frenzies, navController = navController)

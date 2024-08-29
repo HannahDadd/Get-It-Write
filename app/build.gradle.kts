@@ -11,7 +11,7 @@ android {
         }
     }
     namespace = "hannah.bd.getitwrite"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hannah.bd.getitwrite"
@@ -81,6 +81,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.androidx.ui.text.google.fonts)
+    implementation(libs.androidx.adaptive.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

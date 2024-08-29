@@ -53,7 +53,7 @@ fun QuickQueryCritique(requests: MutableState<List<RequestCritique>?>, navContro
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                itemsIndexed(requests.value!!) { index, item ->
+                itemsIndexed(requests.value!!.subList(0, 5)) {index, item ->
                     HomePageTileButton(
                         title = item.genres.joinToString(),
                         bubbleText = "Query",

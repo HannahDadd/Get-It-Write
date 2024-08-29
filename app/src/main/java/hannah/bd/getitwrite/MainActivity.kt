@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.theme.GetItWriteTheme
 import hannah.bd.getitwrite.views.feed.PostLoginNavController
@@ -23,11 +25,13 @@ import hannah.bd.getitwrite.views.login.ShowSignUp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import hannah.bd.getitwrite.views.login.OnBoardingPageOne
 import hannah.bd.getitwrite.views.login.ShowOpeningPage
+import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
-    private var destination = "onboarding"
+    private var destination = "login"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -52,9 +56,6 @@ class MainActivity : ComponentActivity() {
             startDestination = destination,
             modifier = Modifier.fillMaxSize()
         ) {
-            composable("onboarding") {
-                ShowOpeningPage(navController, auth)
-            }
             composable("login") {
                 ShowLogin(navController, auth)
             }
@@ -66,6 +67,14 @@ class MainActivity : ComponentActivity() {
             }
             composable("createAccount") {
                 ShowCreateAccountView(navController, auth)
+            }
+            composable(
+                "onboardingPageOne/{name}",
+                arguments = listOf(navArgument("name") { type = NavType.StringType })
+            ) { backStackEntry ->
+                requireNotNull(backStackEntry.arguments).getString("name")?.let {
+                    OnBoardingPageOne(navController, it, auth)
+                }
             }
         }
     }

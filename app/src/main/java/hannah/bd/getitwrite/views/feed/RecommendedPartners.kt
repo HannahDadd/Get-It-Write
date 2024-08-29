@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>) {
+fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>, navController: NavController) {
     var bottomSheet by remember { mutableStateOf<User?>(null) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     bottomSheet?.let {
@@ -62,7 +62,9 @@ fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>) {
             onDismissRequest = { bottomSheet = null },
             sheetState = sheetState
         ) {
-            ProfilePopUp(user = it, user)
+            ProfilePopUp(user = it, navController = navController, {
+                bottomSheet = null
+            })
         }
     }
     recs.value?.let {

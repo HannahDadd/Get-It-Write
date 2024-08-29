@@ -41,6 +41,7 @@ import hannah.bd.getitwrite.views.settings.TsAndCsView
 @Composable
 fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
     var email = remember { mutableStateOf("") }
+    var username = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var confirmPassword = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf<String?>(null) }
@@ -61,6 +62,13 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
         Image(painter = painterResource(id = R.drawable.building), modifier = Modifier.fillMaxWidth(), contentDescription = "", contentScale = ContentScale.FillWidth)
         Text("Sign Up", fontSize = 40.sp, fontWeight = FontWeight.Bold)
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+            OutlinedTextField(
+                value = username.value,
+                maxLines = 1,
+                onValueChange = { username.value = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(text = "Username") }
+            )
             OutlinedTextField(
                 value = email.value,
                 maxLines = 1,
@@ -100,14 +108,14 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
                     errorString.value = "Passwords do not match"
                 else
                     auth.createUserWithEmailAndPassword(email.value, password.value)
-                        .addOnCompleteListener() { task ->
+                        .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = "", bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = mutableListOf<String>())
+                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = username.value, bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = mutableListOf<String>())
                                 Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
                                     .set(user)
                                     .addOnSuccessListener {  }
                                     .addOnFailureListener { errorString.value = "Network error" }
-                                navController.navigate("createAccount")
+                                navController.navigate("onboardingPageOne/$username")
                             } else {
                                 errorString.value = task.exception?.message.toString()
                             }

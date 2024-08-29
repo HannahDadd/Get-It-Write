@@ -60,12 +60,10 @@ fun CritiquedDetailedView(critique: Critique, user: User, navigateUp: () -> Unit
             paragraphs.forEachIndexed { index, element ->
                 if (critique.comments.containsValue(index.toLong())) {
                     Text(element,
-                        style = TextStyle(background = MaterialTheme.colorScheme.primary,
-                            color = MaterialTheme.colorScheme.onPrimary,
+                        style = TextStyle(background = MaterialTheme.colorScheme.secondary,
+                            color = MaterialTheme.colorScheme.onSecondary,
                         fontFamily = FontFamily.Default,
                         fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
-                        lineHeight = 24.sp,
                         letterSpacing = 0.5.sp), modifier = Modifier.clickable { bottomSheetText = Triple(element, index, comments.get(index.toLong()) ?: "")})
                 } else {
                     Text(element)
