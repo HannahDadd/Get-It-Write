@@ -51,7 +51,6 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
     var errorString = remember { mutableStateOf<String?>(null) }
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color.White)
         .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Image(painter = painterResource(id = R.drawable.sitting), modifier = Modifier.fillMaxWidth(), contentDescription = "", contentScale = ContentScale.FillWidth)

@@ -32,7 +32,7 @@ import hannah.bd.getitwrite.views.components.TitleAndSubText
 @Composable
 fun FindPartnersByGenre(navController: NavHostController) {
     val genres = listOf(Triple(R.drawable.scifi, "Sci Fi", "Science Fiction"),
-        Triple(R.drawable.crime, "Crime", "Mystery"),
+        Triple(R.drawable.crime, "Mystery", "Mystery"),
         Triple(R.drawable.dystopian, "Dystopian", "Dystopian"),
         Triple(R.drawable.fantasy, "Fantasy", "Fantasy"),
         Triple(R.drawable.histroical, "Historical", "Historical"),
@@ -40,7 +40,7 @@ fun FindPartnersByGenre(navController: NavHostController) {
         Triple(R.drawable.memoir, "Memoir", "Memoir"),
         Triple(R.drawable.romance, "Romance", "Romance"),
         Triple(R.drawable.thriller, "Thriller", "Thriller"),
-        Triple(R.drawable.shortstory, "Short Stories", "Short Story"))
+        Triple(R.drawable.shortstory, "Short Stories", "Short Stories"))
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {

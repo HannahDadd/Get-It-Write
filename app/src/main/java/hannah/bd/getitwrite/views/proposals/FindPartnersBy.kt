@@ -41,7 +41,7 @@ fun FindPartnersByAudience(navController: NavHostController) {
     val images = listOf(
         Triple(R.drawable.adults, "Adult", "Adult"),
         Triple(R.drawable.ya, "YA", "Young Adult"),
-        Triple(R.drawable.childrens, "Childrens", "crime"))
+        Triple(R.drawable.childrens, "Childrens", "Middle Grade"))
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
