@@ -47,6 +47,7 @@ fun ProposalDetails(
     isOwn: Boolean = false,
     navController: NavController
 ) {
+    var buttonText = remember { mutableStateOf("Send Author Message") }
     var critiqued = remember { mutableStateOf<List<Critique>?>(null) }
     if(isOwn) {
         LaunchedEffect(Unit) {
@@ -70,6 +71,7 @@ fun ProposalDetails(
                             .padding(16.dp),
                         onClick = {
                             sendAuthorMessage(user, proposal.writerId, proposal.writerName, navController)
+                            buttonText.value = "Message sent!"
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
@@ -77,7 +79,7 @@ fun ProposalDetails(
                         )
                     ) {
                         Text(
-                            "Send Author Message",
+                            buttonText.value,
                             Modifier.padding(10.dp),
                             fontWeight = FontWeight.Bold
                         )
@@ -153,14 +155,14 @@ fun sendAuthorMessage(user: User, secondUserid: String, secondUserName: String, 
                         .set(mapOf("users" to listOf(user.id, secondUserid)))
                         .addOnSuccessListener {
                             navController?.let {
-                                it.navigate("chatDetails/${id}/${secondUserid}/${secondUserName}")
+                                it.navigate("chatDetails/${id}/${secondUserName}/${secondUserid}")
                             }
                         }
                         .addOnFailureListener { }
                 } else {
                     val doc = it.documents.get(0)
                     navController?.let {
-                        it.navigate("chatDetails/${doc.id}${secondUserName}")
+                        it.navigate("chatDetails/${doc.id}/${secondUserName}/${secondUserid}")
                     }
                 }
             }

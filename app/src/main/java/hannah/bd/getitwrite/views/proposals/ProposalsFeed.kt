@@ -42,6 +42,7 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.DetailHeader
 import hannah.bd.getitwrite.views.components.ErrorText
 import hannah.bd.getitwrite.views.components.TagCloud
+import hannah.bd.getitwrite.views.messages.ShowMessages
 import hannah.bd.getitwrite.views.positivityCorner.getRandPeice
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 
@@ -116,6 +117,30 @@ fun ProposalNavHost(tag: String, hostNavController: NavHostController, user: Use
                 ProposalDetails(proposal = porposals.filter { it.id == id }.get(0),
                     user = user,
                     navController = navController
+                )
+            }
+            composable(
+                "chatDetails/{chat_id}/{otherUserName}/{otherUserId}",
+                arguments = listOf(
+                    navArgument("chat_id") {
+                        type = NavType.StringType
+                    },
+                    navArgument("otherUserName") {
+                        type = NavType.StringType
+                    },
+                    navArgument("otherUserId") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val arguments = requireNotNull(backStackEntry.arguments)
+                ShowMessages(
+                    chatId = arguments.getString("chat_id")!!,
+                    user = user,
+                    user2Name = arguments.getString("otherUserName")!!,
+                    user2Id = arguments.getString("otherUserId")!!,
+                    backStackEntry = backStackEntry,
+                    navigateUp = { navController.navigateUp() }
                 )
             }
         }

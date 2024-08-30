@@ -114,25 +114,6 @@ fun ProfileView(navController: NavController, ownProfile: Boolean,
                 ) {
                     Text("Edit Profile", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
                 }
-            } else {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    onClick = {
-                        sendAuthorMessage(loggedInUser, user.id, user.displayName, navController)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                ) {
-                    Text(
-                        "Send Author Message",
-                        Modifier.padding(10.dp),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
             }
         }
     }
