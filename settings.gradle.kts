@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Get It Write"
 include(":app")
- 

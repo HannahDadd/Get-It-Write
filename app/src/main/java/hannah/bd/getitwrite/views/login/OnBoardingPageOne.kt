@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -33,6 +35,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -50,152 +54,113 @@ import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.ErrorText
 
 @Composable
-fun OnBoardingPageOne(navController: NavController, displayName: String, auth: FirebaseAuth) {
-    val windowSize = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
-    if (windowSize == WindowHeightSizeClass.COMPACT) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.onboarding1),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(10.dp))
-            )
-            OnBoardingPageOneContent(navController, displayName, auth)
-        }
-    } else {
-        Row(modifier = Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(id = R.drawable.onboarding1),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(10.dp))
-            )
-            OnBoardingPageOneContent(navController, displayName, auth)
-        }
-    }
+fun TextOnboarding(text: String) {
+    Text(
+        text = text,
+        color = Color.Black,
+        style = MaterialTheme.typography.titleLarge,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(4.dp),
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnBoardingPageOneContent(navController: NavController, displayName: String, auth: FirebaseAuth) {
-    var expanded by remember { mutableStateOf(false) }
+fun OnBoardingPageOne(navController: NavController, displayName: String, auth: FirebaseAuth) {
     var errorString = remember { mutableStateOf<String?>(null) }
+    val primary = MaterialTheme.colorScheme.primary
+    var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf("Select an option") }
-    Column(Modifier.padding(16.dp)) {
-        Text(
-            text = "Once upon a time there was a writer who went on a journey to find their community…",
-            color = Color.Black,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Start,
-            modifier = Modifier
-                .background(
-                    color = Color.White,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(4.dp),
-        )
-        Spacer(modifier = Modifier.weight(1.0f))
-        Row {
+    Box {
+        Column(Modifier.padding(8.dp)) {
             Spacer(modifier = Modifier.weight(1.0f))
-            IconButton(onClick = {
-                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName,
-                    bio = "", writing = "", critiqueStyle = "", authors = mutableListOf(),
-                    writingGenres = mutableListOf(),
-                    colour = (0..<GlobalVariables.profileColours.size).random(),
-                    blockedUserIds = mutableListOf(), critiquerExpected = selectedOption)
-                Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
-                    .set(user)
-                    .addOnSuccessListener {  }
-                    .addOnFailureListener { errorString.value = "Network error" }
-                navController.navigate("onboardingPageTwo")
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowForward,
-                    tint = MaterialTheme.colorScheme.onPrimary,
-                    contentDescription = "Localized description"
-                )
-            }
-        }
-        Spacer(modifier = Modifier.weight(1.0f))
-        ErrorText(errorString)
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded }
-        ) {
-            TextField(
-                value = selectedOption,
-                onValueChange = {},
-                readOnly = true,
-                label = { Text("What are you looking for in a critique partner?") },
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth(),
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                val options = listOf("Confidence Builder", "Honest Feedback Giver", "Query Package Evaluator", "Accountability Partner", "Writing Pal")
-
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            selectedOption = option
-                            expanded = false
-                        },
+            Row {
+                Spacer(modifier = Modifier.weight(1.0f))
+                IconButton(onClick = {
+                    val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName,
+                        bio = "", writing = "", critiqueStyle = "", authors = mutableListOf(),
+                        writingGenres = mutableListOf(),
+                        colour = (0..<GlobalVariables.profileColours.size).random(),
+                        blockedUserIds = mutableListOf(), critiquerExpected = selectedOption)
+                    Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
+                        .set(user)
+                        .addOnSuccessListener {  }
+                        .addOnFailureListener { errorString.value = "Network error" }
+                    navController.navigate("onboardingPageTwo")
+                }) {
+                    Icon(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
+                            .drawBehind {
+                                drawRoundRect(
+                                    primary,
+                                    cornerRadius = CornerRadius(10.dp.toPx())
+                                )
+                            }
+                            .size(100.dp),
+                        imageVector = Icons.Filled.ArrowForward,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        contentDescription = "Localized description"
                     )
                 }
             }
+            Spacer(modifier = Modifier.weight(1.0f))
         }
-    }
-}
+        Column(Modifier.padding(8.dp)) {
+            Image(
+                painter = painterResource(id = R.drawable.crime),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(50.dp)
+                    .fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextOnboarding("Once upon a time there was a writer who went on a journey to find their community…")
+            Spacer(modifier = Modifier.weight(1.0f))
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                TextField(
+                    value = selectedOption,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("What are you looking for in a critique partner?") },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth(),
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    val options = listOf(
+                        "Confidence Builder",
+                        "Honest Feedback Giver",
+                        "Query Package Evaluator",
+                        "Accountability Partner",
+                        "Writing Pal"
+                    )
 
-@Composable
-fun ShowOpeningPage(navController: NavController) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.primary),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = "Welcome to Get It Write!",
-            style = MaterialTheme.typography.headlineLarge,
-            color = Color.White, fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(16.dp)
-        )
-        Text(
-            text = "What are you looking for most?",
-            style = MaterialTheme.typography.bodyLarge,
-            color = Color.White,
-            modifier = Modifier.padding(16.dp)
-        )
-        FilledTonalButton(onClick = { navController.navigate("enterUsernameCosyCorner") },
-            modifier = Modifier.padding(16.dp)) {
-            Text("A supportive community of writers.",
-                style = MaterialTheme.typography.bodyMedium)
-        }
-        FilledTonalButton(onClick = { navController.navigate("enterUsernameKillerCritiquer") },
-            modifier = Modifier.padding(16.dp)) {
-            Text("Honest critiques of your work.",
-                style = MaterialTheme.typography.bodyMedium)
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                selectedOption = option
+                                expanded = false
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
         }
     }
 }

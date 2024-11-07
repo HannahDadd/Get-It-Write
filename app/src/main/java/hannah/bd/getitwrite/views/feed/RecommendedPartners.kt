@@ -86,9 +86,9 @@ fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>, navContro
             ) {
                 it.forEach { userRec ->
                     userRec.frequencey?.let {timeInSeconds ->
-                        val days = TimeUnit.SECONDS.toDays(timeInSeconds)
-                        val hours = TimeUnit.SECONDS.toHours(timeInSeconds) % 24
-                        val minutes = TimeUnit.SECONDS.toMinutes(timeInSeconds) % 60
+                        val days = TimeUnit.SECONDS.toDays(timeInSeconds.toLong())
+                        val hours = TimeUnit.SECONDS.toHours(timeInSeconds.toLong()) % 24
+                        val minutes = TimeUnit.SECONDS.toMinutes(timeInSeconds.toLong()) % 60
                         val seconds = timeInSeconds % 60
 
                         val humanReadableTime = buildString {

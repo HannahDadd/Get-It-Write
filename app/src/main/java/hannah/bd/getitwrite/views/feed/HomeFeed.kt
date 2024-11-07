@@ -105,11 +105,11 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
             onSuccess = { positives.value = it },
             onError = { exception -> }
         )
-        getCritiqued(user, "critiquedQuery",
+        getCritiqued(user, "queries",
             onSuccess = { queriesToCritique.value = it },
             onError = { exception -> }
         )
-        getCritiqued(user, "critiquedFrenzy",
+        getCritiqued(user, "frenzy",
             onSuccess = { frenzy.value = it },
             onError = { exception -> }
         )
@@ -349,10 +349,7 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
             WorkToCritique(user.displayName, navController, toCritiques)
         }
         item {
-            RecommendedCritiquers(user, recs, navController)
-        }
-        item {
-            FreeForAll(frenzies, navController = navController)
+            QuickQueryCritique(queries, navController)
         }
         item {
             PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview })
@@ -361,7 +358,7 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
             JoinTheConvo(navController, questions)
         }
         item {
-            QuickQueryCritique(queries, navController)
+            FreeForAll(frenzies, navController = navController)
         }
         item {
             Promo(
@@ -370,6 +367,9 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
                 painter = painterResource(id = R.drawable.aibg),) {
 
             }
+        }
+        item {
+            RecommendedCritiquers(user, recs, navController)
         }
     }
 }

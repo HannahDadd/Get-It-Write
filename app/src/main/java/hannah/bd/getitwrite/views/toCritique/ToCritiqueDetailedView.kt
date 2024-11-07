@@ -142,7 +142,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                 onClick = {
                     if (CheckInput.verifyCanBeEmpty(overallFeedback.value)) {
                         val id = UUID.randomUUID().toString()
-                        val collectionName = if(toCritique.title == "Critique Frenzy") "critiquedFrenzy" else if(toCritique.title == "Query Frenzy") "critiquedQuery" else "critiques"
+                        val collectionName = if(toCritique.title == "Critique Frenzy") "frenzy" else if(toCritique.title == "Query Frenzy") "queries" else "critiques"
                         val critique = Critique(id, comments = comments.value, overallFeedback = overallFeedback.value,
                             critiquerId = user.id, text = toCritique.text, title = toCritique.workTitle,
                             projectTitle = toCritique.title, critiquerName = user.displayName,
@@ -178,7 +178,7 @@ fun ToCritiqueDetailedView(user: User, isCritiqueFrenzy: Boolean, toCritique: Re
                                     freq = averageSeconds.absoluteValue
                                 }
                                 user.lastFiveCritiques = lastFive
-                                user.frequencey = freq.toLong()
+                                user.frequencey = freq
 
                                 Firebase.firestore.collection("users").document(user.id).set(user)
                                 navController.navigateUp()

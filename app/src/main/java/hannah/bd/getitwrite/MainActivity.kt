@@ -26,6 +26,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import hannah.bd.getitwrite.views.login.OnBoardingPageOne
+import hannah.bd.getitwrite.views.login.OnBoardingPageTwo
 import hannah.bd.getitwrite.views.login.ShowOpeningPage
 import hannah.bd.getitwrite.views.toCritique.ToCritiqueDetailedView
 
@@ -75,6 +76,9 @@ class MainActivity : ComponentActivity() {
                 requireNotNull(backStackEntry.arguments).getString("name")?.let {
                     OnBoardingPageOne(navController, it, auth)
                 }
+            }
+            composable("onboardingPageTwo") {
+                    OnBoardingPageTwo(navController)
             }
         }
     }

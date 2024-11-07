@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
