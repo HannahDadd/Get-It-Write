@@ -1,5 +1,8 @@
 package hannah.bd.getitwrite.views.login
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,28 +50,44 @@ import hannah.bd.getitwrite.modals.User
 
 @Composable
 fun OnBoardingPageTwo(navController: NavController) {
-//    val permissionState = rememberPermissionState(Manifest.permission.)
-//
-//    val requestPermissionLauncher = rememberLauncherForActivityResult(
-//        ActivityResultContracts.RequestPermission()
-//    ) { isGranted ->
-//        if (isGranted) {
-//            // Permission granted
-//        } else {
-//            // Handle permission denial
-//        }
-//    }
-//
-//    LaunchedEffect(cameraPermissionState) {
-//        if (!cameraPermissionState.status.isGranted && cameraPermissionState.status.shouldShowRationale) {
-//            // Show rationale if needed
-//        } else {
-//            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-//        }
-//    }
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        navController.navigate("feed")
+    }
 
     val primary = MaterialTheme.colorScheme.primary
     Box {
+        Column(Modifier.padding(8.dp)) {
+            Image(
+                painter = painterResource(id = R.drawable.onboarding2),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.weight(1.0f))
+            TextOnboarding("Receive updates from Get it Write.")
+            Spacer(modifier = Modifier.weight(1.0f))
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            ) {
+                Text(
+                    "Allow Notifications",
+                    Modifier.padding(10.dp),
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
+        }
         Column(Modifier.padding(8.dp)) {
             Spacer(modifier = Modifier.weight(1.0f))
             Row {
@@ -90,36 +109,6 @@ fun OnBoardingPageTwo(navController: NavController) {
                         contentDescription = "Localized description"
                     )
                 }
-            }
-            Spacer(modifier = Modifier.weight(1.0f))
-        }
-        Column(Modifier.padding(8.dp)) {
-            Image(
-                painter = painterResource(id = R.drawable.crime),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(50.dp)
-                    .fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
-            TextOnboarding("Once upon a time there was a writer who went on a journey to find their community…")
-            Spacer(modifier = Modifier.weight(1.0f))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = {
-
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                Text(
-                    "Allow Notifications",
-                    Modifier.padding(10.dp),
-                    fontWeight = FontWeight.Bold
-                )
             }
             Spacer(modifier = Modifier.weight(1.0f))
         }

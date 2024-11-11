@@ -94,8 +94,7 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
         ) {
             Text("LOGIN", Modifier.padding(10.dp), fontWeight = FontWeight.Bold)
         }
-        TextButton(onClick = { navController.navigate("onboardingPageOne/hannah") }) {
-        //TextButton(onClick = { navController.navigate("signup") }) {
+        TextButton(onClick = { navController.navigate("signup") }) {
             Text(modifier = Modifier.align(Alignment.Bottom),
                 text = "Don't have an account? Sign Up", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
         }

@@ -74,48 +74,16 @@ fun OnBoardingPageOne(navController: NavController, displayName: String, auth: F
     Box {
         Column(Modifier.padding(8.dp)) {
             Spacer(modifier = Modifier.weight(1.0f))
-            Row {
-                Spacer(modifier = Modifier.weight(1.0f))
-                IconButton(onClick = {
-                    val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName,
-                        bio = "", writing = "", critiqueStyle = "", authors = mutableListOf(),
-                        writingGenres = mutableListOf(),
-                        colour = (0..<GlobalVariables.profileColours.size).random(),
-                        blockedUserIds = mutableListOf(), critiquerExpected = selectedOption)
-                    Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
-                        .set(user)
-                        .addOnSuccessListener {  }
-                        .addOnFailureListener { errorString.value = "Network error" }
-                    navController.navigate("onboardingPageTwo")
-                }) {
-                    Icon(
-                        modifier = Modifier
-                            .drawBehind {
-                                drawRoundRect(
-                                    primary,
-                                    cornerRadius = CornerRadius(10.dp.toPx())
-                                )
-                            }
-                            .size(100.dp),
-                        imageVector = Icons.Filled.ArrowForward,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        contentDescription = "Localized description"
-                    )
-                }
-            }
+            TextOnboarding("Critique partners improve your writing, offer emotional support and encourage you to reach your writing goals.")
             Spacer(modifier = Modifier.weight(1.0f))
-        }
-        Column(Modifier.padding(8.dp)) {
             Image(
-                painter = painterResource(id = R.drawable.crime),
+                painter = painterResource(id = R.drawable.onboarding1),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .padding(50.dp)
+                    .padding(10.dp)
                     .fillMaxWidth()
             )
-            Spacer(modifier = Modifier.weight(1.0f))
-            TextOnboarding("Once upon a time there was a writer who went on a journey to find their community…")
             Spacer(modifier = Modifier.weight(1.0f))
             ExposedDropdownMenuBox(
                 expanded = expanded,
@@ -125,7 +93,7 @@ fun OnBoardingPageOne(navController: NavController, displayName: String, auth: F
                     value = selectedOption,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("What are you looking for in a critique partner?") },
+                    label = { Text("What are you looking for most in a critique partner?") },
                     modifier = Modifier
                         .menuAnchor()
                         .fillMaxWidth(),
@@ -158,6 +126,40 @@ fun OnBoardingPageOne(navController: NavController, displayName: String, auth: F
                                 .padding(horizontal = 16.dp)
                         )
                     }
+                }
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
+        }
+
+        Column(Modifier.padding(8.dp)) {
+            Spacer(modifier = Modifier.weight(1.0f))
+            Row {
+                Spacer(modifier = Modifier.weight(1.0f))
+                IconButton(onClick = {
+                    val user = User(id = auth.currentUser?.uid ?: "ID", displayName = displayName,
+                        bio = "", writing = "", critiqueStyle = "", authors = mutableListOf(),
+                        writingGenres = mutableListOf(),
+                        colour = (0..<GlobalVariables.profileColours.size).random(),
+                        blockedUserIds = mutableListOf(), critiquerExpected = selectedOption)
+                    Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
+                        .set(user)
+                        .addOnSuccessListener {  }
+                        .addOnFailureListener { errorString.value = "Network error" }
+                    navController.navigate("onboardingPageTwo")
+                }) {
+                    Icon(
+                        modifier = Modifier
+                            .drawBehind {
+                                drawRoundRect(
+                                    primary,
+                                    cornerRadius = CornerRadius(10.dp.toPx())
+                                )
+                            }
+                            .size(100.dp),
+                        imageVector = Icons.Filled.ArrowForward,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        contentDescription = "Localized description"
+                    )
                 }
             }
             Spacer(modifier = Modifier.weight(1.0f))

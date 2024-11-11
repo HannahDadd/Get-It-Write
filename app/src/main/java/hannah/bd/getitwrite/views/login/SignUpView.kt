@@ -41,7 +41,7 @@ import hannah.bd.getitwrite.views.settings.TsAndCsView
 @Composable
 fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
     var email = remember { mutableStateOf("") }
-    var username = remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
     var confirmPassword = remember { mutableStateOf("") }
     var errorString = remember { mutableStateOf<String?>(null) }
@@ -63,9 +63,9 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
         Text("Sign Up", fontSize = 40.sp, fontWeight = FontWeight.Bold)
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
             OutlinedTextField(
-                value = username.value,
+                value = username,
                 maxLines = 1,
-                onValueChange = { username.value = it },
+                onValueChange = { username = it },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Username") }
             )
@@ -110,7 +110,10 @@ fun ShowSignUp(navController: NavController, auth: FirebaseAuth) {
                     auth.createUserWithEmailAndPassword(email.value, password.value)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = username.value, bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(), writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random(), blockedUserIds = mutableListOf<String>())
+                                val user = User(id = auth.currentUser?.uid ?: "ID", displayName = username,
+                                    bio = "", writing = "", critiqueStyle = "", authors = mutableListOf<String>(),
+                                    writingGenres = mutableListOf<String>(), colour = (0..<GlobalVariables.profileColours.size).random(),
+                                    blockedUserIds = mutableListOf<String>())
                                 Firebase.firestore.collection("users").document(auth.currentUser?.uid.toString())
                                     .set(user)
                                     .addOnSuccessListener {  }

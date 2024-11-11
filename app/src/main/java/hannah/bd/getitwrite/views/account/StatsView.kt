@@ -57,7 +57,6 @@ fun StatsSection(user: User) {
                 if (days > 0) append("$days days ")
                 if (hours > 0) append("$hours hours ")
                 if (minutes > 0) append("$minutes minutes ")
-                if (seconds > 0 || isEmpty()) append("$seconds seconds")
             }.trim()
 
             Text(text = "Critique average is ${humanReadableTime}")
