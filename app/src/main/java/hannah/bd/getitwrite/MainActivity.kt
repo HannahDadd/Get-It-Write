@@ -60,6 +60,9 @@ class MainActivity : ComponentActivity() {
             composable("login") {
                 ShowLogin(navController, auth)
             }
+            composable("forgottenPassword") {
+                ShowLogin(navController, auth)
+            }
             composable("feed") {
                 PostLoginNavController(navController, auth)
             }

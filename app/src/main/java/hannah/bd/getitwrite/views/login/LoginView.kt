@@ -72,21 +72,29 @@ fun ShowLogin(navController: NavController, auth: FirebaseAuth) {
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Password") }
             )
-            TextButton(onClick = {/**/}) {
+            TextButton(onClick = {
+                navController.navigate("feed")
+            }) {
                 Text("Forgot Password?", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, textAlign = TextAlign.End)
             }
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                auth.signInWithEmailAndPassword(email.value, password.value)
-                    .addOnCompleteListener() { task ->
-                        if (task.isSuccessful) {
-                            navController.navigate("feed")
-                        } else {
-                            errorString.value = task.exception?.message.toString()
+                if(email.value.isEmpty()) {
+                    errorString.value = "Email cannot be empty."
+                } else if(password.value.isEmpty()) {
+                    errorString.value = "Password cannot be empty."
+                } else {
+                    auth.signInWithEmailAndPassword(email.value, password.value)
+                        .addOnCompleteListener() { task ->
+                            if (task.isSuccessful) {
+                                navController.navigate("feed")
+                            } else {
+                                errorString.value = task.exception?.message.toString()
+                            }
                         }
-                    }
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
