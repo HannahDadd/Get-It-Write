@@ -31,16 +31,16 @@ import hannah.bd.getitwrite.views.components.TitleAndSubText
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FindPartnersByGenre(navController: NavHostController) {
-    val genres = listOf(Triple(R.drawable.scifi, "Sci Fi", "Science Fiction"),
-        Triple(R.drawable.crime, "Mystery", "Mystery"),
-        Triple(R.drawable.dystopian, "Dystopian", "Dystopian"),
-        Triple(R.drawable.fantasy, "Fantasy", "Fantasy"),
-        Triple(R.drawable.histroical, "Historical", "Historical"),
-        Triple(R.drawable.magicalrealism, "Magical Realism", "Magical Realism"),
-        Triple(R.drawable.memoir, "Memoir", "Memoir"),
-        Triple(R.drawable.romance, "Romance", "Romance"),
-        Triple(R.drawable.thriller, "Thriller", "Thriller"),
-        Triple(R.drawable.shortstory, "Short Stories", "Short Stories"))
+    val genres = listOf(Triple("", "Sci Fi", "Science Fiction"),
+        Triple("", "Mystery", "Mystery"),
+        Triple("", "Dystopian", "Dystopian"),
+        Triple("", "Fantasy", "Fantasy"),
+        Triple("", "Historical", "Historical"),
+        Triple("", "Magical Realism", "Magical Realism"),
+        Triple("", "Memoir", "Memoir"),
+        Triple("", "Romance", "Romance"),
+        Triple("", "Thriller", "Thriller"),
+        Triple("", "Short Stories", "Short Stories"))
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -58,7 +58,6 @@ fun FindPartnersByGenre(navController: NavHostController) {
         ) {
             genres.forEach {
                 ElevatedCardRect(
-                    painter = painterResource(id = it.first),
                     buttonText = it.second,
                     width = 180.dp,
                     height = 80.dp,
@@ -71,7 +70,6 @@ fun FindPartnersByGenre(navController: NavHostController) {
 
 @Composable
 fun ElevatedCardRect(
-    painter: Painter,
     buttonText: String,
     height: Dp,
     width: Dp,
@@ -88,12 +86,6 @@ fun ElevatedCardRect(
     ) {
         Row(modifier = Modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.background)) {
-            Image(
-                painter = painter,
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.size(height)
-            )
             Text(
                 text = buttonText,
                 modifier = Modifier
