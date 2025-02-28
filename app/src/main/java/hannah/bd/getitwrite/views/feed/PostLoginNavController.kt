@@ -26,6 +26,7 @@ import hannah.bd.getitwrite.views.settings.SettingsScreen
 import com.google.firebase.auth.FirebaseAuth
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.messages.getUser
+import hannah.bd.getitwrite.views.profile.profileDestination
 
 @Composable
 fun PostLoginNavController(logoutNavController: NavHostController, auth: FirebaseAuth) {
@@ -70,11 +71,13 @@ fun PostLoginNavController(logoutNavController: NavHostController, auth: Firebas
                     loggedInUser = it, user = it, navigateUp = actions.navigateUp)
             }
         }
-        composable("editProfile") {
-            user.value?.let {
-                EditProfileView(user = it, navigateUp = actions.navigateUp)
-            }
-        }
+        // https://developer.android.com/guide/navigation/design/encapsulate
+        profileDestination(user, actions.navigateUp)
+//        composable("editProfile") {
+//            user.value?.let {
+//                EditProfileView(user = it, navigateUp = actions.navigateUp)
+//            }
+//        }
         composable("settings") {
             SettingsScreen(logoutNavController, navigateUp = actions.navigateUp)
         }

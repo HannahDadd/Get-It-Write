@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.GlobalVariables
 import hannah.bd.getitwrite.theme.AppTypography
 import hannah.bd.getitwrite.views.forum.RectangleTileButtonNoDate
+import hannah.bd.getitwrite.views.profile.ProfileUiState
 
 @Composable
 fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
@@ -256,6 +257,22 @@ fun QuestionSection(response: MutableState<String>, question: String) {
             value = response.value,
             maxLines = 5,
             onValueChange = { response.value = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+        )
+    }
+}
+
+@Composable
+fun QuestionSectionNew(response: MutableState<String>, question: String, uiState: ProfileUiState) {
+    Column(verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = Modifier.padding(vertical = 10.dp)) {
+        Text(question, fontWeight = FontWeight.Bold)
+        OutlinedTextField(
+            value = response.value,
+            maxLines = 5,
+            onValueChange = { uiState.sendAction() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp)
