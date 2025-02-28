@@ -17,13 +17,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,25 +30,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
-import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.theme.AppTypography
-import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
+import hannah.bd.getitwrite.views.forum.RectangleTileButtonNoDate
 
 @Composable
 fun RoundedButton(modifier: Modifier, onClick: () -> Unit) {
@@ -214,6 +206,29 @@ fun HomePageTileButton(
 }
 
 @Composable
+fun HeadingAndSubText(
+    title: String,
+    subText: String
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.padding(top = 16.dp, start = 8.dp, end = 8.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            text = subText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@Composable
 fun TitleAndSubText(
     title: String,
     subText: String,
@@ -224,14 +239,9 @@ fun TitleAndSubText(
         modifier = Modifier.padding(top = 16.dp, start = 8.dp, end = 8.dp)
     ) {
         Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
+            text = title.uppercase(),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            color = textColour
-        )
-        Text(
-            text = subText,
-            style = MaterialTheme.typography.labelLarge,
             color = textColour
         )
     }

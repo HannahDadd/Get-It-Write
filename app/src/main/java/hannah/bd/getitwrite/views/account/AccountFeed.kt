@@ -26,7 +26,7 @@ import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.components.Promo
 import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
-import hannah.bd.getitwrite.views.feed.RectangleTileButtonNoDate
+import hannah.bd.getitwrite.views.forum.RectangleTileButtonNoDate
 import hannah.bd.getitwrite.views.positivityCorner.MakePositiveCorner
 import hannah.bd.getitwrite.views.proposals.MakeProposalView
 

@@ -39,9 +39,9 @@ import hannah.bd.getitwrite.views.components.TitleAndSubText
 @Composable
 fun FindPartnersByAudience(navController: NavHostController) {
     val images = listOf(
-        Triple(R.drawable.adults, "Adult", "Adult"),
-        Triple(R.drawable.ya, "YA", "Young Adult"),
-        Triple(R.drawable.childrens, "Childrens", "Middle Grade"))
+        Triple(R.drawable.lounging, "Adult", "Adult"),
+        Triple(R.drawable.lounging, "YA", "Young Adult"),
+        Triple(R.drawable.lounging, "Childrens", "Middle Grade"))
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {

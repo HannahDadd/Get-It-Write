@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -20,43 +19,30 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.Proposal
 import hannah.bd.getitwrite.modals.Question
 import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
-import hannah.bd.getitwrite.views.MainView
 import hannah.bd.getitwrite.views.account.StatsView
 import hannah.bd.getitwrite.views.account.getProposals
-import hannah.bd.getitwrite.views.components.ProfileImage
-import hannah.bd.getitwrite.views.components.Promo
-import hannah.bd.getitwrite.views.critiqueFrenzy.FreeForAll
 import hannah.bd.getitwrite.views.critiqueFrenzy.FrenzyFeed
-import hannah.bd.getitwrite.views.critiqueFrenzy.MakeFrenzyView
-import hannah.bd.getitwrite.views.positivityCorner.MakePositiveCorner
 import hannah.bd.getitwrite.views.positivityCorner.PositiveFeedback
 import hannah.bd.getitwrite.views.positivityCorner.PositivityPopUp
-import hannah.bd.getitwrite.views.proposals.FindPartnersByAudience
-import hannah.bd.getitwrite.views.proposals.FindPartnersByGenre
 import hannah.bd.getitwrite.views.proposals.ProposalNavHost
-import hannah.bd.getitwrite.views.critiqueFrenzy.QuickQueryCritique
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiqued
 import hannah.bd.getitwrite.views.critiqueFrenzy.getCritiques
 import hannah.bd.getitwrite.views.critiqueFrenzy.getPositivities
 import hannah.bd.getitwrite.views.critiqueFrenzy.getQuestions
 import hannah.bd.getitwrite.views.critiqueFrenzy.getToCritiques
 import hannah.bd.getitwrite.views.forum.ForumFeed
-import hannah.bd.getitwrite.views.forum.ForumView
+import hannah.bd.getitwrite.views.forum.JoinTheConvo
 import hannah.bd.getitwrite.views.forum.QuestionDetailView
-import hannah.bd.getitwrite.views.messages.ChatsFeed
-import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.messages.ShowMessages
 import hannah.bd.getitwrite.views.positivityCorner.PositivityCritique
 import hannah.bd.getitwrite.views.profile.ProfileView
 import hannah.bd.getitwrite.views.proposals.ProposalDetails
-import hannah.bd.getitwrite.views.proposals.ProposalView
 import hannah.bd.getitwrite.views.proposals.SearchView
 import hannah.bd.getitwrite.views.toCritique.CritiquedDetailedView
 import hannah.bd.getitwrite.views.toCritique.CritiquedFeed
@@ -121,11 +107,20 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
 
     NavHost(navController = navController, startDestination = "bottomNav") {
         composable("bottomNav") {
-            MainView(user = user, logoutNavController, hostnavController, recs = recs,
-                questions = questions, toCritiques = toCritiques,
-                navController, frenzies, queries, critiqued = critiqued,
-                queryCritiques = queriesToCritique, positiveCritiques = positives,
-                proposals = proposals, frenzy = frenzy)
+            ShowBottomNav(
+                user = user,
+                questions = questions,
+                recs = recs,
+                toCritiques = toCritiques,
+                hostNavController = navController,
+                frenzies = frenzies,
+                queries = queries,
+                critiqued = critiqued,
+                queryCritiques = queriesToCritique,
+                positiveCritiques = positives,
+                proposals = proposals,
+                frenzy = frenzy
+            )
         }
         composable("frenzyFeed") {
             FrenzyFeed(navController, "frenzy", "Text", user = user, requests = frenzies)
@@ -190,9 +185,6 @@ fun FeedNavHost(user: User, logoutNavController: NavHostController, hostnavContr
                     )
                 }
             }
-        }
-        composable("messages") {
-            MessagesNavHost(navController, user)
         }
         composable("critiquedFeed") {
             CritiquedFeed(user, critiqued, navController)
@@ -348,28 +340,17 @@ fun HomeFeed(user: User, recs: MutableState<List<User>?>, questions: MutableStat
         item {
             WorkToCritique(user.displayName, navController, toCritiques)
         }
+//        item {
+//            QuickQueryCritique(queries, navController)
+//        }
         item {
-            QuickQueryCritique(queries, navController)
-        }
-        item {
-            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview })
+            RecommendedCritiquers(recs, navController)
         }
         item {
             JoinTheConvo(navController, questions)
         }
         item {
-            FreeForAll(frenzies, navController = navController)
-        }
-        item {
-            Promo(
-                title = "Get instant AI feedback on your writing.",
-                buttonText = "Give it a go",
-                painter = painterResource(id = R.drawable.aibg),) {
-
-            }
-        }
-        item {
-            RecommendedCritiquers(user, recs, navController)
+            PositiveFeedback(onTap = { bottomSheet = HomeSheetContent.positiveReview })
         }
     }
 }

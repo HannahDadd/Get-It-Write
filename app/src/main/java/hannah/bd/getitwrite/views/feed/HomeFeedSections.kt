@@ -46,6 +46,7 @@ import androidx.navigation.NavController
 import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.Critique
 import hannah.bd.getitwrite.modals.RequestCritique
+import hannah.bd.getitwrite.views.components.HeadingAndSubText
 import hannah.bd.getitwrite.views.components.SquareTileButton
 
 @Composable
@@ -54,10 +55,9 @@ fun WorkToCritique(username: String, navController: NavController, toCritiques: 
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text(
-            text = "Welcome " + username,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+        HeadingAndSubText(
+            title = "Welcome " + username,
+            subText = "to your writing community"
         )
         if (toCritiques.value?.isNotEmpty() == true) {
             LazyRow(

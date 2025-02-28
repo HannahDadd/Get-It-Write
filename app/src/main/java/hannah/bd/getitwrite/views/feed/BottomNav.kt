@@ -9,7 +9,9 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +34,7 @@ import hannah.bd.getitwrite.modals.RequestCritique
 import hannah.bd.getitwrite.modals.RequestPositivity
 import hannah.bd.getitwrite.modals.User
 import hannah.bd.getitwrite.views.account.AccountView
+import hannah.bd.getitwrite.views.messages.MessagesNavHost
 import hannah.bd.getitwrite.views.proposals.SearchView
 
 @Composable
@@ -49,8 +52,10 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
 ) {
     val items = listOf(
         Screen.Home,
+        Screen.Queries,
         Screen.FindPartners,
         Screen.Messages,
+        Screen.Account,
     )
     val navController = rememberNavController()
     Scaffold(
@@ -94,11 +99,19 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
                 HomeFeed(user = user, recs = recs, questions = questions, toCritiques = toCritiques, hostNavController,
                     frenzies, queries)
             }
+            composable(Screen.Queries.route) {
+                HomeFeed(user = user, recs = recs, questions = questions, toCritiques = toCritiques, hostNavController,
+                    frenzies, queries)
+            }
             composable(Screen.FindPartners.route) { SearchView(user, hostNavController) }
-            composable(Screen.Messages.route) {
+            composable(Screen.Account.route) {
                 AccountView(user = user, hostNavController, critiqued = critiqued,
                     queryCritiques = queryCritiques, positiveCritiques = positiveCritiques,
                     proposals= proposals, frenzy = frenzy)
+            }
+
+            composable(Screen.Messages.route) {
+                MessagesNavHost(navController, user)
             }
         }
     }
@@ -106,6 +119,8 @@ fun ShowBottomNav(user: User, questions: MutableState<List<Question>?>,
 
 sealed class Screen(val route: String, val label: String, val resourceId: ImageVector) {
     object Home : Screen("homeFeed", "", Icons.Default.Home)
+    object Queries : Screen("queriesFeed", "", Icons.Default.Email)
     object Messages : Screen("ShowMessages", "Messages", Icons.Default.Edit)
+    object Account : Screen("ShowAccount", "Messages", Icons.Default.Person)
     object FindPartners : Screen("findPartners", "Find Partners", Icons.Default.Search)
 }

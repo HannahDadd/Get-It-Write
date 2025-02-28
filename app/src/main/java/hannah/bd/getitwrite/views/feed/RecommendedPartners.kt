@@ -3,14 +3,24 @@ package hannah.bd.getitwrite.views.feed
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -30,12 +40,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
@@ -54,7 +68,7 @@ import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>, navController: NavController) {
+fun RecommendedCritiquers(recs: MutableState<List<User>?>, navController: NavController) {
     var bottomSheet by remember { mutableStateOf<User?>(null) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     bottomSheet?.let {
@@ -67,7 +81,7 @@ fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>, navContro
             })
         }
     }
-    recs.value?.let {
+    recs.value?.let { recs ->
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -77,40 +91,46 @@ fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>, navContro
                 "Specially picked out for you.",
                 MaterialTheme.colorScheme.onSurface
             )
-            FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                it.forEach { userRec ->
-                    userRec.frequencey?.let {timeInSeconds ->
-                        val days = TimeUnit.SECONDS.toDays(timeInSeconds.toLong())
-                        val hours = TimeUnit.SECONDS.toHours(timeInSeconds.toLong()) % 24
-                        val minutes = TimeUnit.SECONDS.toMinutes(timeInSeconds.toLong()) % 60
-                        val seconds = timeInSeconds % 60
-
-                        val humanReadableTime = buildString {
-                            if (days > 0) append("$days days ")
-                            if (hours > 0) append("$hours hours ")
-                            if (minutes > 0) append("$minutes minutes ")
-                            if (seconds > 0 || isEmpty()) append("$seconds seconds")
-                        }.trim()
-                        RecommendedPartnerCard(
-                            title = userRec.displayName,
-                            reason = "Critiques every $humanReadableTime",
-                            onClick = { bottomSheet = userRec }
-                        )
-                    } ?: run {
-                        RecommendedPartnerCard(
-                            title = userRec.displayName,
-                            reason = "",
-                            onClick = { bottomSheet = userRec }
-                        )
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(128.dp),
+                contentPadding = PaddingValues(
+                    start = 12.dp,
+                    top = 16.dp,
+                    end = 12.dp,
+                    bottom = 16.dp
+                ),
+                content = {
+                    items(recs.size) { index ->
+                        Card(
+                            //backgroundColor = Color.Red,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .fillMaxWidth(),
+                            //elevation = 8.dp,
+                        ) {
+                            Text(
+                                text = recs[index].displayName,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 30.sp,
+                                color = Color(0xFFFFFFFF),
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
                     }
                 }
-            }
+            )
+//            LazyVerticalGrid(
+//                columns = GridCells.Fixed(3)
+//            ) {
+////                    recs.forEach {
+//                items(recs) {
+//                    RecommendedPartnerCard(
+//                        title = it.displayName,
+//                        onClick = { bottomSheet = it }
+//                    )
+//                }
+//            }
         }
     }
 }
@@ -118,36 +138,18 @@ fun RecommendedCritiquers(user: User, recs: MutableState<List<User>?>, navContro
 @Composable
 fun RecommendedPartnerCard(
     title: String,
-    reason: String,
     onClick: () -> Unit
 ) {
-    ElevatedCard(
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+    Box(
         modifier = Modifier
-            .size(120.dp)
+            .background(MaterialTheme.colorScheme.primary)
             .clickable(onClick = onClick)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(8.dp)) {
-            Icon(
-                Icons.Default.Person,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-            Text(
-                text = title,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(modifier = Modifier.weight(1.0f))
-            Text(
-                text = reason,
-                style = AppTypography.labelSmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
+        Text(
+            text = title,
+            color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
