@@ -152,34 +152,3 @@ fun RecommendedPartnerCard(
         )
     }
 }
-
-fun getRecs(user: User,
-                 onSuccess: (List<User>) -> Unit,
-                 onError: (Exception) -> Unit) {
-    Firebase.firestore.collection("users")
-        //.orderBy("lastCritique", Query.Direction.ASCENDING)
-        .limit(10).get()
-        .addOnSuccessListener { documents ->
-            if (documents != null) {
-                val items = documents.map { doc ->
-                    User(doc.id, doc.data)
-                }
-                user.frequencey?.let {freq ->
-                    val recs = items.filter { it.frequencey != null }
-                        .sortedBy { kotlin.math.abs(it.frequencey!! - freq) }
-                    if (recs.size < 4) {
-                        onSuccess(items.subList(0, 3))
-                    } else {
-                        onSuccess(recs.subList(0, 3))
-                    }
-                } ?: {
-                    onSuccess(items.subList(0, 3))
-                }
-            } else {
-                onError(Exception("Data not found"))
-            }
-        }
-        .addOnFailureListener { exception ->
-            onError(exception)
-        }
-}

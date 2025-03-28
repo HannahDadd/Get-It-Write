@@ -56,24 +56,3 @@ fun ProposalsSection(navController: NavController, proposals: MutableState<List<
         Text("Loading...", modifier = Modifier.padding(16.dp))
     }
 }
-
-fun getProposals(user: User,
-                 onSuccess: (List<Proposal>) -> Unit,
-                 onError: (Exception) -> Unit) {
-    Firebase.firestore.collection("proposals")
-        .whereEqualTo("writerId", user.id)
-        .get()
-        .addOnSuccessListener { documents ->
-            if (documents != null) {
-                val items = documents.map { doc ->
-                    Proposal(doc.id, doc.data)
-                }
-                onSuccess(items)
-            } else {
-                onError(Exception("Data not found"))
-            }
-        }
-        .addOnFailureListener { exception ->
-            onError(exception)
-        }
-}
