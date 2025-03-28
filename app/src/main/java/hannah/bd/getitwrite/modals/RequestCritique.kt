@@ -2,44 +2,14 @@ package hannah.bd.getitwrite.modals
 
 import com.google.firebase.Timestamp
 
-class RequestCritique(
-    override var id: String,
-    val title: String,
-    val blurb: String,
-    val genres: MutableList<String>,
-    val triggerWarnings: MutableList<String>,
-    val workTitle: String,
-    val text: String,
-    val timestamp: Timestamp,
-    val writerId: String,
-    val writerName: String
-) : UserGeneratedContent {
-    constructor(id: String, data: Map<String, Any>) : this(
-        id = id,
-        title = data["title"] as String,
-        blurb = data["blurb"] as String,
-        genres = data["genres"] as MutableList<String>,
-        triggerWarnings = data["triggerWarnings"] as MutableList<String>,
-        workTitle = data["workTitle"] as String,
-        text = data["text"] as String,
-        timestamp = data["timestamp"] as Timestamp,
-        writerId = data["writerId"] as String,
-        writerName = data["writerName"] as String
-    )
-}
-
-class RequestPositivity(
-    override var id: String,
-    val text: String,
-    val writerId: String,
-    val writerName: String,
-    val comments: Map<String, String>
-) : UserGeneratedContent {
-    constructor(id: String, data: Map<String, Any>) : this(
-        id = id,
-        text = data["text"] as String,
-        writerId = data["writerId"] as String,
-        writerName = data["writerName"] as String,
-        comments = data["comments"] as Map<String, String>,
-    )
+data class RequestCritique(override var id: String, val data: Map<String, Any>) : UserGeneratedContent {
+    val title = data["title"] as String
+    val blurb = data["blurb"] as String
+    val genres = data["genres"] as MutableList<String>
+    val triggerWarnings = data["triggerWarnings"] as MutableList<String>
+    val workTitle = data["workTitle"] as String
+    val text = data["text"] as String
+    val timestamp = data["timestamp"] as Timestamp
+    val writerId = data["writerId"] as String
+    val writerName = data["writerName"] as String
 }
