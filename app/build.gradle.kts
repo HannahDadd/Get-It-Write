@@ -83,6 +83,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation(libs.androidx.ui.text.google.fonts)
     implementation(libs.androidx.adaptive.android)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.benchmark.traceprocessor.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
