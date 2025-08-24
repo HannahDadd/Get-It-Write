@@ -71,6 +71,12 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.room.compiler)
+    implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.navigation.compose.jvmstubs)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,4 +84,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    val room_version = "2.7.2"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("io.github.thechance101:chart:1.1.0")
 }

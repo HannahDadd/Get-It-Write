@@ -14,16 +14,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,11 +32,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private var destination = "login"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -83,7 +85,7 @@ class MainActivity : ComponentActivity() {
                 Button(
                     onClick = { onScrollTo(index) },
                     shape = CircleShape,
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(label, color = MaterialTheme.colorScheme.onPrimary)
                 }
@@ -94,6 +96,14 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun VerticalContent(scrollState: ScrollState, navController: NavHostController) {
+
+        LaunchedEffect(Unit) {
+            val db = Room.databaseBuilder(
+                applicationContext,
+                AppDatabase::class.java, "database-name"
+            ).build()
+        }
+
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
