@@ -24,7 +24,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,11 +34,22 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
+import hannah.bd.getitwrite.views.graphs.GraphForWriter
+import hannah.bd.getitwrite.views.sprints.SprintCTA
+import hannah.bd.getitwrite.views.sprints.SprintStack
+import hannah.bd.getitwrite.views.wips.WIPsCTA
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    var db: AppDatabase = Room.databaseBuilder(
+        applicationContext,
+        AppDatabase::class.java, "database-name"
+    ).build()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val navController = rememberNavController()
             GetItWriteTheme {
@@ -97,13 +107,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun VerticalContent(scrollState: ScrollState, navController: NavHostController) {
 
-        LaunchedEffect(Unit) {
-            val db = Room.databaseBuilder(
-                applicationContext,
-                AppDatabase::class.java, "database-name"
-            ).build()
-        }
-
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
@@ -113,11 +116,11 @@ class MainActivity : ComponentActivity() {
             SprintCTA {
                 navController.navigate("sprint")
             }
+//            Divider()
+//            CommitmentCTA()
             Divider()
-            CommitmentCTA()
-            Divider()
-            WIPsCTA()
-            GraphForWriter()
+            WIPsCTA(db)
+            GraphForWriter(db)
         }
     }
 
@@ -125,39 +128,7 @@ class MainActivity : ComponentActivity() {
     fun NavigationGraph(navController: NavHostController) {
         NavHost(navController, startDestination = "main") {
             composable("main") { MainPage(navController) }
-            composable("sprint") { SprintStack { navController.popBackStack() } }
-        }
-    }
-}
-
-@Composable
-fun SprintCTA(onClick: () -> Unit) {
-    Button(onClick = onClick) {
-        Text("Start Sprint")
-    }
-}
-
-@Composable
-fun CommitmentCTA() {
-    Text("Your writing schedule goes here")
-}
-
-@Composable
-fun WIPsCTA() {
-    Text("Your WIPs section")
-}
-
-@Composable
-fun GraphForWriter() {
-    Text("Graphs and stats for your writing")
-}
-
-@Composable
-fun SprintStack(onFinish: () -> Unit) {
-    Column {
-        Text("Sprint Mode")
-        Button(onClick = onFinish) {
-            Text("Finish Sprint")
+            composable("sprint") { SprintStack(db) { navController.popBackStack() } }
         }
     }
 }

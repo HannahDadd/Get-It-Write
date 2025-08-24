@@ -33,7 +33,6 @@ fun Sprint(
     var timeRemaining by remember { mutableStateOf(initialTime) }
     var quoteNumber by remember { mutableStateOf(0) }
 
-    // Timer logic
     LaunchedEffect(timeRemaining) {
         if (timeRemaining > 0) {
             delay(1000L)
@@ -46,7 +45,6 @@ fun Sprint(
         }
     }
 
-    // UI layout
     Box(
         modifier = Modifier
             .fillMaxSize()

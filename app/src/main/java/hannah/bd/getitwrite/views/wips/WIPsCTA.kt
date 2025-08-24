@@ -1,6 +1,5 @@
 package hannah.bd.getitwrite.views.wips
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,10 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,22 +26,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.WIP
+import hannah.bd.getitwrite.views.graphs.GraphForWIP
 
 @Composable
-fun WIPsCTA() {
+fun WIPsCTA(db: AppDatabase) {
     val context = LocalContext.current
     var wips by remember { mutableStateOf(listOf<WIP>()) }
     var showNewWipDialog by remember { mutableStateOf(false) }
     var selectedWip by remember { mutableStateOf<WIP?>(null) }
 
     LaunchedEffect(Unit) {
-        val prefs = context.getSharedPreferences("user_defaults", Context.MODE_PRIVATE)
-        val json = prefs.getString("wips", null)
-        json?.let {
-            val type = object : TypeToken<List<WIP>>() {}.type
-            wips = Gson().fromJson(it, type)
-        }
+        wips = db.wipDao().getAll()
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -61,11 +59,11 @@ fun WIPsCTA() {
             Text("Add your writing projects here.")
         }
 
-        Divider()
+        HorizontalDivider()
 
         LazyColumn {
             items(wips) { wip ->
-                WIPView(wip = wip, onClick = { selectedWip = it })
+                WIPView(wip = wip, onClick = { selectedWip = wip })
             }
         }
     }
@@ -73,7 +71,7 @@ fun WIPsCTA() {
     if (showNewWipDialog) {
         Dialog(onDismissRequest = { showNewWipDialog = false }) {
             Surface(shape = RoundedCornerShape(8.dp)) {
-                NewWIP(existingWips = wips) {
+                NewWIP(db, existingWips = wips) {
                     wips = it
                     showNewWipDialog = false
                 }
@@ -84,7 +82,7 @@ fun WIPsCTA() {
     selectedWip?.let {
         Dialog(onDismissRequest = { selectedWip = null }) {
             Surface(shape = RoundedCornerShape(8.dp)) {
-                GraphForWIP(wip = it)
+                GraphForWIP(db, wip = it)
             }
         }
     }

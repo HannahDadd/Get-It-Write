@@ -1,6 +1,5 @@
 package hannah.bd.getitwrite.views.wips
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.WIP
+import hannah.bd.getitwrite.views.components.NumberInput
 import kotlin.random.Random
 
 @Composable
 fun NewWIP(
+    db: AppDatabase,
     existingWips: List<WIP>,
     onWipAdded: (List<WIP>) -> Unit
 ) {
@@ -66,10 +68,8 @@ fun NewWIP(
                     count = currentWordCount,
                     goal = targetWordCount
                 )
+                db.wipDao().insertAll(arrayOf(newWip))
                 val updatedList = listOf(newWip) + existingWips
-                val json = Gson().toJson(updatedList)
-                val prefs = context.getSharedPreferences("user_defaults", Context.MODE_PRIVATE)
-                prefs.edit().putString("wips", json).apply()
                 onWipAdded(updatedList)
             },
             modifier = Modifier.fillMaxWidth()

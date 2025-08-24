@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -26,14 +28,17 @@ fun WIPView(wip: WIP, onClick: () -> Unit) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         if (wip.count > wip.goal) {
-            LinearProgressIndicator(progress = 1f, modifier = Modifier.fillMaxWidth())
+            LinearProgressIndicator(
+                progress = { 1f },
+                modifier = Modifier.fillMaxWidth(),
+            )
             Text("${wip.title}")
             Text("You've hit your target! This WIP is ${wip.count - wip.goal} words over!")
         } else {
             Text(wip.title, style = MaterialTheme.typography.titleMedium)
             LinearProgressIndicator(
-                progress = wip.count.toFloat() / wip.goal,
-                modifier = Modifier.fillMaxWidth()
+                progress = { wip.count.toFloat() / wip.goal },
+                modifier = Modifier.fillMaxWidth(),
             )
             Column {
                 Text("Current: ${wip.count} words")
@@ -50,6 +55,6 @@ fun WIPView(wip: WIP, onClick: () -> Unit) {
                 }
             }
         }
-        Divider()
+        HorizontalDivider()
     }
 }

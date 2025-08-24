@@ -70,7 +70,7 @@ fun SprintStack(db: AppDatabase, onFinish: () -> Unit) {
 
             if (showWipSelector) {
                 Dialog(onDismissRequest = { showWipSelector = false }) {
-                    SelectWip(onWipSelected = {
+                    SelectWip(db, onWipSelected = {
                         selectedWip = it
                         startWordCount = it.count
                         showWipSelector = false
@@ -133,7 +133,7 @@ fun SprintStack(db: AppDatabase, onFinish: () -> Unit) {
                 selectedWip?.let {
                     Text("Selected project:", style = MaterialTheme.typography.titleMedium)
                     WIPView(wip = it) {}
-                    GraphForWIP(wip = it)
+                    GraphForWIP(db, wip = it)
                 }
                 Button(onClick = onFinish) {
                     Text("Back To Home Page")

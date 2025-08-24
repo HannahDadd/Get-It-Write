@@ -1,10 +1,11 @@
-package hannah.bd.getitwrite.views.components
+package hannah.bd.getitwrite.views.commitments
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import java.util.Calendar
@@ -12,7 +13,7 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DialTimePicker(
-    onConfirm: () -> Unit,
+    onConfirm: (timePickerState: TimePickerState) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val currentTime = Calendar.getInstance()
@@ -30,7 +31,7 @@ fun DialTimePicker(
         Button(onClick = onDismiss) {
             Text("Dismiss picker")
         }
-        Button(onClick = onConfirm) {
+        Button(onClick = { onConfirm(timePickerState) }) {
             Text("Confirm selection")
         }
     }

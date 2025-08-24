@@ -87,4 +87,7 @@ dependencies {
     val room_version = "2.7.2"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("io.github.thechance101:chart:1.1.0")
+    implementation("androidx.compose.material3:material3:1.2.0-alpha12")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
 }

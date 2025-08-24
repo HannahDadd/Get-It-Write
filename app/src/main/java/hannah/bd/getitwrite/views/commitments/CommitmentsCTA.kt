@@ -1,17 +1,52 @@
-package hannah.bd.getitwrite.views.commitments
-
-//@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+//package hannah.bd.getitwrite.views.commitments
+//
+//import android.Manifest
+//import android.content.Context
+//import androidx.compose.foundation.layout.Arrangement
+//import androidx.compose.foundation.layout.Column
+//import androidx.compose.foundation.layout.Row
+//import androidx.compose.foundation.layout.Spacer
+//import androidx.compose.material.icons.Icons
+//import androidx.compose.material3.Icon
+//import androidx.compose.material.icons.filled.AddCircle
+//import androidx.compose.material.icons.filled.CheckCircle
+//import androidx.compose.material3.Button
+//import androidx.compose.material3.MaterialTheme
+//import androidx.compose.material3.Switch
+//import androidx.compose.material3.Text
+//import androidx.compose.runtime.Composable
+//import androidx.compose.runtime.LaunchedEffect
+//import androidx.compose.runtime.getValue
+//import androidx.compose.runtime.mutableStateOf
+//import androidx.compose.runtime.remember
+//import androidx.compose.runtime.setValue
+//import androidx.compose.ui.Alignment
+//import androidx.compose.ui.Modifier
+//import androidx.compose.ui.unit.dp
+//import androidx.core.app.NotificationCompat
+//import androidx.core.app.NotificationManagerCompat
+//import com.google.accompanist.permissions.ExperimentalPermissionsApi
+//import com.google.accompanist.permissions.isGranted
+//import com.google.accompanist.permissions.rememberPermissionState
+//import hannah.bd.getitwrite.notifications.NotificationHandler
+//import hannah.bd.getitwrite.R
+//import java.time.LocalTime
+//import java.time.format.DateTimeFormatter
+//import java.time.format.FormatStyle
+//
+//@OptIn(ExperimentalPermissionsApi::class)
 //@Composable
-//fun CommitmentCTA() {
-//    val context = LocalContext.current
-//    val commitFlow = loadCommitment(context).collectAsState(initial = Triple(false, LocalTime.now().toSecondOfDay() * 1000L, emptySet()))
-//    var (notifEnabled, timeMillis, daysSet) by remember { mutableStateOf(commitFlow.value) }
+//fun CommitmentCTA(context: Context) {
+//    val postNotificationPermission = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+//    val notificationHandler = NotificationHandler(context)
+//    var notifEnabled by remember { mutableStateOf(false) }
 //
 //    val notifPerm = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 //
 //    LaunchedEffect(Unit) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !notifPerm.status.isGranted)
-//            notifPerm.launchPermissionRequest()
+//        if (!postNotificationPermission.status.isGranted) {
+//            postNotificationPermission.launchPermissionRequest()
+//        }
 //    }
 //
 //    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -21,9 +56,14 @@ package hannah.bd.getitwrite.views.commitments
 //            Spacer(Modifier.weight(1f))
 //            Switch(checked = notifEnabled, onCheckedChange = { enabled ->
 //                notifEnabled = enabled
-//                if (!enabled) AlarmScheduler.cancelAll(context)
-//                saveCommitment(enabled, timeMillis, daysSet, context)
-//                if (enabled) AlarmScheduler.scheduleWeekly(context, daysSet, timeMillis)
+//                if (enabled) {
+//
+//                } else {
+//
+//                }
+////                if (!enabled) AlarmScheduler.cancelAll(context)
+////                saveCommitment(enabled, timeMillis, daysSet, context)
+////                if (enabled) AlarmScheduler.scheduleWeekly(context, daysSet, timeMillis)
 //            })
 //        }
 //        if (notifEnabled) {
@@ -34,15 +74,14 @@ package hannah.bd.getitwrite.views.commitments
 //                Spacer(Modifier.weight(1f))
 //                Button(onClick = { showTimePicker.value = true }) { Text("Pick Time") }
 //                if (showTimePicker.value) {
-//                    TimePickerDialog(
-//                        onTimeSelected = { h, m ->
-//                            val newTime = LocalTime.of(h, m)
-//                            time.value = newTime
-//                            timeMillis = newTime.toSecondOfDay() * 1000L
-//                            AlarmScheduler.scheduleWeekly(context, daysSet, timeMillis)
-//                            saveCommitment(notifEnabled, timeMillis, daysSet, context)
+//                    DialTimePicker(onConfirm = { h, m ->
+//                        val newTime = LocalTime.of(h, m)
+//                        time.value = newTime
+//                        timeMillis = newTime.toSecondOfDay() * 1000L
+//                        AlarmScheduler.scheduleWeekly(context, daysSet, timeMillis)
+//                        saveCommitment(notifEnabled, timeMillis, daysSet, context)
 //                        },
-//                        onDismissRequest = { showTimePicker.value = false }
+//                        onDismiss = { showTimePicker.value = false }
 //                    )
 //                }
 //            }
@@ -52,14 +91,14 @@ package hannah.bd.getitwrite.views.commitments
 //                    val selected = daysSet.contains(d)
 //                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
 //                        Icon(
-//                            imageVector = if (selected) Icons.Default.RadioButtonChecked else Icons.Default.RadioButtonUnchecked,
+//                            imageVector = if (selected) Icons.Default.CheckCircle else Icons.Default.AddCircle,
 //                            contentDescription = d,
 //                            modifier = Modifier
 //                                .size(40.dp)
 //                                .clickable {
-//                                    daysSet = if (selected) daysSet - d else daysSet + d
-//                                    AlarmScheduler.scheduleWeekly(context, daysSet, timeMillis)
-//                                    saveCommitment(notifEnabled, timeMillis, daysSet, context)
+////                                    daysSet = if (selected) daysSet - d else daysSet + d
+////                                    AlarmScheduler.scheduleWeekly(context, daysSet, timeMillis)
+////                                    saveCommitment(notifEnabled, timeMillis, daysSet, context)
 //                                }
 //                        )
 //                        Text(d)
@@ -67,42 +106,5 @@ package hannah.bd.getitwrite.views.commitments
 //                }
 //            }
 //        }
-//    }
-//
-//    fun scheduleWeeklyWork(context: Context, days: Set<String>, hour: Int, minute: Int) {
-//        val workManager = getInstance(context)
-//        days.forEach { day ->
-//            val delay = computeDelayToNext(day, hour, minute)
-//            val request = PeriodicWorkRequestBuilder<WritingReminderWorker>(7, TimeUnit.DAYS)
-//                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
-//                .addTag("writing_$day")
-//                .build()
-//            workManager.enqueueUniquePeriodicWork(
-//                "writing_$day",
-//                ExistingPeriodicWorkPolicy.REPLACE,
-//                request
-//            )
-//        }
-//    }
-//
-//    fun cancelWeeklyWork(context: Context, days: Set<String>) {
-//        val workManager = getInstance(context)
-//        days.forEach { day ->
-//            workManager.cancelAllWorkByTag("writing_$day")
-//        }
-//    }
-//
-//}
-//
-//class WritingReminderWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams) {
-//    override fun doWork(): Result {
-//        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.ic_notification)
-//            .setContentTitle("Let's get writing!")
-//            .setContentText("Open Get It Write and start your writing sprint now!")
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setAutoCancel(true)
-//        NotificationManagerCompat.from(applicationContext).notify(Random.nextInt(), builder.build())
-//        return Result.success()
 //    }
 //}
