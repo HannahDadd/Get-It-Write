@@ -25,7 +25,7 @@ import kotlin.random.Random
 
 @Composable
 fun NewWIP(
-    db: AppDatabase,
+    db: AppDatabase?,
     existingWips: List<WIP>,
     onWipAdded: (List<WIP>) -> Unit
 ) {
@@ -68,7 +68,9 @@ fun NewWIP(
                     count = currentWordCount,
                     goal = targetWordCount
                 )
-                db.wipDao().insertAll(arrayOf(newWip))
+                db?.let {
+                    db.wipDao().insertAll(arrayOf(newWip))
+                }
                 val updatedList = listOf(newWip) + existingWips
                 onWipAdded(updatedList)
             },

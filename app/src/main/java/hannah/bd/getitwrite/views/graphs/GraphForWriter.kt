@@ -32,11 +32,14 @@ import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.Stat
 
 @Composable
-fun GraphForWriter(db: AppDatabase) {
+fun GraphForWriter(db: AppDatabase?) {
     var stats by remember { mutableStateOf(listOf<Stat>()) }
 
     LaunchedEffect(Unit) {
-        val stats = db.statDao().getAll()
+
+        db?.let {
+            stats = db.statDao().getAll()
+        }
     }
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp)) {

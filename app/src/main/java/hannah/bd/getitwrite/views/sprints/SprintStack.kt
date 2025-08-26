@@ -31,7 +31,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("NewApi")
 @Composable
-fun SprintStack(db: AppDatabase, onFinish: () -> Unit) {
+fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
     var sprintState by remember { mutableStateOf(SprintState.START) }
     var selectedWip by remember { mutableStateOf<WIP?>(null) }
     var startWordCount by remember { mutableStateOf(0) }
@@ -108,16 +108,18 @@ fun SprintStack(db: AppDatabase, onFinish: () -> Unit) {
                         wipId = selectedWip?.id,
                         minutes = selectedTime
                     )
-                    db.statDao().insertAll(arrayOf(stat))
-                    selectedWip?.let { w ->
-                        db.wipDao().delete(w)
-                        val newWip = WIP(
-                            id = w.id,
-                            title = w.title,
-                            count = w.count + wordsWritten,
-                            goal = w.goal
-                        )
-                        db.wipDao().insertAll(arrayOf(newWip))
+                    db?.let {
+                        db.statDao().insertAll(arrayOf(stat))
+                        selectedWip?.let { w ->
+                            db.wipDao().delete(w)
+                            val newWip = WIP(
+                                id = w.id,
+                                title = w.title,
+                                count = w.count + wordsWritten,
+                                goal = w.goal
+                            )
+                            db.wipDao().insertAll(arrayOf(newWip))
+                        }
                     }
                     sprintState = SprintState.SHOW_RESULTS
                 }) {

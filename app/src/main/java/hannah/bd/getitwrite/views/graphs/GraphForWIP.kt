@@ -34,11 +34,13 @@ import hannah.bd.getitwrite.modals.WIP
 import hannah.bd.getitwrite.views.wips.WIPView
 
 @Composable
-fun GraphForWIP(db: AppDatabase, wip: WIP) {
+fun GraphForWIP(db: AppDatabase?, wip: WIP) {
     var stats by remember { mutableStateOf(listOf<Stat>()) }
 
     LaunchedEffect(Unit) {
-        val stats = db.statDao().getStatsForWIPId(wip.id)
+        db?.let {
+            stats = db.statDao().getStatsForWIPId(wip.id)
+        }
     }
 
     Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp)) {

@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.WIP
@@ -21,14 +20,15 @@ import hannah.bd.getitwrite.views.wips.WIPView
 
 @Composable
 fun SelectWip(
-    db: AppDatabase,
+    db: AppDatabase?,
     onWipSelected: (WIP) -> Unit
 ) {
-    val context = LocalContext.current
     var wips by remember { mutableStateOf(listOf<WIP>()) }
 
     LaunchedEffect(Unit) {
-        wips = db.wipDao().getAll()
+        db?.let {
+            wips = db.wipDao().getAll()
+        }
     }
 
     Column(modifier = Modifier.padding(16.dp)) {

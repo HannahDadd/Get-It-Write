@@ -16,8 +16,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -28,24 +28,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
-import hannah.bd.getitwrite.views.graphs.GraphForWriter
-import hannah.bd.getitwrite.views.sprints.SprintCTA
-import hannah.bd.getitwrite.views.sprints.SprintStack
-import hannah.bd.getitwrite.views.wips.WIPsCTA
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
-    var db: AppDatabase = Room.databaseBuilder(
-        applicationContext,
-        AppDatabase::class.java, "database-name"
-    ).build()
+    var db: AppDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +56,11 @@ class MainActivity : ComponentActivity() {
     fun MainPage(navController: NavHostController = rememberNavController()) {
         val scrollState = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
+
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).build()
 
         Scaffold(
             topBar = {
@@ -113,22 +109,22 @@ class MainActivity : ComponentActivity() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            SprintCTA {
-                navController.navigate("sprint")
-            }
+//            SprintCTA {
+//                navController.navigate("sprint")
+//            }
 //            Divider()
 //            CommitmentCTA()
-            Divider()
-            WIPsCTA(db)
-            GraphForWriter(db)
+            HorizontalDivider()
+            //WIPsCTA(db)
+            //GraphForWriter(db)
         }
     }
 
-    @Composable
-    fun NavigationGraph(navController: NavHostController) {
-        NavHost(navController, startDestination = "main") {
-            composable("main") { MainPage(navController) }
-            composable("sprint") { SprintStack(db) { navController.popBackStack() } }
-        }
-    }
+//    @Composable
+//    fun NavigationGraph(navController: NavHostController) {
+//        NavHost(navController, startDestination = "main") {
+//            composable("main") { MainPage(navController) }
+//            composable("sprint") { SprintStack(db) { navController.popBackStack() } }
+//        }
+//    }
 }

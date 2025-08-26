@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import hannah.bd.getitwrite.modals.AppDatabase
@@ -32,14 +31,15 @@ import hannah.bd.getitwrite.modals.WIP
 import hannah.bd.getitwrite.views.graphs.GraphForWIP
 
 @Composable
-fun WIPsCTA(db: AppDatabase) {
-    val context = LocalContext.current
+fun WIPsCTA(db: AppDatabase?) {
     var wips by remember { mutableStateOf(listOf<WIP>()) }
     var showNewWipDialog by remember { mutableStateOf(false) }
     var selectedWip by remember { mutableStateOf<WIP?>(null) }
 
     LaunchedEffect(Unit) {
-        wips = db.wipDao().getAll()
+        db?.let {
+            wips = db.wipDao().getAll()
+        }
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
