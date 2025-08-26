@@ -1,8 +1,10 @@
 package hannah.bd.getitwrite.views.graphs
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +41,8 @@ fun GraphForWriter(db: AppDatabase?) {
         }
     }
 // (modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp))
-    Column {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Text("Graphs", style = MaterialTheme.typography.headlineMedium)
 
         if (stats.size < 2) {
@@ -76,9 +79,9 @@ fun GraphForWriter(db: AppDatabase?) {
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
-            Box(Modifier) {
+            Box(Modifier.fillMaxSize()) {
                 LineChart(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().defaultMinSize(minHeight = 200.dp),
                     linesParameters = listOf(
                         LineParameters(
                             label = "Words Written",

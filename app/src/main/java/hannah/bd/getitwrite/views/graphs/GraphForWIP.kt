@@ -1,5 +1,6 @@
 package hannah.bd.getitwrite.views.graphs
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -43,7 +44,8 @@ fun GraphForWIP(db: AppDatabase?, wip: WIP) {
         }
     }
 
-    Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp)) {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)) {
         Text("Your statistics for ${wip.title}", style = MaterialTheme.typography.headlineSmall)
         WIPView(wip) {}
 

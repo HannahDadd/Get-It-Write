@@ -27,6 +27,7 @@ fun WIPView(wip: WIP, onClick: () -> Unit) {
             .padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        HorizontalDivider()
         if (wip.count > wip.goal) {
             LinearProgressIndicator(
                 progress = { 1f },
@@ -55,6 +56,5 @@ fun WIPView(wip: WIP, onClick: () -> Unit) {
                 }
             }
         }
-        HorizontalDivider()
     }
 }

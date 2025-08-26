@@ -1,14 +1,21 @@
 package hannah.bd.getitwrite.views.sprints
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimeInput
+import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +29,6 @@ import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.Stat
 import hannah.bd.getitwrite.modals.WIP
 import hannah.bd.getitwrite.views.components.NumberInput
-import hannah.bd.getitwrite.views.components.SprintTimePicker
 import hannah.bd.getitwrite.views.graphs.GraphForWIP
 import hannah.bd.getitwrite.views.wips.WIPView
 import java.util.Date
@@ -36,12 +42,17 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
     var selectedWip by remember { mutableStateOf<WIP?>(null) }
     var startWordCount by remember { mutableStateOf(0) }
     var endWordCount by remember { mutableStateOf(0) }
-    var selectedTime by remember { mutableStateOf(20) }
+    var timePickerState by remember { mutableStateOf(TimePickerState(
+        initialHour = 0,
+        initialMinute = 20,
+        is24Hour = true
+    )) }
     var showWipSelector by remember { mutableStateOf(false) }
 
     when (sprintState) {
         SprintState.START -> {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 Text("Let's Sprint!", style = MaterialTheme.typography.headlineMedium)
                 Spacer(Modifier.height(16.dp))
                 selectedWip?.let {
@@ -52,15 +63,15 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
                     }
                 } ?: Button(onClick = { showWipSelector = true }) {
                     Text("Select the project you're working on.")
+
+                    NumberInput(label = "Start Word Count", value = startWordCount) {
+                        startWordCount = it
+                    }
                 }
 
-                NumberInput(label = "Start Word Count", value = startWordCount) {
-                    startWordCount = it
-                }
-
-                SprintTimePicker(onConfirm = {
-                    selectedTime = (it.hour * 60 + it.minute)
-                }, onDismiss = {})
+                TimeInput(
+                    state = timePickerState,
+                )
 
                 Spacer(Modifier.weight(1f))
                 Button(onClick = { sprintState = SprintState.SPRINT }) {
@@ -70,24 +81,31 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
 
             if (showWipSelector) {
                 Dialog(onDismissRequest = { showWipSelector = false }) {
-                    SelectWip(db, onWipSelected = {
-                        selectedWip = it
-                        startWordCount = it.count
-                        showWipSelector = false
-                    })
+                    Surface(shape = RoundedCornerShape(8.dp)) {
+                        SelectWip(db, onWipSelected = {
+                            selectedWip = it
+                            startWordCount = it.count
+                            showWipSelector = false
+                        })
+                    }
                 }
             }
         }
 
         SprintState.SPRINT -> {
             Sprint(
-                initialTime = selectedTime,
+                initialTime = timePickerState.hour * 60 + timePickerState.minute,
                 onEnd = { sprintState = SprintState.END }
             )
         }
 
         SprintState.END -> {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(20.dp)) {
+
+                Spacer(Modifier.weight(1f))
                 Text("Sprint Finished!", style = MaterialTheme.typography.headlineMedium)
                 selectedWip?.let {
                     Text("Selected project:", style = MaterialTheme.typography.titleMedium)
@@ -106,7 +124,7 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
                         wordsWritten = wordsWritten,
                         date = Date(),
                         wipId = selectedWip?.id,
-                        minutes = selectedTime
+                        minutes = timePickerState.hour * 60 + timePickerState.minute
                     )
                     db?.let {
                         db.statDao().insertAll(arrayOf(stat))
@@ -129,12 +147,11 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
         }
 
         SprintState.SHOW_RESULTS -> {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 Text("You're one step closer to hitting that writing goal!", style = MaterialTheme.typography.headlineMedium)
-                Text("You wrote ${endWordCount - startWordCount} words in ${selectedTime} minutes.")
+                Text("You wrote ${endWordCount - startWordCount} words in ${timePickerState.hour * 60 + timePickerState.minute} minutes.")
                 selectedWip?.let {
-                    Text("Selected project:", style = MaterialTheme.typography.titleMedium)
-                    WIPView(wip = it) {}
                     GraphForWIP(db, wip = it)
                 }
                 Button(onClick = onFinish) {

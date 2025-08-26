@@ -7,6 +7,7 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -28,12 +29,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
 import hannah.bd.getitwrite.views.graphs.GraphForWriter
 import hannah.bd.getitwrite.views.sprints.SprintCTA
+import hannah.bd.getitwrite.views.sprints.SprintStack
 import hannah.bd.getitwrite.views.wips.WIPsCTA
 import kotlinx.coroutines.launch
 
@@ -57,8 +61,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MainPage(navController: NavHostController = rememberNavController()) {
-        val scrollState = rememberScrollState()
-        val coroutineScope = rememberCoroutineScope()
 
         db = Room.databaseBuilder(
             applicationContext,
@@ -67,19 +69,28 @@ class MainActivity : ComponentActivity() {
 
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("Get It Write") })
+                TopAppBar(title = { Text("Get It Write", style = MaterialTheme.typography.titleLarge) })
             },
-            content = {
-                Column(modifier = Modifier.padding(it)) {
-                    HorizontalScrollButtons { index ->
-                        coroutineScope.launch {
-                            scrollState.animateScrollTo(index * 500) // Approximate scroll position
-                        }
-                    }
-                    VerticalContent(scrollState, navController)
-                }
+            content = { it ->
+                NavigationGraph(navController, it)
             }
         )
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun Home(navController: NavHostController, paddingValues: PaddingValues) {
+        val scrollState = rememberScrollState()
+        val coroutineScope = rememberCoroutineScope()
+
+        Column(modifier = Modifier.padding(paddingValues)) {
+            HorizontalScrollButtons { index ->
+                coroutineScope.launch {
+                    scrollState.animateScrollTo(index * 500) // Approximate scroll position
+                }
+            }
+            VerticalContent(scrollState, navController)
+        }
     }
 
     @Composable
@@ -125,11 +136,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    @Composable
-//    fun NavigationGraph(navController: NavHostController) {
-//        NavHost(navController, startDestination = "main") {
-//            composable("main") { MainPage(navController) }
-//            composable("sprint") { SprintStack(db) { navController.popBackStack() } }
-//        }
-//    }
+    @Composable
+    fun NavigationGraph(navController: NavHostController, paddingValues: PaddingValues) {
+        NavHost(navController, startDestination = "main") {
+            composable("main") { Home(navController, paddingValues) }
+            composable("sprint") { SprintStack(db) { navController.popBackStack() } }
+        }
+    }
 }
