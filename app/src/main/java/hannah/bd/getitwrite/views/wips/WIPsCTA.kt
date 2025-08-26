@@ -4,14 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -42,7 +38,7 @@ fun WIPsCTA(db: AppDatabase?) {
         }
     }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Your WIPs", style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.weight(1f))
@@ -59,13 +55,13 @@ fun WIPsCTA(db: AppDatabase?) {
             Text("Add your writing projects here.")
         }
 
-        HorizontalDivider()
-
-        LazyColumn {
-            items(wips) { wip ->
+        Column {
+            wips.forEach { wip ->
                 WIPView(wip = wip, onClick = { selectedWip = wip })
             }
         }
+
+        Spacer(Modifier.weight(1f))
     }
 
     if (showNewWipDialog) {

@@ -30,15 +30,15 @@ fun SprintCTA(onStartSprint: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(15.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
             Column(
                 modifier = Modifier
-                    .align(Alignment.BottomStart)
+                    .align(Alignment.Center)
                     .padding(16.dp)
                     .background(Color.White, shape = RoundedCornerShape(15.dp))
             ) {
-                Text("Unleash your productivity.", style = MaterialTheme.typography.titleMedium)
+                Text("Unleash your productivity.", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(16.dp))
             }
         }
         Button(

@@ -32,6 +32,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
+import hannah.bd.getitwrite.views.graphs.GraphForWriter
+import hannah.bd.getitwrite.views.sprints.SprintCTA
+import hannah.bd.getitwrite.views.wips.WIPsCTA
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -60,7 +63,7 @@ class MainActivity : ComponentActivity() {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "database-name"
-        ).build()
+        ).allowMainThreadQueries().build()
 
         Scaffold(
             topBar = {
@@ -85,8 +88,8 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .horizontalScroll(rememberScrollState())
                 .padding(8.dp)
-        ) {
-            val buttons = listOf("Sprint!" to 0, "Writing Schedule" to 1, "Your WIPs" to 2, "Graphs" to 3)
+        ) { //"Writing Schedule" to 1
+            val buttons = listOf("Sprint!" to 0, "Your WIPs" to 1, "Graphs" to 2)
             buttons.forEach { (label, index) ->
                 Button(
                     onClick = { onScrollTo(index) },
@@ -109,14 +112,16 @@ class MainActivity : ComponentActivity() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-//            SprintCTA {
-//                navController.navigate("sprint")
-//            }
+            HorizontalDivider()
+            SprintCTA {
+                navController.navigate("sprint")
+            }
 //            Divider()
 //            CommitmentCTA()
             HorizontalDivider()
-            //WIPsCTA(db)
-            //GraphForWriter(db)
+            WIPsCTA(db)
+            HorizontalDivider()
+            GraphForWriter(db)
         }
     }
 
