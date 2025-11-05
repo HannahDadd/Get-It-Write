@@ -51,7 +51,7 @@ fun VocabQuestion(
             .padding(8.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Text("What does **$word** mean?", style = MaterialTheme.typography.bodyLarge)
+        Text("What does $word mean?", style = MaterialTheme.typography.bodyLarge)
 
         Spacer(modifier = Modifier.height(12.dp))
 

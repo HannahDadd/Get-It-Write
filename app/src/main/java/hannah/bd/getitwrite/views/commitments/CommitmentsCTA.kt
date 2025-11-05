@@ -1,6 +1,7 @@
 package hannah.bd.getitwrite.views.commitments
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import hannah.bd.getitwrite.notifications.NotificationReceiver
 import hannah.bd.getitwrite.views.components.StretchedButton
@@ -35,7 +37,7 @@ import java.util.Calendar
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CommitmentCTA(context: Context = LocalContext.current) {
+fun CommitmentCTA(activity: Activity, context: Context = LocalContext.current) {
     val prefs = remember { context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE) }
     var notif by remember { mutableStateOf(prefs.getBoolean("notification", false)) }
     var showSetSheet by remember { mutableStateOf(false) }
@@ -49,11 +51,11 @@ fun CommitmentCTA(context: Context = LocalContext.current) {
             if (ContextCompat.checkSelfPermission(context, permission)
                 != PackageManager.PERMISSION_GRANTED
             ) {
-//                ActivityCompat.requestPermissions(
-//                    context.ac,
-//                    arrayOf(permission),
-//                    100
-//                )
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(permission),
+                    100
+                )
             }
         }
     }

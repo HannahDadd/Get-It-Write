@@ -33,6 +33,7 @@ fun BadgePage() {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.Start
     ) {
         HeadlineAndSubtitle(

@@ -1,5 +1,6 @@
 package hannah.bd.getitwrite
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -41,6 +42,7 @@ import hannah.bd.getitwrite.views.streak.ExtendStreak
 class MainActivity : ComponentActivity() {
     var db: AppDatabase? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,7 +50,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             GetItWriteTheme {
                 Surface(tonalElevation = 5.dp) {
-                    MainPage(navController)
+                    MainPage(this, navController)
                 }
             }
         }
@@ -56,7 +58,7 @@ class MainActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Composable
-    fun MainPage(navController: NavHostController) {
+    fun MainPage(activity: Activity, navController: NavHostController) {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "database-name"
@@ -94,7 +96,7 @@ class MainActivity : ComponentActivity() {
                 startDestination = "home",
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable("home") { HomepagePage(navController) }
+                composable("home") { HomepagePage(activity, navController) }
                 composable("stats") { StatsPage(db) }
                 composable("badges") { BadgePage() }
                 composable("games") { GamesPage(navController) }

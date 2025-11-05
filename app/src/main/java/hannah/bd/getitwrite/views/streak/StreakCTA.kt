@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +34,7 @@ fun StreakCTA(onAddWords: () -> Unit, context: Context = LocalContext.current) {
         verticalArrangement = Arrangement.spacedBy(24.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "$streak",
             fontSize = 44.sp,

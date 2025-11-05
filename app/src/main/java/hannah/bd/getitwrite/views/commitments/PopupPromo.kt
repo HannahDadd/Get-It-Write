@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.unit.dp
@@ -33,7 +32,6 @@ fun PopupPromo(
             .clip(RoundedCornerShape(8.dp))
             .clickable { action() }
             .background(MaterialTheme.colorScheme.primary)
-            .shadow(5.dp)
     ) {
         DrawingPathsPopupPromo(modifier = Modifier.matchParentSize())
 
