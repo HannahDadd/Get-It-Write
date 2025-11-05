@@ -2,6 +2,7 @@ package hannah.bd.getitwrite.views.games.prompt
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,7 +18,7 @@ fun PromptsCTA(navController: NavController) {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
-        TitleAndSubtitle(title = "Writing Prompt of the Day")
+        Text("Writing Prompt of the Day")
         PromptCard(question = prompt, navController = navController)
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.GlobalVariables
+import hannah.bd.getitwrite.views.components.StretchedButton
 
 @Composable
 fun EditingQuestion(

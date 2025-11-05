@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import hannah.bd.getitwrite.views.components.HeadlineAndSubtitle
+import hannah.bd.getitwrite.views.games.editing.EditingGameCTA
+import hannah.bd.getitwrite.views.games.prompt.PromptsCTA
+import hannah.bd.getitwrite.views.games.vocab.VocabCTA
 
 @Composable
 fun GamesPage(navController: NavController) {
@@ -16,12 +19,12 @@ fun GamesPage(navController: NavController) {
                 subtitle = "Writing games to keep you on top form."
             )
         }
-        item { PromptsCTA() }
+        item { PromptsCTA(navController) }
         item {
-            VocabCTA(onClick = { navController.navigate("vocabGame") })
+            VocabCTA(action = { navController.navigate("vocabGame") })
         }
         item {
-            EditingGameCTA(onClick = { navController.navigate("editingGame") })
+            EditingGameCTA(action = { navController.navigate("editingGame") })
         }
     }
 }

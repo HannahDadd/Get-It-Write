@@ -1,8 +1,10 @@
 package hannah.bd.getitwrite
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -30,9 +32,11 @@ import hannah.bd.getitwrite.views.badges.BadgePage
 import hannah.bd.getitwrite.views.games.GamesPage
 import hannah.bd.getitwrite.views.games.editing.EditingQuestion
 import hannah.bd.getitwrite.views.games.prompt.ExpandedPrompt
+import hannah.bd.getitwrite.views.games.vocab.VocabGame
 import hannah.bd.getitwrite.views.pages.HomepagePage
 import hannah.bd.getitwrite.views.pages.StatsPage
 import hannah.bd.getitwrite.views.sprints.SprintStack
+import hannah.bd.getitwrite.views.streak.ExtendStreak
 
 class MainActivity : ComponentActivity() {
     var db: AppDatabase? = null
@@ -50,6 +54,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     fun MainPage(navController: NavHostController) {
         db = Room.databaseBuilder(
@@ -90,20 +95,20 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("home") { HomepagePage(navController) }
-                composable("stats") { StatsPage() }
+                composable("stats") { StatsPage(db) }
                 composable("badges") { BadgePage() }
                 composable("games") { GamesPage(navController) }
                 composable("sprint") {
                     SprintStack(db, onFinish = { navController.popBackStack() })
                 }
                 composable("streak") {
-                    ExtendStreak(onDone = { navController.popBackStack() })
+                    ExtendStreak(db, onDone = { navController.popBackStack() })
                 }
                 composable("vocabGame") {
                     VocabGame(onDone = { navController.popBackStack() })
                 }
                 composable("editingGame") {
-                    EditingQuestion(onBack = { navController.popBackStack() })
+                    EditingQuestion(back = { navController.popBackStack() })
                 }
                 composable(
                     "expanded_prompt/{question}",

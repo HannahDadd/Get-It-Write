@@ -1,4 +1,4 @@
-package hannah.bd.getitwrite.views.sprints
+package hannah.bd.getitwrite.views.wips
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.WIP
-import hannah.bd.getitwrite.views.wips.WIPView
 
 @Composable
 fun SelectWip(

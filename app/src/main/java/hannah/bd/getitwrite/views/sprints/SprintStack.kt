@@ -30,6 +30,7 @@ import hannah.bd.getitwrite.modals.Stat
 import hannah.bd.getitwrite.modals.WIP
 import hannah.bd.getitwrite.views.components.NumberInput
 import hannah.bd.getitwrite.views.graphs.GraphForWIP
+import hannah.bd.getitwrite.views.wips.SelectWip
 import hannah.bd.getitwrite.views.wips.WIPView
 import java.util.Date
 import kotlin.random.Random

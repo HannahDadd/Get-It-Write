@@ -9,12 +9,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.WIP
+import hannah.bd.getitwrite.views.components.HeadlineAndSubtitle
 import hannah.bd.getitwrite.views.graphs.GraphForWriter
+import hannah.bd.getitwrite.views.wips.NewWIP
 import hannah.bd.getitwrite.views.wips.WIPsCTA
 
 @Composable
-fun StatsPage() {
+fun StatsPage(db: AppDatabase?) {
     var wips by remember { mutableStateOf(listOf<WIP>()) }
     var createWip by remember { mutableStateOf(false) }
 
@@ -25,17 +28,17 @@ fun StatsPage() {
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
-                WIPsCTA()
-                GraphForWriter()
+                WIPsCTA(db)
+                GraphForWriter(db)
             }
         }
     }
 
     if (createWip) {
-        NewWIPDialog(
-            wips = wips,
-            onDismiss = { createWip = false },
-            onCreate = { newWips ->
+        NewWIP(
+            db = db,
+            existingWips = wips,
+            onWipAdded = { newWips ->
                 wips = newWips
                 createWip = false
             }

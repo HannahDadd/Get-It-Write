@@ -1,4 +1,4 @@
-package hannah.bd.getitwrite.views.games.editing
+package hannah.bd.getitwrite.views.games.vocab
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -22,35 +22,33 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun EditingGameCTA(action: () -> Unit) {
+fun VocabCTA(action: () -> Unit) {
     Box(
         modifier = Modifier
-            .height(140.dp)
             .fillMaxWidth()
+            .height(140.dp)
             .clip(RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.primary)
             .clickable { action() }
     ) {
-        DrawingPathsToneCTA(
-            modifier = Modifier
-                .matchParentSize()
-                .background(MaterialTheme.colorScheme.primary)
+        DrawingPaths(
+            modifier = Modifier.matchParentSize()
         )
 
         Column(
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxHeight(),
+                .fillMaxHeight()
+                .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                "Practice editing",
+                "Test your vocabulary!",
                 style = MaterialTheme.typography.titleMedium,
                 color = Color.White
             )
             Text(
-                "Practice your editing skills on these sentences.",
+                "Play a game of matchy matchy.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White
             )
@@ -60,13 +58,13 @@ fun EditingGameCTA(action: () -> Unit) {
 
 @OptIn(ExperimentalStdlibApi::class)
 @Composable
-fun DrawingPathsToneCTA(modifier: Modifier = Modifier) {
+fun DrawingPaths(modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {
         val path = Path().apply {
-            moveTo(0f, 0f)
-            lineTo(180f, 0f)
-            cubicTo(100f, 75f, 110f, 80f, 150f, 140f)
-            lineTo(0f, 140f)
+            moveTo(180f, 0f)
+            cubicTo(100f, 75f, 110f, 80f, 300f, 140f)
+            lineTo(5000f, 500f)
+            lineTo(5000f, 0f)
             close()
         }
         drawPath(

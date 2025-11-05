@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.modals.BadgeTitles
 import hannah.bd.getitwrite.views.badges.BadgeView
+import hannah.bd.getitwrite.views.components.StretchedButton
 
 @Composable
 fun ExpandedPrompt(question: String) {
