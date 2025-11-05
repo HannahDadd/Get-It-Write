@@ -3,42 +3,33 @@ package hannah.bd.getitwrite
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
 import hannah.bd.getitwrite.views.badges.BadgePage
-import hannah.bd.getitwrite.views.pages.GamesPage
+import hannah.bd.getitwrite.views.games.GamesPage
+import hannah.bd.getitwrite.views.games.editing.EditingQuestion
+import hannah.bd.getitwrite.views.games.prompt.ExpandedPrompt
 import hannah.bd.getitwrite.views.pages.HomepagePage
 import hannah.bd.getitwrite.views.pages.StatsPage
 import hannah.bd.getitwrite.views.sprints.SprintStack
@@ -113,6 +104,13 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("editingGame") {
                     EditingQuestion(onBack = { navController.popBackStack() })
+                }
+                composable(
+                    "expanded_prompt/{question}",
+                    arguments = listOf(navArgument("question") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    val question = backStackEntry.arguments?.getString("question") ?: ""
+                    ExpandedPrompt(question = question)
                 }
             }
         }

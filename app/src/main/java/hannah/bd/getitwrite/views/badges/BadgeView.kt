@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.modals.Badge
+import hannah.bd.getitwrite.modals.BadgeTitles
 
 @Composable
 fun BadgeView(
@@ -97,4 +98,12 @@ private fun loadBadge(context: Context, title: String): Badge {
 private fun saveBadge(context: Context, badge: Badge) {
     val prefs = context.getSharedPreferences("badges", Context.MODE_PRIVATE)
     prefs.edit().putInt(badge.title, badge.score).apply()
+}
+
+object BadgeView {
+    fun incrementBadge(incrementBy: Int, badge: BadgeTitles, context: Context) {
+        val prefs = context.getSharedPreferences("badges", Context.MODE_PRIVATE)
+        val current = prefs.getInt(badge.rawValue, 0)
+        prefs.edit().putInt(badge.rawValue, current + incrementBy).apply()
+    }
 }
