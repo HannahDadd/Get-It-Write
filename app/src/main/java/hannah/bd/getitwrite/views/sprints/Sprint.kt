@@ -35,7 +35,7 @@ fun Sprint(
 
     LaunchedEffect(timeRemaining) {
         if (timeRemaining > 0) {
-            delay(1000L)
+            delay(60000L)
             if (timeRemaining % 10 == 0) {
                 quoteNumber = (1 until GlobalVariables.inspiringQuotes.size - 1).random()
             }
