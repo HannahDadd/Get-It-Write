@@ -37,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.theme.GetItWriteTheme
+import hannah.bd.getitwrite.views.badges.BadgePage
 import hannah.bd.getitwrite.views.pages.GamesPage
 import hannah.bd.getitwrite.views.pages.HomepagePage
 import hannah.bd.getitwrite.views.pages.StatsPage
@@ -116,64 +117,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-//    @OptIn(ExperimentalMaterial3Api::class)
-//    @Composable
-//    fun MainPage(navController: NavHostController = rememberNavController()) {
-//
-//        db = Room.databaseBuilder(
-//            applicationContext,
-//            AppDatabase::class.java, "database-name"
-//        ).allowMainThreadQueries().build()
-//
-//        Scaffold(
-//            topBar = {
-//                TopAppBar(title = { Text("Get It Write", style = MaterialTheme.typography.titleLarge) })
-//            },
-//            content = { it ->
-//                NavigationTabExample(navController, it)
-//            }
-//        )
-//    }
-//
-//    @OptIn(ExperimentalMaterial3Api::class)
-//    @Composable
-//    fun NavigationTabExample(navController: NavHostController, paddingValues: PaddingValues) {
-//        val startDestination = Destination.HOME
-//        var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
-//
-//        Scaffold(modifier = Modifier.padding(paddingValues)) { contentPadding ->
-//            PrimaryTabRow(selectedTabIndex = selectedDestination, modifier = Modifier.padding(contentPadding)) {
-//                Destination.entries.forEachIndexed { index, destination ->
-//                    Tab(
-//                        selected = selectedDestination == index,
-//                        onClick = {
-//                            navController.navigate(route = destination.route)
-//                            selectedDestination = index
-//                        },
-//                        text = {
-//                            Text(
-//                                text = destination.label,
-//                                maxLines = 2,
-//                                overflow = TextOverflow.Ellipsis
-//                            )
-//                        }
-//                    )
-//                }
-//            }
-//            //AppNavHost(navController, startDestination)
-//        }
-//    }
-}
-
-enum class Destination(
-    val route: String,
-    val label: String,
-    val icon: ImageVector,
-    val contentDescription: String
-) {
-    HOME("home", "Home", Icons.Default.Home, "Home"),
-    STATS("stats", "Stats", Icons.Default.Person, "Stats"),
-    BADGES("badges", "Badges", Icons.Default.CheckCircle, "Badges"),
-    GAMES("games", "Games", Icons.Default.Edit, "Games"),
 }
