@@ -1,6 +1,7 @@
 package hannah.bd.getitwrite.views.badges
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.modals.Badge
 import hannah.bd.getitwrite.modals.BadgeTitles
 
+@ExperimentalFoundationApi
 @Composable
 fun BadgeView(
     title: String,

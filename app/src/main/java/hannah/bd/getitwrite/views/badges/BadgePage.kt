@@ -1,6 +1,7 @@
 package hannah.bd.getitwrite.views.badges
 
 import android.content.Context
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,7 @@ import hannah.bd.getitwrite.modals.popUpButton
 import hannah.bd.getitwrite.modals.popUpText
 import hannah.bd.getitwrite.views.components.HeadlineAndSubtitle
 
+@ExperimentalFoundationApi
 @Composable
 fun BadgePage() {
     val context = LocalContext.current
@@ -94,6 +96,7 @@ fun BadgePage() {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 private fun BadgeSection(title: String, badges: List<BadgeTitles>, context: Context) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {

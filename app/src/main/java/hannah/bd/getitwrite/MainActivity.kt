@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
@@ -42,6 +43,7 @@ import hannah.bd.getitwrite.views.streak.ExtendStreak
 class MainActivity : ComponentActivity() {
     var db: AppDatabase? = null
 
+    @ExperimentalFoundationApi
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +58,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalFoundationApi
     @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     fun MainPage(activity: Activity, navController: NavHostController) {
