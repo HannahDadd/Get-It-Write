@@ -1,16 +1,13 @@
 package hannah.bd.getitwrite.views.badges
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +24,7 @@ import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.Badge
 
 @Composable
-fun BadgePromo(badge: Badge) {
+fun FinishBookPromo(badge: Badge) {
     val GoldAchieve = Color(0xFFFFD700)
     val context = LocalContext.current
     val achieved = remember { getAchievement(context, badge.key) }
@@ -35,12 +32,13 @@ fun BadgePromo(badge: Badge) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .background(Color(0xFF6A1B9A)) // CardPurple equivalent
+            .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
         Icon(
-            imageVector = if (achieved) badge.getIcon() else Icons.Default.Lock,
+            imageVector = Icons.Default.Edit,
             contentDescription = null,
             tint = Color.White,
             modifier = Modifier
@@ -54,27 +52,10 @@ fun BadgePromo(badge: Badge) {
 
         Text(
             text = badge.getText(),
+            color = Color.White,
             fontSize = 18.sp,
             fontFamily = FontFamily(Font(R.font.bellefairregularfont)),
-            modifier = Modifier.padding(start = 10.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Icon(
-            imageVector = if (achieved) Icons.Default.CheckCircle else Icons.Default.Lock,
-            contentDescription = null,
-            tint = if (achieved) GoldAchieve else Color.Gray
+            modifier = Modifier.padding(start = 12.dp)
         )
     }
-}
-
-fun getAchievement(context: Context, key: String): Boolean {
-    val prefs = context.getSharedPreferences("badges", Context.MODE_PRIVATE)
-    return prefs.getBoolean(key, false)
-}
-
-fun setAchievement(context: Context, key: String, value: Boolean) {
-    val prefs = context.getSharedPreferences("badges", Context.MODE_PRIVATE)
-    prefs.edit().putBoolean(key, value).apply()
 }

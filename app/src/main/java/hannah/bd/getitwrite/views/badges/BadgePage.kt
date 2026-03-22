@@ -6,9 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -19,99 +21,91 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.modals.BadgeTitles
-import hannah.bd.getitwrite.modals.popUpButton
-import hannah.bd.getitwrite.modals.popUpText
+import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.views.components.HeadlineAndSubtitle
 
-@ExperimentalFoundationApi
 @Composable
 fun BadgePage() {
     val context = LocalContext.current
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.Start
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 8.dp)
     ) {
-        HeadlineAndSubtitle(
-            title = "Celebrate your Wins",
-            subtitle = "Writing games to keep you on top form."
-        )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(32.dp)
-        ) {
-            item {
-                BadgeSection(
-                    title = "Messing",
-                    badges = listOf(
-                        BadgeTitles.PromptsUsed,
-                        BadgeTitles.WordsLearnt
-                    ),
-                    context = context
-                )
-            }
-            item {
-                BadgeSection(
-                    title = "Writing",
-                    badges = listOf(BadgeTitles.Projects),
-                    context = context
-                )
-            }
-            item {
-                BadgeSection(
-                    title = "Querying",
-                    badges = listOf(
-                        BadgeTitles.QueriesSent,
-                        BadgeTitles.FullRequest
-                    ),
-                    context = context
-                )
-            }
-            item {
-                BadgeSection(
-                    title = "Authoring",
-                    badges = listOf(BadgeTitles.BooksPublished),
-                    context = context
-                )
-            }
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(25.dp)
-                            .background(MaterialTheme.colorScheme.secondary, CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("tap to increment, double tap to reset")
-                }
+        item {
+            Text(
+                text = "Achievements",
+                fontSize = 34.sp,
+                fontFamily = FontFamily(Font(R.font.abril_fatface_regular)),
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
+        // Finish Book Section
+        item {
+            SectionHeader("FINISH A BOOK")
+            FinishBookPromo(badge = Badge.BookGoal)
+        }
+
+        // Sprint Section
+        item {
+            SectionHeader("SPRINTS COMPLETED")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                SprintBadge(Badge.TwentySprint, screenWidth * 0.29f)
+                SprintBadge(Badge.FortySprint, screenWidth * 0.29f)
+                SprintBadge(Badge.HourSprint, screenWidth * 0.29f)
             }
         }
-    }
-}
 
-@ExperimentalFoundationApi
-@Composable
-private fun BadgeSection(title: String, badges: List<BadgeTitles>, context: Context) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            badges.forEach { badgeTitle ->
-                val text = popUpText(badgeTitle)
-                val showPopup = popUpButton(badgeTitle)
-                BadgeView(
-                    title = badgeTitle.rawValue,
-                    onTapText = text,
-                    shouldShowPopup = showPopup,
-                    context = context
-                )
-            }
+        // Quick Words
+        item {
+            SectionHeader("QUICK WORDS")
+        }
+        items(listOf(
+            Badge.QuickWords250,
+            Badge.QuickWords500,
+            Badge.QuickWords1000,
+            Badge.QuickWords2000,
+            Badge.QuickWords5000
+        )) {
+            BadgePromo(it)
+        }
+
+        // Word Nerd
+        item {
+            SectionHeader("WORD NERD")
+        }
+        items(listOf(
+            Badge.WordNerd200,
+            Badge.WordNerd500,
+            Badge.WordNerd1000,
+            Badge.WordNerd10000,
+            Badge.WordNerd20000,
+            Badge.WordNerd50000
+        )) {
+            BadgePromo(it)
+        }
+
+        // Streak Freak
+        item {
+            SectionHeader("STREAK FREAK")
+        }
+        items(listOf(
+            Badge.StreakFreak2,
+            Badge.StreakFreak7,
+            Badge.StreakFreak14,
+            Badge.StreakFreak31,
+            Badge.StreakFreak100
+        )) {
+            BadgePromo(it)
         }
     }
 }
