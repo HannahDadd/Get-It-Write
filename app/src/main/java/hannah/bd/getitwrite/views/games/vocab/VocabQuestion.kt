@@ -26,8 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.modals.BadgeTitles
-import hannah.bd.getitwrite.views.badges.BadgeView
 
 @Composable
 fun VocabQuestion(
@@ -62,9 +60,9 @@ fun VocabQuestion(
                     .height(100.dp)
                     .padding(vertical = 4.dp)
                     .clickable {
-                        if (option == definition) {
+                        if (option == definition)  {
                             showCorrect = true
-                            BadgeView.incrementBadge(1, BadgeTitles.WordsLearnt, context)
+                            //BadgeView.incrementBadge(1, BadgeTitles.WordsLearnt, context)
                         } else {
                             showError = true
                         }

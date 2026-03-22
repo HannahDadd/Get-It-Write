@@ -15,8 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import hannah.bd.getitwrite.modals.BadgeTitles
-import hannah.bd.getitwrite.views.badges.BadgeView
 import hannah.bd.getitwrite.views.components.StretchedButton
 
 @Composable
@@ -40,7 +38,7 @@ fun ExpandedPrompt(question: String) {
             text = if (btnPressed) "Congrats!" else "I did the prompt!",
             onClick = {
                 // Increment prompt badge
-                BadgeView.incrementBadge(1, BadgeTitles.PromptsUsed, context)
+                //BadgeView.incrementBadge(1, BadgeTitles.PromptsUsed, context)
                 btnPressed = true
             }
         )
