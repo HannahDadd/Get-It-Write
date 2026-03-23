@@ -10,7 +10,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -101,7 +100,13 @@ class MainActivity : ComponentActivity() {
                     NavigationBarItem(
                         selected = currentDestination == "games",
                         onClick = { navController.navigate("games") },
-                        icon = { Icon(Icons.Default.Edit, contentDescription = null) }
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.gameicon),
+                                contentDescription = "Home",
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
                     )
                 }
             }
