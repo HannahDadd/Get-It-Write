@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -42,11 +43,11 @@ fun BadgePromo(badge: Badge) {
         Icon(
             imageVector = if (achieved) badge.getIcon() else Icons.Default.Lock,
             contentDescription = null,
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
                 .size(40.dp)
                 .background(
-                    if (achieved) GoldAchieve else Color.Gray,
+                    if (achieved) GoldAchieve else MaterialTheme.colorScheme.primary,
                     shape = CircleShape
                 )
                 .padding(8.dp)

@@ -8,8 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -84,7 +85,13 @@ class MainActivity : ComponentActivity() {
                     NavigationBarItem(
                         selected = currentDestination == "badges",
                         onClick = { navController.navigate("badges") },
-                        icon = { Icon(Icons.Default.CheckCircle, contentDescription = null) }
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.trophyicon),
+                                contentDescription = "Home",
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
                     )
                     NavigationBarItem(
                         selected = currentDestination == "games",

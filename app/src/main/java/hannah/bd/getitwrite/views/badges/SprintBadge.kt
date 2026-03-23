@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -37,7 +38,7 @@ fun SprintBadge(badge: Badge, width: Dp) {
             .width(width)
             .height(150.dp)
             .padding(8.dp)
-            .background(Color.White, shape = RoundedCornerShape(8.dp)),
+            .background(MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(8.dp)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -46,11 +47,11 @@ fun SprintBadge(badge: Badge, width: Dp) {
         Icon(
             imageVector = badge.getIcon(),
             contentDescription = null,
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
                 .size(40.dp)
                 .background(
-                    if (achieved) GoldAchieve else Color.Gray,
+                    if (achieved) GoldAchieve else MaterialTheme.colorScheme.primary,
                     shape = CircleShape
                 )
                 .padding(8.dp)
@@ -61,6 +62,7 @@ fun SprintBadge(badge: Badge, width: Dp) {
         Text(
             text = badge.getText(),
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = 18.sp,
             fontFamily = FontFamily(Font(R.font.bellefairregularfont))
         )

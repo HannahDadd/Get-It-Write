@@ -3,8 +3,10 @@ package hannah.bd.getitwrite.views.badges
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -41,13 +43,17 @@ fun BadgePage() {
 
         // Finish Book Section
         item {
-            BadgeSectionHeader("FINISH A BOOK")
+            BadgeSectionHeader("Finish a book")
             FinishBookPromo(badge = Badge.BOOK_GOAL)
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
         }
 
         // Sprint Section
         item {
-            BadgeSectionHeader("SPRINTS COMPLETED")
+            BadgeSectionHeader("Sprints completed")
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -58,9 +64,13 @@ fun BadgePage() {
             }
         }
 
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         // Quick Words
         item {
-            BadgeSectionHeader("QUICK WORDS")
+            BadgeSectionHeader("Quick words")
         }
         items(listOf(
             Badge.QUICK_WORDS_250,
@@ -72,9 +82,13 @@ fun BadgePage() {
             BadgePromo(it)
         }
 
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         // Word Nerd
         item {
-            BadgeSectionHeader("WORD NERD")
+            BadgeSectionHeader("Word nerd")
         }
         items(listOf(
             Badge.WORD_NERD_200,
@@ -87,9 +101,13 @@ fun BadgePage() {
             BadgePromo(it)
         }
 
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         // Streak Freak
         item {
-            BadgeSectionHeader("STREAK FREAK")
+            BadgeSectionHeader("Streak freak")
         }
         items(listOf(
             Badge.STREAK_FREAK_2,

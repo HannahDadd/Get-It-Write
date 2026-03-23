@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -32,7 +33,7 @@ fun FinishBookPromo(badge: Badge) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF6A1B9A)) // CardPurple equivalent
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -40,11 +41,11 @@ fun FinishBookPromo(badge: Badge) {
         Icon(
             imageVector = Icons.Default.Edit,
             contentDescription = null,
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
                 .size(40.dp)
                 .background(
-                    if (achieved) GoldAchieve else Color.Gray,
+                    if (achieved) GoldAchieve else MaterialTheme.colorScheme.primary,
                     shape = CircleShape
                 )
                 .padding(8.dp)
@@ -52,7 +53,7 @@ fun FinishBookPromo(badge: Badge) {
 
         Text(
             text = badge.getText(),
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontSize = 18.sp,
             fontFamily = FontFamily(Font(R.font.bellefairregularfont)),
             modifier = Modifier.padding(start = 12.dp)
