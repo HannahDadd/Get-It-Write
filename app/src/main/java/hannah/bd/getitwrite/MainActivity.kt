@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -80,7 +79,13 @@ class MainActivity : ComponentActivity() {
                     NavigationBarItem(
                         selected = currentDestination == "stats",
                         onClick = { navController.navigate("stats") },
-                        icon = { Icon(Icons.Default.Person, contentDescription = null) }
+                        icon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baricons),
+                                contentDescription = "Home",
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
                     )
                     NavigationBarItem(
                         selected = currentDestination == "badges",
