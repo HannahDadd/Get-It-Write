@@ -17,7 +17,7 @@ import hannah.bd.getitwrite.views.games.vocab.VocabCTA
 fun GamesPage(navController: NavController) {
     LazyColumn(modifier = Modifier.fillMaxSize()
         .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        verticalArrangement = Arrangement.spacedBy(16.dp)) {
         item {
             HeadlineAndSubtitle(
                 title = "Writing Games",

@@ -20,8 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.WIP
 import hannah.bd.getitwrite.views.graphs.GraphForWIP
@@ -40,7 +43,9 @@ fun WIPsCTA(db: AppDatabase?) {
 
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("Your WIPs", style = MaterialTheme.typography.headlineMedium)
+            Text("Your WIPs",
+                style = MaterialTheme.typography.headlineMedium,
+                fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)),)
             Spacer(Modifier.weight(1f))
             Icon(
                 imageVector = Icons.Default.Add,

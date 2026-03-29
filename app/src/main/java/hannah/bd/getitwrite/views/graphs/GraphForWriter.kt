@@ -18,6 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +29,7 @@ import com.aay.compose.baseComponents.model.GridOrientation
 import com.aay.compose.lineChart.LineChart
 import com.aay.compose.lineChart.model.LineParameters
 import com.aay.compose.lineChart.model.LineType
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.Stat
 
@@ -40,16 +43,19 @@ fun GraphForWriter(db: AppDatabase?) {
             stats = db.statDao().getAll()
         }
     }
-// (modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp))
     Column(
         verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        Text("Graphs", style = MaterialTheme.typography.headlineMedium)
+        Text("Graphs",
+            style = MaterialTheme.typography.headlineMedium,
+            fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)))
 
         if (stats.size < 2) {
             Text("Not enough statistics to show yet! Keep writing!")
         } else {
             val totalWords = stats.sumOf { it.wordsWritten }
-            Text("You've written a total of $totalWords words across ${stats.size} sprints!", fontWeight = FontWeight.Bold)
+            Text("You've written a total of $totalWords words across ${stats.size} sprints!",
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
 
             Box(Modifier.fillMaxSize()) {
                 BarChart(

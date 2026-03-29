@@ -26,10 +26,10 @@ fun StatsPage(db: AppDatabase?) {
 
     Column(modifier = Modifier.fillMaxSize()
         .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        verticalArrangement = Arrangement.spacedBy(16.dp)) {
         HeadlineAndSubtitle(
             title = "Your Writing Stats",
-            subtitle = "Writing games to keep you on top form."
+            subtitle = "Let's see how you're writing projects are doing."
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {

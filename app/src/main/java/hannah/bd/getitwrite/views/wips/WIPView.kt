@@ -14,8 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.WIP
 
 @Composable
@@ -27,23 +30,27 @@ fun WIPView(wip: WIP, onClick: () -> Unit) {
             .padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        HorizontalDivider()
         if (wip.count > wip.goal) {
             LinearProgressIndicator(
                 progress = { 1f },
                 modifier = Modifier.fillMaxWidth(),
             )
-            Text("${wip.title}")
+            Text("${wip.title}",
+                fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
             Text("You've hit your target! This WIP is ${wip.count - wip.goal} words over!")
         } else {
-            Text(wip.title, style = MaterialTheme.typography.titleMedium)
+            Text(wip.title,
+                style = MaterialTheme.typography.titleMedium,
+                fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
             LinearProgressIndicator(
                 progress = { wip.count.toFloat() / wip.goal },
                 modifier = Modifier.fillMaxWidth(),
             )
             Column {
-                Text("Current: ${wip.count} words")
-                Text("Goal: ${wip.goal} words", fontWeight = FontWeight.Bold)
+                Text("Current: ${wip.count} words",
+                    fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
+                Text("Goal: ${wip.goal} words", fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     Text(
                         "${(wip.count.toFloat() / wip.goal * 100).toInt()}% complete",
@@ -56,5 +63,6 @@ fun WIPView(wip: WIP, onClick: () -> Unit) {
                 }
             }
         }
+        HorizontalDivider()
     }
 }
