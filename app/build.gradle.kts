@@ -72,7 +72,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.androidx.ui.android)
