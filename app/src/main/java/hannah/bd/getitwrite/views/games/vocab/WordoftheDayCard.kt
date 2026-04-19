@@ -31,8 +31,10 @@ fun WordOfTheDayCard() {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
-        Text("Learn a new word",
-            fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)))
+        Text(
+            text = "learn a new word".uppercase(),
+            style = MaterialTheme.typography.labelLarge
+        )
         Card(
             modifier = Modifier
                 .fillMaxWidth()

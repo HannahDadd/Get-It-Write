@@ -17,28 +17,43 @@ import hannah.bd.getitwrite.views.commitments.CommitmentCTA
 import hannah.bd.getitwrite.views.components.HeadlineAndSubtitle
 import hannah.bd.getitwrite.views.games.vocab.WordOfTheDayCard
 import hannah.bd.getitwrite.views.sprints.SprintCTA
+import hannah.bd.getitwrite.views.sprints.SprintCarousel
 import hannah.bd.getitwrite.views.streak.StreakCTA
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomepagePage(activity: Activity, navController: NavController) {
-    Column(modifier = Modifier.fillMaxSize()
-        .padding(16.dp)) {
+    Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
             horizontalAlignment = Alignment.Start,
         ) {
             item {
-                HeadlineAndSubtitle(
-                    title = "Hey, future best selling author",
-                    subtitle = "Let's get that manuscript written."
-                )
+                Column(modifier = Modifier.padding(16.dp)) {
+                    HeadlineAndSubtitle(
+                        title = "Hey, future best selling author",
+                        subtitle = "Let's get that manuscript written."
+                    )
+                }
             }
             item {
-                Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
                     StreakCTA(onAddWords = { navController.navigate("streak") })
-                    CommitmentCTA(activity)
+                }
+            }
+            item {
+                SprintCarousel { navController.navigate("sprint") }
+            }
+            item {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(15.dp)
+                ) {
                     SprintCTA(onStartSprint = { navController.navigate("sprint") })
+                    CommitmentCTA(activity)
                     WordOfTheDayCard()
                 }
             }

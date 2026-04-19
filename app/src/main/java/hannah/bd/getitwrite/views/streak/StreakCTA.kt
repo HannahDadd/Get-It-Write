@@ -19,9 +19,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.views.components.StretchedButton
 
 @Composable
@@ -31,14 +33,14 @@ fun StreakCTA(onAddWords: () -> Unit, context: Context = LocalContext.current) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "$streak",
             fontSize = 44.sp,
-            fontFamily = FontFamily.Serif,
+            fontFamily = FontFamily(Font(R.font.bellefairregularfont)),
             color = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primary, shape = CircleShape)

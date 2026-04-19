@@ -30,7 +30,7 @@ fun SprintCarousel(
         )
 
         LazyRow(
-            modifier = Modifier.padding(horizontal = 16.dp)
+//            modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             item {
                 StartSprintCard(
