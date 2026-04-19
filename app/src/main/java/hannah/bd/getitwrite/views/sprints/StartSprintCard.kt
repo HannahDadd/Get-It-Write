@@ -29,13 +29,13 @@ fun StartSprintCard(
             .padding(8.dp)
             .size(width = 150.dp, height = 100.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable { onClick() }
             .padding(12.dp)
     ) {
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
             fontSize = 28.sp,
             fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)),
             fontWeight = FontWeight.Bold,
