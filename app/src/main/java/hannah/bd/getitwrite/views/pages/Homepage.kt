@@ -18,6 +18,7 @@ import hannah.bd.getitwrite.views.components.HeadlineAndSubtitle
 import hannah.bd.getitwrite.views.games.vocab.WordOfTheDayCard
 import hannah.bd.getitwrite.views.sprints.SprintCTA
 import hannah.bd.getitwrite.views.sprints.SprintCarousel
+import hannah.bd.getitwrite.views.sprints.SprintDurations
 import hannah.bd.getitwrite.views.streak.StreakCTA
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,14 +46,20 @@ fun HomepagePage(activity: Activity, navController: NavController) {
                 }
             }
             item {
-                SprintCarousel { navController.navigate("sprint") }
+                SprintCarousel { sprintDurations ->
+                    when(sprintDurations) {
+                        SprintDurations.TWENTY_MINS -> navController.navigate("sprint20")
+                        SprintDurations.FORTY_MINS -> navController.navigate("sprint40")
+                        SprintDurations.ONE_HOUR -> navController.navigate("sprint60")
+                    }
+                }
             }
             item {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(15.dp)
                 ) {
-                    SprintCTA(onStartSprint = { navController.navigate("sprint") })
+                    SprintCTA(onStartSprint = { navController.navigate("sprint20") })
                     CommitmentCTA(activity)
                     WordOfTheDayCard()
                 }

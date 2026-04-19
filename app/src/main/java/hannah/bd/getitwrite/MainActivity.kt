@@ -120,8 +120,14 @@ class MainActivity : ComponentActivity() {
                 composable("stats") { StatsPage(db) }
                 composable("badges") { BadgePage() }
                 composable("games") { GamesPage(navController) }
-                composable("sprint") {
-                    SprintStack(db, onFinish = { navController.popBackStack() })
+                composable("sprint20") {
+                    SprintStack(db, onFinish = { navController.popBackStack() }, 20)
+                }
+                composable("sprint40") {
+                    SprintStack(db, onFinish = { navController.popBackStack() }, 40)
+                }
+                composable("sprint60") {
+                    SprintStack(db, onFinish = { navController.popBackStack() }, 60)
                 }
                 composable("streak") {
                     ExtendStreak(db, onDone = { navController.popBackStack() })

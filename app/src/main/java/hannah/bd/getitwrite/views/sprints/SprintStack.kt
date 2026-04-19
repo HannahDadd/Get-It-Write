@@ -38,14 +38,14 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("NewApi")
 @Composable
-fun SprintStack(db: AppDatabase?, onFinish: () -> Unit) {
+fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
     var sprintState by remember { mutableStateOf(SprintState.START) }
     var selectedWip by remember { mutableStateOf<WIP?>(null) }
     var startWordCount by remember { mutableStateOf(0) }
     var endWordCount by remember { mutableStateOf(0) }
     var timePickerState by remember { mutableStateOf(TimePickerState(
         initialHour = 0,
-        initialMinute = 20,
+        initialMinute = initialMinute,
         is24Hour = true
     )) }
     var showWipSelector by remember { mutableStateOf(false) }
