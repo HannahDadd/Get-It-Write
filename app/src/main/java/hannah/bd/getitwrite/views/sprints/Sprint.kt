@@ -18,11 +18,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
 import hannah.bd.getitwrite.GlobalVariables.inspiringQuotes
+import hannah.bd.getitwrite.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -35,7 +38,7 @@ fun Sprint(
 
     LaunchedEffect(timeRemaining) {
         if (timeRemaining > 0) {
-            delay(60000L)
+            delay(1000L)
             if (timeRemaining % 10 == 0) {
                 quoteNumber = (1 until GlobalVariables.inspiringQuotes.size - 1).random()
             }
@@ -62,6 +65,7 @@ fun Sprint(
                 text = inspiringQuotes[quoteNumber],
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onPrimary,
+                fontFamily = FontFamily(Font(R.font.bellefairregularfont)),
                 fontSize = 28.sp
             )
 
@@ -70,13 +74,15 @@ fun Sprint(
             Text(
                 text = "Sprint Time Remaining (minutes):",
                 color = MaterialTheme.colorScheme.onPrimary,
+                fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)),
                 fontSize = 20.sp
             )
 
             Text(
                 text = "$timeRemaining",
                 color = MaterialTheme.colorScheme.onPrimary,
-                fontSize = 32.sp
+                fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)),
+                fontSize = 48.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
