@@ -48,6 +48,17 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
         initialMinute = initialMinute,
         is24Hour = true
     )) }
+    if (initialMinute < 60) {
+        timePickerState = TimePickerState(
+            initialHour = 0,
+            initialMinute = initialMinute,
+            is24Hour = true)
+    } else {
+        timePickerState = TimePickerState(
+            initialHour = 1,
+            initialMinute = 0,
+            is24Hour = true)
+    }
     var showWipSelector by remember { mutableStateOf(false) }
 
     when (sprintState) {
