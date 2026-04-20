@@ -127,7 +127,7 @@ class MainActivity : ComponentActivity() {
                     SprintStack(db, onFinish = { navController.popBackStack() }, 40)
                 }
                 composable("sprint60") {
-                    SprintStack(db, onFinish = { navController.popBackStack() }, 59)
+                    SprintStack(db, onFinish = { navController.popBackStack() }, 60)
                 }
                 composable("streak") {
                     ExtendStreak(db, onDone = { navController.popBackStack() })

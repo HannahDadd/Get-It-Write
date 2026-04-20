@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
@@ -21,10 +22,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.Stat
 import hannah.bd.getitwrite.modals.WIP
@@ -40,12 +46,12 @@ import kotlin.random.Random
 @Composable
 fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
     var sprintState by remember { mutableStateOf(SprintState.START) }
-    var selectedWip by remember { mutableStateOf<WIP?>(null) }
+    var selectedWip by remember { mutableStateOf<WIP?>(db?.wipDao()?.getAll()?.get(0)) }
     var startWordCount by remember { mutableStateOf(0) }
     var endWordCount by remember { mutableStateOf(0) }
     var timePickerState by remember { mutableStateOf(TimePickerState(
         initialHour = 0,
-        initialMinute = initialMinute,
+        initialMinute = 0,
         is24Hour = true
     )) }
     if (initialMinute < 60) {
@@ -64,27 +70,27 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
     when (sprintState) {
         SprintState.START -> {
             Column(modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)) {
-                Text("Let's Sprint!", style = MaterialTheme.typography.headlineMedium)
-                Spacer(Modifier.height(16.dp))
+                verticalArrangement = Arrangement.spacedBy(
+                    space = 20.dp,
+                    alignment = Alignment.CenterVertically
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Let's Sprint!",
+                    fontSize = 32.sp,
+                    fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)),)
                 selectedWip?.let {
-                    Text("Selected project", style = MaterialTheme.typography.titleMedium)
                     WIPView(wip = it) {}
-                    Button(onClick = { showWipSelector = true }) {
+                    TextButton(onClick = { showWipSelector = true }) {
                         Text("Change the WIP you're working on.")
                     }
                 } ?: Button(onClick = { showWipSelector = true }) {
                     Text("Select the project you're working on.")
-
-                    NumberInput(label = "Start Word Count", value = startWordCount) {
-                        startWordCount = it
-                    }
                 }
-
+                Spacer(Modifier.height(16.dp))
                 TimeInput(
                     state = timePickerState,
                 )
-
                 Spacer(Modifier.weight(1f))
                 Button(onClick = { sprintState = SprintState.SPRINT }) {
                     Text("Start")
@@ -120,7 +126,6 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
                 Spacer(Modifier.weight(1f))
                 Text("Sprint Finished!", style = MaterialTheme.typography.headlineMedium)
                 selectedWip?.let {
-                    Text("Selected project:", style = MaterialTheme.typography.titleMedium)
                     WIPView(wip = it) {}
                 }
                 Text("Start word count: $startWordCount words", fontWeight = FontWeight.Bold)
