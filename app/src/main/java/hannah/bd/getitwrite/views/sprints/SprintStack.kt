@@ -78,7 +78,7 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
             ) {
                 Text("Let's Sprint!",
                     fontSize = 32.sp,
-                    fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)),)
+                    fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)))
                 selectedWip?.let {
                     WIPView(wip = it) {}
                     TextButton(onClick = { showWipSelector = true }) {
@@ -118,13 +118,16 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
         }
 
         SprintState.END -> {
-            Column(modifier = Modifier
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(20.dp)) {
-
-                Spacer(Modifier.weight(1f))
-                Text("Sprint Finished!", style = MaterialTheme.typography.headlineMedium)
+            Column(modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(
+                    space = 20.dp,
+                    alignment = Alignment.CenterVertically
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Sprint Finished!",
+                    fontSize = 32.sp,
+                    fontFamily = FontFamily(Font(R.font.abrilfatfaceregular)))
                 selectedWip?.let {
                     WIPView(wip = it) {}
                 }
@@ -164,8 +167,14 @@ fun SprintStack(db: AppDatabase?, onFinish: () -> Unit, initialMinute: Int) {
         }
 
         SprintState.SHOW_RESULTS -> {
-            Column(modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            Column(modifier = Modifier
+                .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(
+                    space = 20.dp,
+                    alignment = Alignment.CenterVertically
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text("You're one step closer to hitting that writing goal!", style = MaterialTheme.typography.headlineMedium)
                 Text("You wrote ${endWordCount - startWordCount} words in ${timePickerState.hour * 60 + timePickerState.minute} minutes.")
                 selectedWip?.let {
