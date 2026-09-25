@@ -72,12 +72,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.room.common.jvm)
-    implementation(libs.androidx.ui.android)
-    //implementation(libs.androidx.navigation.compose.jvmstubs)
-    val nav_version = "2.7.6"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.transport.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -85,20 +80,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-//    val room_version = "2.7.2"
-//    implementation("androidx.room:room-runtime:$room_version")
-//    ksp("androidx.room:room-compiler:2.7.2")
-//    //kapt("androidx.room:room-compiler:2.4.0-beta01")
-    val room_version = "2.5.1"
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("io.github.thechance101:chart:1.1.0")
+
+    val room_version = "2.6.1"
 
     implementation ("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:2.6.1")
     ksp("androidx.room:room-compiler:$room_version")
-    implementation("io.github.thechance101:chart:1.1.0")
-    implementation("androidx.compose.material3:material3:1.2.0-alpha12")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
-    implementation("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
 
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation("com.patrykandpatryk.vico:view:1.5.2")
+    implementation("com.patrykandpatryk.vico:compose:1.5.2")
+    implementation("com.patrykandpatryk.vico:compose-m2:1.5.2")
+    implementation("com.patrykandpatryk.vico:compose-m3:1.5.2")
+
+    implementation("androidx.work:work-runtime:2.11.2")
 }

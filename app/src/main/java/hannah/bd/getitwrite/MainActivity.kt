@@ -1,151 +1,199 @@
-package hannah.bd.getitwrite
+package hannah.bd.shelfify
 
+import android.Manifest
 import android.app.Activity
+import android.provider.Settings
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.room.Room
-import hannah.bd.getitwrite.modals.AppDatabase
-import hannah.bd.getitwrite.theme.GetItWriteTheme
-import hannah.bd.getitwrite.views.badges.BadgePage
-import hannah.bd.getitwrite.views.games.GamesPage
-import hannah.bd.getitwrite.views.games.editing.EditingQuestion
-import hannah.bd.getitwrite.views.games.prompt.ExpandedPrompt
-import hannah.bd.getitwrite.views.games.vocab.VocabGame
-import hannah.bd.getitwrite.views.pages.HomepagePage
-import hannah.bd.getitwrite.views.pages.StatsPage
-import hannah.bd.getitwrite.views.sprints.SprintStack
-import hannah.bd.getitwrite.views.streak.ExtendStreak
+import com.example.compose.AppTheme
+import com.hannah.shelfify.views.ghosts.ghostView
+import hannah.bd.shelfify.modals.AppDatabase
+import hannah.bd.shelfify.modals.UserPreferences
+import hannah.bd.shelfify.modals.onboardingPages
+import hannah.bd.shelfify.views.homepage.LibraryView
+import hannah.bd.shelfify.views.homepage.MenuView
+import hannah.bd.shelfify.views.homepage.NavigationStack
+import hannah.bd.shelfify.views.homepage.Screen
+import hannah.bd.shelfify.views.homepage.backGroundView
+import hannah.bd.shelfify.views.homepage.growYourLibraryHomepage
+import hannah.bd.shelfify.views.notifications.NotificationHelper
+import hannah.bd.shelfify.views.onboarding.OnboardingOverlay
+import hannah.bd.shelfify.views.sprints.liveUpdate.LiveUpdateSprintService
+import hannah.bd.shelfify.views.sprints.liveUpdate.LiveUpdateNotificationManager
+import kotlinx.coroutines.launch
+import kotlin.jvm.java
 
 class MainActivity : ComponentActivity() {
     var db: AppDatabase? = null
 
-    @ExperimentalFoundationApi
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var notificationManager: LiveUpdateNotificationManager
+    private var hasNotificationPermission by mutableStateOf(false)
 
-        setContent {
-            val navController = rememberNavController()
-            GetItWriteTheme {
-                Surface(tonalElevation = 5.dp) {
-                    MainPage(this, navController)
-                }
-            }
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasNotificationPermission = isGranted
+        if (isGranted) {
+            Toast.makeText(this, "Notification permission granted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Notification permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
-    @ExperimentalFoundationApi
     @RequiresApi(Build.VERSION_CODES.O)
-    @Composable
-    fun MainPage(activity: Activity, navController: NavHostController) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        NotificationHelper.createChannel(this)
+        notificationManager = LiveUpdateNotificationManager(this)
+        checkNotificationPermission()
+        super.onCreate(savedInstanceState)
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "database-name"
         ).allowMainThreadQueries().build()
 
-        Scaffold(
-            bottomBar = {
-                NavigationBar {
-                    val currentDestination = navController.currentDestination?.route
-                    NavigationBarItem(
-                        selected = currentDestination == "home",
-                        onClick = { navController.navigate("home") },
-                        icon = { Icon(Icons.Default.Home, contentDescription = null) }
-                    )
-                    NavigationBarItem(
-                        selected = currentDestination == "stats",
-                        onClick = { navController.navigate("stats") },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.baricons),
-                                contentDescription = "Home",
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    )
-                    NavigationBarItem(
-                        selected = currentDestination == "badges",
-                        onClick = { navController.navigate("badges") },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.trophyicon),
-                                contentDescription = "Home",
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    )
-                    NavigationBarItem(
-                        selected = currentDestination == "games",
-                        onClick = { navController.navigate("games") },
-                        icon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.gameicon),
-                                contentDescription = "Home",
-                                modifier = Modifier.size(32.dp)
-                            )
-                        }
+        enableEdgeToEdge()
+        setContent {
+            AppTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NavigationStack(
+                        modifier = Modifier.padding(innerPadding),
+//                        hasPermission = hasNotificationPermission,
+//                        canPostPromoted = notificationManager.canPostPromotedNotifications(),
+//                        onRequestPermission = { requestNotificationPermission() },
+                        startTwentyMinsActivity = { startWritingSprint("20mins") },
+                        startFortyMinsActivity = { startWritingSprint("40mins") },
+                        startSixtyMinsActivity = { startWritingSprint("60mins") },
+                        db
                     )
                 }
             }
-        ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = "home",
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable("home") { HomepagePage(activity, navController) }
-                composable("stats") { StatsPage(db) }
-                composable("badges") { BadgePage() }
-                composable("games") { GamesPage(navController) }
-                composable("sprint20") {
-                    SprintStack(db, onFinish = { navController.popBackStack() }, 20)
+        }
+    }
+
+    private fun checkNotificationPermission() {
+        hasNotificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true // Permissions automatically granted on older Android versions
+        }
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    private fun startWritingSprint(delayLength: String) {
+//        if (!hasNotificationPermission) {
+//            Toast.makeText(this, "Please grant notification permission first", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+//
+//        val intent = Intent(this, LiveUpdateSprintService::class.java).apply {
+//            action = LiveUpdateSprintService.ACTION_START
+//        }
+//        intent.putExtra("delayLength", delayLength)
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(intent)
+//        } else {
+//            startService(intent)
+//        }
+//
+        Toast.makeText(this, "Writing sprint started", Toast.LENGTH_SHORT).show()
+    }
+}
+
+@Composable
+fun AppMainPage(navController: NavController,
+                userPreferences: UserPreferences,
+                db: AppDatabase?,
+//                onRequestPermission: () -> Unit,
+                ) {
+
+    val scope = rememberCoroutineScope()
+    val hasSeenOnboarding by userPreferences
+        .hasSeenOnboarding
+        .collectAsState(initial = false)
+
+    val wordsWritten by userPreferences
+        .wordsWritten
+        .collectAsState(initial = 0)
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        backGroundView()
+        LibraryView(wordsWritten)
+        MenuView(
+            { navController.navigate(Screen.Grow.route)},
+            { navController.navigate(Screen.Stats.route)},
+            {navController.navigate(Screen.Final.route)},
+            db,
+            navController = navController,
+            userPreferences)
+
+        if (!hasSeenOnboarding) {
+            OnboardingOverlay(
+                pages = onboardingPages,
+                onFinished = {
+                    scope.launch {
+                        userPreferences.completeOnboarding()
+//                        onRequestPermission()
+                    }
                 }
-                composable("sprint40") {
-                    SprintStack(db, onFinish = { navController.popBackStack() }, 40)
-                }
-                composable("sprint60") {
-                    SprintStack(db, onFinish = { navController.popBackStack() }, 60)
-                }
-                composable("streak") {
-                    ExtendStreak(db, onDone = { navController.popBackStack() })
-                }
-                composable("vocabGame") {
-                    VocabGame(onDone = { navController.popBackStack() })
-                }
-                composable("editingGame") {
-                    EditingQuestion(back = { navController.popBackStack() })
-                }
-                composable(
-                    "expanded_prompt/{question}",
-                    arguments = listOf(navArgument("question") { type = NavType.StringType })
-                ) { backStackEntry ->
-                    val question = backStackEntry.arguments?.getString("question") ?: ""
-                    ExpandedPrompt(question = question)
-                }
+            )
+        }
+    }
+}
+
+@Composable
+fun NotificationPermissionRequest() {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+        val launcher =
+            rememberLauncherForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { granted ->
+                // Optional: handle result
             }
+
+        LaunchedEffect(Unit) {
+            launcher.launch(
+                Manifest.permission.POST_NOTIFICATIONS
+            )
         }
     }
 }

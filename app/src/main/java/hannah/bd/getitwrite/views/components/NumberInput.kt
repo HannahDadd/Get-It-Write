@@ -1,4 +1,4 @@
-package hannah.bd.getitwrite.views.components
+package hannah.bd.shelfify.views.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,8 +13,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import hannah.bd.getitwrite.R
 
 @Composable
 fun NumberInput(
@@ -28,7 +31,8 @@ fun NumberInput(
         Text(
             text = label,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
+            fontFamily = FontFamily(Font(R.font.bellefairregularfont))
         )
 
         OutlinedTextField(
@@ -40,7 +44,6 @@ fun NumberInput(
                     onValueChange(parsed)
                 }
             },
-            label = { Text(label) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             modifier = Modifier.fillMaxWidth()

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-<!--    android:name=".notifications.ScheduleNotificationApplication"-->
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,23 +12,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.GetItWrite"
-        tools:targetApi="31">
-        <receiver
-            android:name=".notifications.ReminderReceiver"
-            android:enabled="true" />
+        android:theme="@style/Theme.Shelfify">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.GetItWrite">
+            android:theme="@style/Theme.Shelfify">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name=".views.notifications.DailyNotificationReceiver"
+            android:exported="false" />
     </application>
-<!--    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />-->
-<!--    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />-->
+
 </manifest>

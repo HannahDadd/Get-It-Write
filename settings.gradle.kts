@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Get It Write"
+rootProject.name = "Writers Hollow"
 include(":app")
