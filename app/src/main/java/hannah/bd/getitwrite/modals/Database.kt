@@ -1,11 +1,11 @@
-package hannah.bd.shelfify.modals
+package hannah.bd.getitwrite.modals
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import hannah.bd.shelfify.modals.Converters
-import hannah.bd.shelfify.modals.Stat
-import hannah.bd.shelfify.modals.StatDao
+import hannah.bd.getitwrite.modals.Converters
+import hannah.bd.getitwrite.modals.Stat
+import hannah.bd.getitwrite.modals.StatDao
 
 @Database(entities = [Stat::class], version = 1)
 @TypeConverters(Converters::class)

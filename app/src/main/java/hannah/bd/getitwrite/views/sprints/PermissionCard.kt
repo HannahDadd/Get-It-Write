@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.sprints
+package hannah.bd.getitwrite.views.sprints
 
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement

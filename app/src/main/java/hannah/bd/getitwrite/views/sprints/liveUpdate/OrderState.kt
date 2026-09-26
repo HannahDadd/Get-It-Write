@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.sprints.liveUpdate
+package hannah.bd.getitwrite.views.sprints.liveUpdate
 
 enum class OrderState(
     val progress: Int,

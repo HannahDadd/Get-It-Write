@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.homepage
+package hannah.bd.getitwrite.views.homepage
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloat

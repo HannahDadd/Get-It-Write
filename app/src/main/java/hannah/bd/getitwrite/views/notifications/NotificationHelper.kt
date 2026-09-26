@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.notifications
+package hannah.bd.getitwrite.views.notifications
 
 import android.Manifest
 import android.app.NotificationChannel

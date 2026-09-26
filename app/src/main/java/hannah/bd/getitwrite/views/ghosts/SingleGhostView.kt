@@ -1,4 +1,4 @@
-package com.hannah.shelfify.views.ghosts
+package hannah.bd.getitwrite.views.ghosts
 
 import android.R.attr.onClick
 import android.media.Image

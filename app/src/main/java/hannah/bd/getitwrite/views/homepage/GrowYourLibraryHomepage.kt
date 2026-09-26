@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.homepage
+package hannah.bd.getitwrite.views.homepage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -31,9 +31,9 @@ import androidx.navigation.NavController
 import hannah.bd.getitwrite.views.sprints.SprintCarousel
 import hannah.bd.getitwrite.views.sprints.SprintDurations
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.modals.UserPreferences
-import hannah.bd.shelfify.views.notifications.DailyReminderButton
-import hannah.bd.shelfify.views.sprints.LiveUpdateCard
+import hannah.bd.getitwrite.modals.UserPreferences
+import hannah.bd.getitwrite.views.notifications.DailyReminderButton
+import hannah.bd.getitwrite.views.sprints.LiveUpdateCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.homepage
+package hannah.bd.getitwrite.views.homepage
 
 import android.R.attr.height
 import android.R.attr.x

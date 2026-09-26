@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.settings
+package hannah.bd.getitwrite.views.settings
 
 import android.R.attr.padding
 import androidx.compose.animation.core.animateDpAsState

@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.homepage
+package hannah.bd.getitwrite.views.homepage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -31,13 +31,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.hannah.shelfify.views.ghosts.ghostView
+import hannah.bd.getitwrite.views.ghosts.ghostView
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.modals.AppDatabase
-import hannah.bd.shelfify.modals.Stat
-import hannah.bd.shelfify.modals.UserPreferences
-import hannah.bd.shelfify.views.onboarding.OnboardingText
-import hannah.bd.shelfify.views.settings.settingsView
+import hannah.bd.getitwrite.modals.AppDatabase
+import hannah.bd.getitwrite.modals.Stat
+import hannah.bd.getitwrite.modals.UserPreferences
+import hannah.bd.getitwrite.views.onboarding.OnboardingText
+import hannah.bd.getitwrite.views.settings.settingsView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

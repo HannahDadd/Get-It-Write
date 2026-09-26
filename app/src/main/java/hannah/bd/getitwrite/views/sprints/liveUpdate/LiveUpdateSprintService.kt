@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.sprints.liveUpdate
+package hannah.bd.getitwrite.views.sprints.liveUpdate
 
 import android.app.Service
 import android.content.Intent
@@ -14,8 +14,8 @@ class LiveUpdateSprintService : Service() {
 
     companion object {
         private const val TAG = "WritingSprintService"
-        const val ACTION_START = "hannah.bd.shelfify.livenotificationupdate.writingsprint.START"
-        const val ACTION_STOP = "hannah.bd.shelfify.livenotoficationupdate.writingsprint.STOP"
+        const val ACTION_START = "hannah.bd.getitwrite.livenotificationupdate.writingsprint.START"
+        const val ACTION_STOP = "hannah.bd.getitwrite.livenotoficationupdate.writingsprint.STOP"
     }
 
     override fun onCreate() {

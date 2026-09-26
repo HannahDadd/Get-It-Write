@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.settings
+package hannah.bd.getitwrite.views.settings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.graphs
+package hannah.bd.getitwrite.views.graphs
 
 import android.os.Build
 import android.util.Half.toFloat
@@ -41,9 +41,9 @@ import com.patrykandpatryk.vico.core.entry.entryModelOf
 import com.patrykandpatryk.vico.core.legend.Legend
 import com.patrykandpatryk.vico.core.legend.VerticalLegend
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.modals.AppDatabase
-import hannah.bd.shelfify.modals.Stat
-import hannah.bd.shelfify.modals.UserPreferences
+import hannah.bd.getitwrite.modals.AppDatabase
+import hannah.bd.getitwrite.modals.Stat
+import hannah.bd.getitwrite.modals.UserPreferences
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.OffsetDateTime

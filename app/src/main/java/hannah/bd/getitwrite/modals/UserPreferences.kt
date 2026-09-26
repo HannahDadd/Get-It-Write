@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.modals
+package hannah.bd.getitwrite.modals
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey

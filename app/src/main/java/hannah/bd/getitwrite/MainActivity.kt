@@ -1,9 +1,6 @@
-package hannah.bd.shelfify
+package hannah.bd.getitwrite
 
 import android.Manifest
-import android.app.Activity
-import android.provider.Settings
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -33,20 +30,19 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.room.Room
 import com.example.compose.AppTheme
-import com.hannah.shelfify.views.ghosts.ghostView
-import hannah.bd.shelfify.modals.AppDatabase
-import hannah.bd.shelfify.modals.UserPreferences
-import hannah.bd.shelfify.modals.onboardingPages
-import hannah.bd.shelfify.views.homepage.LibraryView
-import hannah.bd.shelfify.views.homepage.MenuView
-import hannah.bd.shelfify.views.homepage.NavigationStack
-import hannah.bd.shelfify.views.homepage.Screen
-import hannah.bd.shelfify.views.homepage.backGroundView
-import hannah.bd.shelfify.views.homepage.growYourLibraryHomepage
-import hannah.bd.shelfify.views.notifications.NotificationHelper
-import hannah.bd.shelfify.views.onboarding.OnboardingOverlay
-import hannah.bd.shelfify.views.sprints.liveUpdate.LiveUpdateSprintService
-import hannah.bd.shelfify.views.sprints.liveUpdate.LiveUpdateNotificationManager
+import hannah.bd.getitwrite.modals.AppDatabase
+import hannah.bd.getitwrite.modals.UserPreferences
+import hannah.bd.getitwrite.modals.onboardingPages
+import hannah.bd.getitwrite.views.homepage.LibraryView
+import hannah.bd.getitwrite.views.homepage.MenuView
+import hannah.bd.getitwrite.views.homepage.NavigationStack
+import hannah.bd.getitwrite.views.homepage.Screen
+import hannah.bd.getitwrite.views.homepage.backGroundView
+import hannah.bd.getitwrite.views.homepage.growYourLibraryHomepage
+import hannah.bd.getitwrite.views.notifications.NotificationHelper
+import hannah.bd.getitwrite.views.onboarding.OnboardingOverlay
+import hannah.bd.getitwrite.views.sprints.liveUpdate.LiveUpdateSprintService
+import hannah.bd.getitwrite.views.sprints.liveUpdate.LiveUpdateNotificationManager
 import kotlinx.coroutines.launch
 import kotlin.jvm.java
 

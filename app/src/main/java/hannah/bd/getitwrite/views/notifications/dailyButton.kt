@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.notifications
+package hannah.bd.getitwrite.views.notifications
 
 import android.app.TimePickerDialog
 import androidx.compose.material3.Button

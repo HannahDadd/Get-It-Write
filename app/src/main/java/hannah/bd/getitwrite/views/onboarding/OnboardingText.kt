@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.onboarding
+package hannah.bd.getitwrite.views.onboarding
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

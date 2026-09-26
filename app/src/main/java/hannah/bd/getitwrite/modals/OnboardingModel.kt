@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.modals
+package hannah.bd.getitwrite.modals
 
 data class OnboardingPage(
     val description: String,

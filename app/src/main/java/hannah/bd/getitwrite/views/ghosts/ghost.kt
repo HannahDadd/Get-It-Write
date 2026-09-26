@@ -1,4 +1,4 @@
-package com.hannah.shelfify.views.ghosts
+package hannah.bd.getitwrite.views.ghosts
 
 import androidx.compose.ui.unit.Dp
 import java.util.UUID

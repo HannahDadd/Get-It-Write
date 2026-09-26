@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.sp
 import hannah.bd.getitwrite.GlobalVariables
 import hannah.bd.getitwrite.GlobalVariables.inspiringQuotes
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.modals.Stat
-import hannah.bd.shelfify.views.sprints.SprintBackGroundView
+import hannah.bd.getitwrite.modals.Stat
+import hannah.bd.getitwrite.views.sprints.SprintBackGroundView
 import kotlinx.coroutines.delay
 import java.util.Date
 import kotlin.math.floor

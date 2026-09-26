@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.sprints
+package hannah.bd.getitwrite.views.sprints
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.views.homepage.rainView
+import hannah.bd.getitwrite.views.homepage.rainView
 
 @Composable
 fun SprintBackGroundView() {

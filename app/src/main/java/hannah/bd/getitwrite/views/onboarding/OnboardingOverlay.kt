@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.onboarding
+package hannah.bd.getitwrite.views.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.modals.OnboardingPage
+import hannah.bd.getitwrite.modals.OnboardingPage
 import kotlin.collections.lastIndex
 
 @Composable

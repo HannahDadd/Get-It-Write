@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.ui.theme
+package hannah.bd.getitwrite.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.sprints.liveUpdate
+package hannah.bd.getitwrite.views.sprints.liveUpdate
 
 import android.os.Handler
 import android.os.Looper

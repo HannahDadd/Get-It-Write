@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.modals
+package hannah.bd.getitwrite.modals
 
 import androidx.room.Dao
 import androidx.room.Entity

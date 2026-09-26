@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.homepage
+package hannah.bd.getitwrite.views.homepage
 
 import android.R.attr.type
 import android.os.Build
@@ -23,16 +23,16 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.room.Room
 import hannah.bd.getitwrite.views.sprints.SprintStack
-import hannah.bd.shelfify.AppMainPage
-import hannah.bd.shelfify.modals.AppDatabase
-import hannah.bd.shelfify.modals.UserPreferences
-import hannah.bd.shelfify.views.graphs.GraphForWriter
-import hannah.bd.shelfify.views.settings.HowItWorks
-import hannah.bd.shelfify.views.settings.MeetTheFamily
-import hannah.bd.shelfify.views.settings.OurOtherApps
-import hannah.bd.shelfify.views.settings.SupportUs
-import hannah.bd.shelfify.views.settings.TsAndCsView
-import hannah.bd.shelfify.views.settings.privacyPolicyView
+import hannah.bd.getitwrite.AppMainPage
+import hannah.bd.getitwrite.modals.AppDatabase
+import hannah.bd.getitwrite.modals.UserPreferences
+import hannah.bd.getitwrite.views.graphs.GraphForWriter
+import hannah.bd.getitwrite.views.settings.HowItWorks
+import hannah.bd.getitwrite.views.settings.MeetTheFamily
+import hannah.bd.getitwrite.views.settings.OurOtherApps
+import hannah.bd.getitwrite.views.settings.SupportUs
+import hannah.bd.getitwrite.views.settings.TsAndCsView
+import hannah.bd.getitwrite.views.settings.privacyPolicyView
 import kotlinx.coroutines.launch
 
 sealed class Screen(val route: String) {

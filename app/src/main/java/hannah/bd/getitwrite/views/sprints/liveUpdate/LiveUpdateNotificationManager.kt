@@ -1,4 +1,4 @@
-package hannah.bd.shelfify.views.sprints.liveUpdate
+package hannah.bd.getitwrite.views.sprints.liveUpdate
 
 import android.Manifest
 import android.app.Notification
@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.toColorInt
-import hannah.bd.shelfify.MainActivity
+import hannah.bd.getitwrite.MainActivity
 import kotlin.jvm.java
 
 /**

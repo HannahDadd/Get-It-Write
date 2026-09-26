@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import hannah.bd.getitwrite.R
-import hannah.bd.shelfify.modals.AppDatabase
-import hannah.bd.shelfify.modals.Stat
-import hannah.bd.shelfify.views.components.NumberInput
+import hannah.bd.getitwrite.modals.AppDatabase
+import hannah.bd.getitwrite.modals.Stat
+import hannah.bd.getitwrite.views.components.NumberInput
 import java.util.Date
 import kotlin.random.Random
 
