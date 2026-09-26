@@ -29,10 +29,10 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.room.Room
-import com.example.compose.AppTheme
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.UserPreferences
 import hannah.bd.getitwrite.modals.onboardingPages
+import hannah.bd.getitwrite.theme.AppTheme
 import hannah.bd.getitwrite.views.homepage.LibraryView
 import hannah.bd.getitwrite.views.homepage.MenuView
 import hannah.bd.getitwrite.views.homepage.NavigationStack
@@ -41,7 +41,6 @@ import hannah.bd.getitwrite.views.homepage.backGroundView
 import hannah.bd.getitwrite.views.homepage.growYourLibraryHomepage
 import hannah.bd.getitwrite.views.notifications.NotificationHelper
 import hannah.bd.getitwrite.views.onboarding.OnboardingOverlay
-import hannah.bd.getitwrite.views.sprints.liveUpdate.LiveUpdateSprintService
 import hannah.bd.getitwrite.views.sprints.liveUpdate.LiveUpdateNotificationManager
 import kotlinx.coroutines.launch
 import kotlin.jvm.java

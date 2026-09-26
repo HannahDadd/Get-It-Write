@@ -1,4 +1,4 @@
-package hannah.bd.getitwrite.ui.theme
+package hannah.bd.getitwrite.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
