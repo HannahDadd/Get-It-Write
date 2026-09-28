@@ -17,9 +17,9 @@ android {
     defaultConfig {
         applicationId = "hannah.bd.getitwrite"
         minSdk = 24
-        targetSdk = 35
-        versionCode = 9
-        versionName = "9.0"
+        targetSdk = 36
+        versionCode = 11
+        versionName = "11"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

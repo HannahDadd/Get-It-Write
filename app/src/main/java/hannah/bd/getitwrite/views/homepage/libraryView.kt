@@ -1,6 +1,5 @@
 package hannah.bd.getitwrite.views.homepage
 
-import android.content.res.Resources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,32 +30,47 @@ fun LibraryView(
 
 private fun getLibraryImage(wordsWritten: Int): Int {
 
-    val libraryImages = listOf(
-        R.drawable.library_1,
-        R.drawable.library_2,
-        R.drawable.library_3,
-        R.drawable.library_4,
-        R.drawable.library_5,
-        R.drawable.library_6,
-        R.drawable.library_7,
-        R.drawable.library_8,
-        R.drawable.library_9,
-        R.drawable.library_10,
-        R.drawable.library_11,
-        R.drawable.library_12,
-        R.drawable.library_13,
-        R.drawable.library_14,
-        R.drawable.library_15,
-        R.drawable.library_16,
-        R.drawable.library_17,
-        R.drawable.library_18,
-        R.drawable.library_19,
-        R.drawable.library_20,
-        R.drawable.library_21
-    )
-
-    val stage = ((wordsWritten / 5000) + 1)
-        .coerceIn(1, 21)
-
-    return libraryImages[stage - 1]
+    if (wordsWritten < 200) {
+        return R.drawable.library_1
+    } else if (wordsWritten < 500) {
+        return R.drawable.library_2
+    } else if (wordsWritten < 1000) {
+        return R.drawable.library_3
+    } else if (wordsWritten < 5000) {
+        return R.drawable.library_4
+    } else if (wordsWritten < 10000) {
+        return R.drawable.library_5
+    } else if (wordsWritten < 12000) {
+        return R.drawable.library_6
+    } else if (wordsWritten < 15000) {
+        return R.drawable.library_7
+    } else if (wordsWritten < 20000) {
+        return R.drawable.library_8
+    } else if (wordsWritten < 24000) {
+        return R.drawable.library_9
+    } else if (wordsWritten < 26000) {
+        return R.drawable.library_10
+    } else if (wordsWritten < 28000) {
+        return R.drawable.library_11
+    } else if (wordsWritten < 30000) {
+        return R.drawable.library_12
+    } else if (wordsWritten < 35000) {
+        return R.drawable.library_13
+    } else if (wordsWritten < 37000) {
+        return R.drawable.library_14
+    } else if (wordsWritten < 40000) {
+        return R.drawable.library_15
+    } else if (wordsWritten < 50000) {
+        return R.drawable.library_16
+    } else if (wordsWritten < 55000) {
+        return R.drawable.library_17
+    } else if (wordsWritten < 60000) {
+        return R.drawable.library_18
+    } else if (wordsWritten < 70000) {
+        return R.drawable.library_19
+    } else if (wordsWritten < 80000) {
+        return R.drawable.library_20
+    } else {
+        return R.drawable.library_21
+    }
 }

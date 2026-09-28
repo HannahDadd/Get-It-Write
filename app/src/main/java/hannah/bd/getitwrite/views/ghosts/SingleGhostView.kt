@@ -1,7 +1,5 @@
 package hannah.bd.getitwrite.views.ghosts
 
-import android.R.attr.onClick
-import android.media.Image
 import android.util.Log
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -9,7 +7,6 @@ import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -107,6 +104,7 @@ fun SingleGhostView(
                 height = ghost.height
             )
             .clickable(enabled = isVisible) {
+                Log.d("Ghost", "tap")
                 onGhostTapped()
             }
             .offset {

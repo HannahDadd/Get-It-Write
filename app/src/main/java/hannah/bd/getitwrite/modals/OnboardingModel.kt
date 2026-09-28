@@ -15,8 +15,8 @@ val onboardingPages = listOf(
         description2 = ""
     ),
     OnboardingPage(
-        description = "Use focus mode, daily notifications and motivational widgets to stay consistent.",
-        description2 = "Shelfify works fully offline so it's totally distraction free."
+        description = "Use focus mode, daily notifications and sprints to stay consistent.",
+        description2 = "Writers Hollow works fully offline so it's totally distraction free."
     ),
     OnboardingPage(
         description = "Let's get writing.",
