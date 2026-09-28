@@ -14,10 +14,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -25,13 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import hannah.bd.getitwrite.R
-import hannah.bd.getitwrite.modals.AppDatabase
-import hannah.bd.getitwrite.modals.UserPreferences
-import hannah.bd.getitwrite.modals.onboardingPages
-import hannah.bd.getitwrite.views.onboarding.OnboardingOverlay
-import kotlinx.coroutines.launch
 
 @Composable
 fun crystalBallLibrary(
@@ -67,7 +57,7 @@ fun crystalBallLibrary(
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Text(
-                    "The library completes at 100k words.",
+                    "The library completes at 80k words.",
                     fontFamily = FontFamily(Font(R.font.bellefairregularfont)),
                     color = Color.White,
                     modifier = Modifier.padding(8.dp)

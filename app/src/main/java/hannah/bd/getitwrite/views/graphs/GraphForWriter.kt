@@ -106,7 +106,7 @@ fun GraphForWriter(
                     Text("Words written in the app: ${ wordsWritten }",
                         fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
                     Text(
-                        "Library completes at 100k words.",
+                        "Library completes at 80k words.",
                         fontFamily = FontFamily(Font(R.font.bellefairregularfont)),
                     )
                 }

@@ -1,20 +1,16 @@
 package hannah.bd.getitwrite.views.homepage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,18 +18,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import hannah.bd.getitwrite.views.sprints.SprintCarousel
-import hannah.bd.getitwrite.views.sprints.SprintDurations
 import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.UserPreferences
 import hannah.bd.getitwrite.views.notifications.DailyReminderButton
-import hannah.bd.getitwrite.views.sprints.LiveUpdateCard
+import hannah.bd.getitwrite.views.sprints.SprintCarousel
+import hannah.bd.getitwrite.views.sprints.SprintDurations
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +75,7 @@ fun growYourLibraryHomepage(
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text("Words written in the app: ${ wordsWritten }",
                                 fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
-                        Text("Library completes at 100k words.",
+                        Text("Library completes at 80k words.",
                             fontFamily = FontFamily(Font(R.font.bellefairregularfont)),)
                     }
                 }
