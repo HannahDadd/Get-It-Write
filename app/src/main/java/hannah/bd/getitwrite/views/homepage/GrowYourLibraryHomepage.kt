@@ -2,16 +2,13 @@ package hannah.bd.getitwrite.views.homepage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,7 +29,7 @@ import hannah.bd.getitwrite.views.sprints.SprintDurations
 @Composable
 fun growYourLibraryHomepage(
     navController: NavController,
-    navigateBack: () -> Unit,
+    toLibrary: () -> Unit,
     userPreferences: UserPreferences,
 //    hasPermission: Boolean,
 //    canPostPromoted: Boolean,
@@ -44,66 +41,60 @@ fun growYourLibraryHomepage(
         .wordsWritten
         .collectAsState(initial = 0)
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        "🪴 Grow your Library 🪴",
-                        fontFamily = FontFamily(Font(R.font.dynapuff))
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = navigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-            )
-        },
-    ) { innerPadding ->
-        Column(modifier = Modifier.fillMaxSize()) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-                    .padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(15.dp),
-                horizontalAlignment = Alignment.Start,
-            ) {
-                item {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Words written in the app: ${ wordsWritten }",
-                                fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
-                        Text("Library completes at 80k words.",
-                            fontFamily = FontFamily(Font(R.font.bellefairregularfont)),)
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(15.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            item {
+                Row {
+                    Spacer(modifier = Modifier.weight(1.0f))
+                    Button(onClick = {
+                        toLibrary()
+                    }) {
+                        Text("Back to Library")
                     }
                 }
-                item {
-                    SprintCarousel { sprintDurations ->
-                        when (sprintDurations) {
-                            SprintDurations.FIVE_SECS -> {
-                                navController.navigate("sprint5")
-                            }
-                            SprintDurations.TWENTY_MINS -> {
-                                startTwentyMinsActivity()
-                                navController.navigate("sprint20")
-                            }
-                            SprintDurations.FORTY_MINS -> {
-                                startFortyMinsActivity
-                                navController.navigate("sprint40")
-                            }
-                            SprintDurations.ONE_HOUR -> {
-                                startSixtyMinsActivity()
-                                navController.navigate("sprint60")
-                            }
+            }
+            item {
+                Text(
+                    "Welcome, Writer!",
+                    fontFamily = FontFamily(Font(R.font.dynapuff))
+                )
+            }
+            item {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Words written in the app: ${ wordsWritten }",
+                            fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
+                    Text("Library completes at 80k words.",
+                        fontFamily = FontFamily(Font(R.font.bellefairregularfont)),)
+                }
+            }
+            item {
+                SprintCarousel { sprintDurations ->
+                    when (sprintDurations) {
+                        SprintDurations.FIVE_SECS -> {
+                            navController.navigate("sprint5")
+                        }
+                        SprintDurations.TWENTY_MINS -> {
+                            startTwentyMinsActivity()
+                            navController.navigate("sprint20")
+                        }
+                        SprintDurations.FORTY_MINS -> {
+                            startFortyMinsActivity
+                            navController.navigate("sprint40")
+                        }
+                        SprintDurations.ONE_HOUR -> {
+                            startSixtyMinsActivity()
+                            navController.navigate("sprint60")
                         }
                     }
                 }
-                item {
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        DailyReminderButton()
-                    }
+            }
+            item {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    DailyReminderButton()
                 }
             }
         }

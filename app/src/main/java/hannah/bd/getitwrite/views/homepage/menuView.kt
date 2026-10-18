@@ -7,8 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -42,8 +40,6 @@ import hannah.bd.getitwrite.views.settings.settingsView
 @Composable
 fun MenuView(
     growAction: () -> Unit,
-    statsAction: () -> Unit,
-    crystalBallAction: () -> Unit,
     db: AppDatabase?,
     navController: NavController,
     userPreferences: UserPreferences,
@@ -159,66 +155,15 @@ fun MenuView(
                 .padding(bottom = 70.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-
-            if (showButtons) {
-
-                Image(
-                    painter = painterResource(R.drawable.grow_btn),
-                    contentDescription = "Grow your library",
-                    modifier = Modifier
-                        .size(buttonSize)
-                        .clickable {
-                            growAction()
-                        }
-                )
-
-                if (stats.size > 2) {
-                    Image(
-                        painter = painterResource(R.drawable.graph_btn),
-                        contentDescription = "Statistics",
-                        modifier = Modifier
-                            .size(buttonSize)
-                            .clickable {
-                                statsAction()
-                            }
-                    )
-                }
-
-                Image(
-                    painter = painterResource(R.drawable.broom_btn),
-                    contentDescription = "Settings",
-                    modifier = Modifier
-                        .size(buttonSize)
-                        .clickable {
-                            showSettings = true
-                        }
-                )
-            }
-
-            Row {
-
-                Image(
-                    painter = painterResource(R.drawable.menu_btn),
-                    contentDescription = "Menu",
-                    modifier = Modifier
-                        .size(buttonSize)
-                        .clickable {
-                            showButtons = !showButtons
-                        }
-                )
-
-                Spacer(modifier = Modifier.weight(1.0f))
-
-                Image(
-                    painter = painterResource(R.drawable.crystal_btn),
-                    contentDescription = "Menu",
-                    modifier = Modifier
-                        .size(buttonSize)
-                        .clickable {
-                            crystalBallAction()
-                        }
-                )
-            }
+            Image(
+                painter = painterResource(R.drawable.menu_btn),
+                contentDescription = "Menu",
+                modifier = Modifier
+                    .size(buttonSize)
+                    .clickable {
+                        growAction()
+                    }
+            )
         }
     }
 

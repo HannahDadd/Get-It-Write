@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,10 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.room.Room
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.UserPreferences
@@ -38,12 +35,10 @@ import hannah.bd.getitwrite.views.homepage.MenuView
 import hannah.bd.getitwrite.views.homepage.NavigationStack
 import hannah.bd.getitwrite.views.homepage.Screen
 import hannah.bd.getitwrite.views.homepage.backGroundView
-import hannah.bd.getitwrite.views.homepage.growYourLibraryHomepage
 import hannah.bd.getitwrite.views.notifications.NotificationHelper
 import hannah.bd.getitwrite.views.onboarding.OnboardingOverlay
 import hannah.bd.getitwrite.views.sprints.liveUpdate.LiveUpdateNotificationManager
 import kotlinx.coroutines.launch
-import kotlin.jvm.java
 
 class MainActivity : ComponentActivity() {
     var db: AppDatabase? = null
@@ -152,9 +147,7 @@ fun AppMainPage(navController: NavController,
         backGroundView()
         LibraryView(wordsWritten)
         MenuView(
-            { navController.navigate(Screen.Grow.route)},
-            { navController.navigate(Screen.Stats.route)},
-            {navController.navigate(Screen.Final.route)},
+            { navController.navigate(Screen.HomePage.route)},
             db,
             navController = navController,
             userPreferences)
