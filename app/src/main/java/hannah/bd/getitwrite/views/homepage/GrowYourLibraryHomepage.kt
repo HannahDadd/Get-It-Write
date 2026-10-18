@@ -37,7 +37,6 @@ import hannah.bd.getitwrite.views.sprints.SprintDurations
 @Composable
 fun growYourLibraryHomepage(
     navController: NavController,
-    toLibrary: () -> Unit,
     userPreferences: UserPreferences,
 //    hasPermission: Boolean,
 //    canPostPromoted: Boolean,
@@ -60,26 +59,24 @@ fun growYourLibraryHomepage(
             horizontalAlignment = Alignment.Start,
         ) {
             item {
-
-                Row(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        "Welcome, Writer!",
-                        fontFamily = FontFamily(Font(R.font.dynapuff))
-                    )
-                    Spacer(modifier = Modifier.weight(1.0f))
-                    Image(
-                        painter = painterResource(R.drawable.broom_btn),
-                        contentDescription = "Menu",
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clickable {
-                                showSettings = true
-                            }
-                    )
-                }
-            }
-            item {
                 Column(modifier = Modifier.padding(16.dp)) {
+
+                    Row {
+                        Text(
+                            "Welcome, Writer!",
+                            fontFamily = FontFamily(Font(R.font.dynapuff))
+                        )
+                        Spacer(modifier = Modifier.weight(1.0f))
+                        Image(
+                            painter = painterResource(R.drawable.broom_btn),
+                            contentDescription = "Menu",
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clickable {
+                                    showSettings = true
+                                }
+                        )
+                    }
                     Text("Words written in the app: ${ wordsWritten }",
                             fontFamily = FontFamily(Font(R.font.bellefairregularfont)))
                     Text("Library completes at 80k words.",

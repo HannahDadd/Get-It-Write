@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
@@ -108,7 +109,6 @@ fun AppNavHost(
                     Destination.HOME ->
                         growYourLibraryHomepage(
                             navController,
-                            { navController.popBackStack() },
                             userPreferences = preferences,
 //                hasPermission = hasPermission,
 //                canPostPromoted = canPostPromoted,
@@ -116,9 +116,13 @@ fun AppNavHost(
                             startFortyMinsActivity = startFortyMinsActivity,
                             startSixtyMinsActivity = startSixtyMinsActivity,
                         )
-                    Destination.ALBUM ->
+                    Destination.STATS ->
                         GraphForWriter(
-                            navigateBack = { navController.popBackStack() },
+                            db,
+                            userPreferences = preferences,
+                        )
+                    Destination.BACK ->
+                        GraphForWriter(
                             db,
                             userPreferences = preferences,
                         )
@@ -197,6 +201,6 @@ enum class Destination(
     val contentDescription: String
 ) {
     HOME("grow_screen", "Home", Icons.Default.Home, "grow_screen"),
-    ALBUM("album", "Album", Icons.Default.Star, "Album"),
-//    PLAYLISTS("playlist", "Playlist", Icons.Default.PlaylistAddCircle, "Playlist")
+    STATS("stats", "Stats", Icons.Default.Star, "Stats"),
+    BACK("back", "Back to Library", Icons.Default.ArrowBack, "Back to Library")
 }
