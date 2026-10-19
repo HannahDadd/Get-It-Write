@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.patrykandpatryk.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatryk.vico.compose.axis.vertical.startAxis
 import com.patrykandpatryk.vico.compose.chart.Chart
@@ -67,8 +68,9 @@ fun GraphForWriter(
         ) {
             item {
                 Text(
-                    "✨ Your Writing Stats ✨",
-                    fontFamily = FontFamily(Font(R.font.dynapuff))
+                    "Your Writing Stats",
+                    fontFamily = FontFamily(Font(R.font.dynapuff)),
+                    fontSize = 30.sp
                 )
                 Text("Words written in the app: ${ wordsWritten }",
                     fontFamily = FontFamily(Font(R.font.bellefairregularfont)))

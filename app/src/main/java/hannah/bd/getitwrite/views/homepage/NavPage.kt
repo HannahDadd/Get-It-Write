@@ -16,11 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,14 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import hannah.bd.getitwrite.modals.AppDatabase
 import hannah.bd.getitwrite.modals.UserPreferences
 import hannah.bd.getitwrite.views.graphs.GraphForWriter
-import hannah.bd.getitwrite.views.settings.HowItWorks
-import hannah.bd.getitwrite.views.settings.MeetTheFamily
-import hannah.bd.getitwrite.views.settings.OurOtherApps
-import hannah.bd.getitwrite.views.settings.SupportUs
-import hannah.bd.getitwrite.views.settings.TsAndCsView
-import hannah.bd.getitwrite.views.settings.privacyPolicyView
-import hannah.bd.getitwrite.views.sprints.SprintStack
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -44,7 +36,9 @@ fun NavigationPage(modifier: Modifier = Modifier,
                    startFortyMinsActivity: () -> Unit,
                    startSixtyMinsActivity: () -> Unit,
                    db: AppDatabase?,
-                   preferences: UserPreferences,) {
+                   preferences: UserPreferences,
+                   backToLibrary: () -> Unit,
+                   hostNavController: NavController) {
     val navController = rememberNavController()
     val startDestination = Destination.HOME
     var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
@@ -81,6 +75,8 @@ fun NavigationPage(modifier: Modifier = Modifier,
             startSixtyMinsActivity = startSixtyMinsActivity,
             db,
             preferences,
+            backToLibrary,
+            hostNavController
         )
     }
 }
@@ -96,8 +92,9 @@ fun AppNavHost(
     startSixtyMinsActivity: () -> Unit,
     db: AppDatabase?,
     preferences: UserPreferences,
+    backToLibrary: () -> Unit,
+    hostNavController: NavController
 ) {
-    val scope = rememberCoroutineScope()
 
     NavHost(
         navController,
@@ -108,10 +105,8 @@ fun AppNavHost(
                 when (destination) {
                     Destination.HOME ->
                         growYourLibraryHomepage(
-                            navController,
+                            hostNavController,
                             userPreferences = preferences,
-//                hasPermission = hasPermission,
-//                canPostPromoted = canPostPromoted,
                             startTwentyMinsActivity = startTwentyMinsActivity,
                             startFortyMinsActivity = startFortyMinsActivity,
                             startSixtyMinsActivity = startSixtyMinsActivity,
@@ -122,73 +117,8 @@ fun AppNavHost(
                             userPreferences = preferences,
                         )
                     Destination.BACK ->
-                        GraphForWriter(
-                            db,
-                            userPreferences = preferences,
-                        )
+                    { backToLibrary() }
                 }
-            }
-            composable("sprint5") {
-                SprintStack(
-                    db,
-                    onFinish = {
-                        scope.launch {
-                            preferences.updateWordCount(it)
-                        }
-                        navController.popBackStack()
-                    }, (5)
-                )
-            }
-            composable("sprint20") {
-                SprintStack(
-                    db,
-                    onFinish = {
-                        scope.launch {
-                            preferences.updateWordCount(it)
-                        }
-                        navController.popBackStack()
-                    }, (20*60)
-                )
-            }
-            composable("sprint40") {
-                SprintStack(
-                    db,
-                    onFinish = {
-                        scope.launch {
-                            preferences.updateWordCount(it)
-                        }
-                        navController.popBackStack()
-                    }, (40*60)
-                )
-            }
-            composable("sprint60") {
-                SprintStack(
-                    db,
-                    onFinish = {
-                        scope.launch {
-                            preferences.updateWordCount(it)
-                        }
-                        navController.popBackStack()
-                    }, (60*60)
-                )
-            }
-            composable("meetTheFamily") {
-                MeetTheFamily() { navController.popBackStack() }
-            }
-            composable("tsAndCs") {
-                TsAndCsView() { navController.popBackStack() }
-            }
-            composable("privacyPolicy") {
-                privacyPolicyView() { navController.popBackStack() }
-            }
-            composable("supportUs") {
-                SupportUs { navController.popBackStack() }
-            }
-            composable("howItWorks") {
-                HowItWorks() { navController.popBackStack() }
-            }
-            composable("otherApps") {
-                OurOtherApps() { navController.popBackStack() }
             }
         }
     }

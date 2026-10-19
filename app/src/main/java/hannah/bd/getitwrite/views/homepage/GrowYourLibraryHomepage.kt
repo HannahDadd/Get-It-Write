@@ -25,10 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import hannah.bd.getitwrite.R
 import hannah.bd.getitwrite.modals.UserPreferences
-import hannah.bd.getitwrite.views.notifications.DailyReminderButton
 import hannah.bd.getitwrite.views.settings.settingsView
 import hannah.bd.getitwrite.views.sprints.SprintCarousel
 import hannah.bd.getitwrite.views.sprints.SprintDurations
@@ -64,7 +64,8 @@ fun growYourLibraryHomepage(
                     Row {
                         Text(
                             "Welcome, Writer!",
-                            fontFamily = FontFamily(Font(R.font.dynapuff))
+                            fontFamily = FontFamily(Font(R.font.dynapuff)),
+                            fontSize = 30.sp
                         )
                         Spacer(modifier = Modifier.weight(1.0f))
                         Image(
@@ -104,11 +105,11 @@ fun growYourLibraryHomepage(
                     }
                 }
             }
-            item {
-                Column(modifier = Modifier.padding(8.dp)) {
-                    DailyReminderButton()
-                }
-            }
+//            item {
+//                Column(modifier = Modifier.padding(8.dp)) {
+//                    DailyReminderButton()
+//                }
+//            }
         }
 
 
